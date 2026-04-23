@@ -3,14 +3,14 @@ import { useState } from "react";
 import { CiSearch, CiShoppingCart } from "react-icons/ci";
 import { LuMenu } from "react-icons/lu";
 import { PiUserCircleLight } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Header() {
   const [sidebar, setSidebar] = useState<boolean>(false);
 
   return (
     <header className="border-b border-[#F3F5F7]">
-      <div className="max-w-310 container mx-auto flex justify-between items-center py-5">
+      <div className="container px-5 mx-auto flex justify-between items-center py-5">
         <div className="flex gap-1 items-center">
           <button
             className="sm:hidden text-xl"
@@ -19,15 +19,23 @@ export default function Header() {
             <LuMenu />
           </button>
           <h1 className="font-medium text-2xl">
-            3legant<span className="text-[#6C7275]">.</span>
+            <NavLink to={"/"}>
+              3legant<span className="text-[#6C7275]">.</span>
+            </NavLink>
           </h1>
         </div>
         <div className="">
           <ul className="hidden sm:flex  gap-10 text-[#6C7275] font-medium">
-            <li className="hover:text-black cursor-pointer">Home</li>
-            <li className="hover:text-black cursor-pointer">Shop</li>
-            <li className="hover:text-black cursor-pointer">Blog</li>
+            <li className="hover:text-black">
+              <NavLink to={"/"}>Home</NavLink>
+            </li>
             <li className="hover:text-black cursor-pointer">
+              <NavLink to={"/shop"}>Shop</NavLink>
+            </li>
+            <li className="hover:text-black cursor-pointer">
+              <NavLink to={"/blog"}>Blog</NavLink>
+            </li>
+            <li className="hover:text-black">
               <Link to={"/contact"}>Contact Us</Link>
             </li>
           </ul>

@@ -1,11 +1,15 @@
 import instagram from "../../assets/icons/instagram-icon.png";
 import facebook from "../../assets/icons/facebook-icon.png";
 import youtube from "../../assets/icons/youtube-icon.png";
+import { Link } from "react-router-dom";
+import SubFooter from "../ui/SubFooter";
 
 export default function Footer() {
   return (
-    <footer className="bg-black py-15">
-      <div className="max-w-310 container m-auto text-white flex flex-col gap-15">
+    <footer className="">
+      <SubFooter/>
+      <div className="bg-black py-15">
+      <div className="container mx-auto px-5 text-white flex flex-col gap-15">
         <div className="flex items-center justify-between">
           <div className="flex flex-row items-center gap-5 ">
             <h4 className="text-2xl">
@@ -16,10 +20,18 @@ export default function Footer() {
           </div>
           <div className="">
             <ul className="flex gap-10 text-[#FEFEFE] text-[14px]">
-              <li className="hover:text-black cursor-pointer">Home</li>
-              <li className="hover:text-black cursor-pointer">Shop</li>
-              <li className="hover:text-black cursor-pointer">Blog</li>
-              <li className="hover:text-black cursor-pointer">Contact Us</li>
+              <li className="">
+                <Link to={"/"}>Home</Link>
+              </li>
+              <li className="">
+                <Link to={"/shop"}>Shop</Link>
+              </li>
+              <li className="">
+                <Link to={"/blog"}>Blog</Link>
+              </li>
+              <li className="">
+                <Link to={"/contact"}>Contact Us</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -35,6 +47,7 @@ export default function Footer() {
             <img src={youtube} alt="youtube-icon" />
           </div>
         </div>
+      </div>
       </div>
     </footer>
   );

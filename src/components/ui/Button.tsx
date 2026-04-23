@@ -1,9 +1,10 @@
 import Spinner from "@/components/ui/Spinner";
 import { cn } from "@/utils/cn";
+import { BsArrowRight } from "react-icons/bs";
 
-type Variant = "primary" | "secondary" | "bordered";
+type Variant = "primary" | "secondary" | "linked";
 type Size = "sm" | "md" | "lg" | "xl";
-type Border = "rounded" | "default";
+type Border = "rounded" | "default" | "none";
 
 interface ButtonProps {
   variant?: Variant;
@@ -20,11 +21,11 @@ const variants: Record<Variant, string> = {
     "bg-[#141718] text-white hover:bg-[#1a1d1f] focus-visible:ring-[#141718]",
   secondary:
     "bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 focus-visible:ring-gray-400",
-  bordered: "",
+  linked: "border-b bg-transparent"
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9  px-4 text-sm",
+  sm: "h-9 px-4 text-sm",
   md: "h-10 px-5 text-sm",
   lg: "h-12 px-6 text-base",
   xl: "h-14 px-8 text-base",
@@ -33,6 +34,7 @@ const sizes: Record<Size, string> = {
 const borders: Record<Border, string> = {
   rounded: "rounded-full",
   default: "rounded-lg",
+  none: "rounded-none"
 };
 
 export const Button = ({
@@ -57,13 +59,14 @@ export const Button = ({
         variants[variant],
         sizes[size],
         borders[border],
+        variant === "linked" && borders[border],
         className,
       )}
     >
       {isLoading && (
         <Spinner size="sm" color={variant === "primary" ? "white" : "dark"} />
       )}
-      {children}
+      {children} {variant === "linked" ? <BsArrowRight /> : <></>}
     </button>
   );
 };

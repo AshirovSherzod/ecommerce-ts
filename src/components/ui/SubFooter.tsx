@@ -1,9 +1,10 @@
+import { MdOutlineMail } from "react-icons/md";
 import subfooter from "../../assets/images/subfooter.png";
 
 export default function SubFooter() {
   return (
-    <div
-      className="w-full h-80 bg-no-repeat bg-cover flex flex-col items-center justify-center"
+    <section
+      className="w-full h-80 bg-no-repeat bg-cover flex flex-col items-center justify-center gap-8"
       style={{ backgroundImage: `url(${subfooter})` }}
     >
       <div className="flex flex-col justify-center items-center gap-2">
@@ -14,11 +15,11 @@ export default function SubFooter() {
           Sign up for deals, new products and promotions
         </p>
       </div>
-      <form className="w-122 bg-green-500" onSubmit={(e) => e.preventDefault()}>
-        <img src="" alt="" />
-        <input placeholder="Email address" type="text" />
+      <form className="w-122 flex items-center gap-2 border-b py-2" onSubmit={(e) => e.preventDefault()}>
+        <MdOutlineMail className="text-2xl"/>
+        <input className="w-full outline-none" placeholder="Email address" type="text" />
         <button>SignUp</button>
       </form>
-    </div>
+    </section>
   );
 }
