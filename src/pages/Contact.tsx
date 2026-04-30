@@ -1,12 +1,12 @@
+import ContactHero from "@/sections/ContactHero";
+import Banner from "@/components/ui/Banner";
 import { Button } from "@/components/ui/Button";
-import ContactHero from "@/components/ui/ContactHero";
-import SaleUpSect from "@/components/ui/SaleUpSect";
 
 export default function Contact() {
 	return (
 		<>
 			<ContactHero />
-			<SaleUpSect>
+			<Banner variant="containered">
 				<h3 className="font-medium text-[40px] max-w-sm">About Us</h3>
 				<p className="text-xl">
 					3legant is a gift & decorations store based in HCMC, Vietnam. Est
@@ -16,7 +16,7 @@ export default function Contact() {
 				<Button className="w-35" variant="linked">
 					Show More
 				</Button>
-			</SaleUpSect>
+			</Banner>
 		</>
 	);
 }

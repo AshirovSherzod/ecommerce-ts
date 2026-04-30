@@ -1,13 +1,22 @@
 import saleImg from "@/assets/images/sale-img.png";
+import { cn } from "@/utils/cn";
 import type { ReactNode } from "react";
+
+type Variant = "containered" | "none";
 
 interface SaleUpProps {
 	children: ReactNode;
+	variant: Variant;
 }
 
-export default function SaleUpSect({ children }: SaleUpProps) {
+const variants: Record<Variant, string> = {
+	containered: "container mx-auto px-5",
+	none: "w-full",
+};
+
+export default function Banner({ children, variant }: SaleUpProps) {
 	return (
-		<section className="w-full h-133 flex items-center">
+		<section className={cn("h-133 flex items-center", variants[variant])}>
 			<div className="w-[50%] h-full overflow-hidden">
 				<img
 					className="w-full h-full object-cover"

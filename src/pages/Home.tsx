@@ -1,12 +1,12 @@
-import ArticlesSect from "@/components/ui/ArticlesSect";
-import CategorySect from "@/components/ui/CategorySect";
-import Hero from "@/components/ui/Hero";
-import ServiceSect from "@/components/ui/ServiceSect";
 import Articles1 from "@/assets/images/articles-1.png";
 import Articles2 from "@/assets/images/articles-2.png";
 import Articles3 from "@/assets/images/articles-3.png";
-import SaleUpSect from "@/components/ui/SaleUpSect";
+import ArticlesSect from "@/sections/ArticlesSect";
+import CategorySect from "@/sections/CategorySect";
+import Hero from "@/sections/Hero";
+import ServiceSect from "@/sections/ServiceSect";
 import { Button } from "@/components/ui/Button";
+import Banner from "@/components/ui/Banner";
 
 const data = [
 	{
@@ -32,7 +32,7 @@ export default function Home() {
 			<Hero />
 			<CategorySect />
 			<ServiceSect />
-			<SaleUpSect>
+			<Banner variant="none">
 				<p className="font-bold text-[#377DFF] text-[16px]">
 					SALE UP TO 35% OFF
 				</p>
@@ -46,7 +46,7 @@ export default function Home() {
 				<Button className="w-35" variant="linked">
 					Show More
 				</Button>
-			</SaleUpSect>
+			</Banner>
 			<ArticlesSect data={data} />
 		</>
 	);
