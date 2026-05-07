@@ -14,7 +14,7 @@ export default function Sidebar({
   return (
     <div className="">
       <div
-        className={`sm:w-[95%] fixed top-0  w-[70%] h-screen bg-white z-1000 transition-all duration-1000 p-6  ${sidebar ? "left-0" : "-left-full"}`}
+        className={`sm:w-[95%] fixed top-0  w-[90%] h-screen bg-white z-1000 transition-all duration-1000 p-6  ${sidebar ? "left-0" : "-left-full"}`}
       >
         <div className="flex justify-between">
           <h4 className="font-medium text-xl">
@@ -24,9 +24,9 @@ export default function Sidebar({
             <IoClose className="text-[#6C7275]" />
           </button>
         </div>
-        {children}
+        <div className="py-4">{children}</div>
       </div>
-      <div className="w-full h-screen bg-gray-400/20 backdrop-blur-sm fixed top-0 left-0 z-999  "></div>
+      <div className="w-full h-screen bg-gray-400/20 backdrop-blur-sm fixed top-0 left-0 z-999"></div>
     </div>
   );
 }
