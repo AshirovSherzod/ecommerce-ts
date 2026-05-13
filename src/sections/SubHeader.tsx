@@ -1,6 +1,7 @@
-import arrow from "../../assets/icons/arrow-right.png";
-import ticket from "../../assets/icons/ticket-icon.png";
-import close from "../../assets/icons/close-icon.png";
+import arrow from "@/assets/icons/arrow-right.png";
+import ticket from "@/assets/icons/ticket-icon.png";
+import close from "@/assets/icons/close-icon.png";
+import { Link } from "react-router-dom";
 
 type Props = {
   setClose: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +19,7 @@ export default function SubHeader({ setClose }: Props) {
           30% off storewide — Limited time!
         </p>
         <p className="flex items-center gap-1 text-[#377DFF] border-b">
-          Shop Now
+          <Link to={"/shop"}>Shop Now</Link>
           <span>
             <img src={arrow} alt="arrow-img" />
           </span>
