@@ -1,14 +1,12 @@
 import { Button } from "@/components/ui/Button";
 import ProductCard from "@/components/ui/ProductCard";
 import { useGetProducts } from "@/hooks/useProducts";
-import type { ProductQueryParams } from "@/types/products.types";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductWrapper() {
-  const [params, setParams] = useState<ProductQueryParams>({});
+  // const [params, setParams] = useState<ProductQueryParams>({});
   const navigate = useNavigate();
-  const { data, isLoading } = useGetProducts(params);
+  const { data, isLoading } = useGetProducts({});
 
   if (isLoading) return <h1>Loading...</h1>;
 

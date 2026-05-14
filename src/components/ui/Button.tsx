@@ -5,6 +5,7 @@ import { BsArrowRight } from "react-icons/bs";
 type Variant = "primary" | "secondary" | "linked";
 type Size = "sm" | "md" | "lg" | "xl";
 type Border = "rounded" | "default" | "none";
+type Type = "button" | "submit";
 
 interface ButtonProps {
   variant?: Variant;
@@ -12,6 +13,7 @@ interface ButtonProps {
   border?: Border;
   isLoading?: boolean;
   children: React.ReactNode;
+  type?: Type;
   onClick?: () => void | Promise<void>;
   className?: string;
 }
@@ -21,7 +23,7 @@ const variants: Record<Variant, string> = {
     "bg-[#141718] text-white hover:bg-[#1a1d1f] focus-visible:ring-[#141718]",
   secondary:
     "bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 focus-visible:ring-gray-400",
-  linked: "border-b bg-transparent"
+  linked: "border-b bg-transparent",
 };
 
 const sizes: Record<Size, string> = {
@@ -34,7 +36,7 @@ const sizes: Record<Size, string> = {
 const borders: Record<Border, string> = {
   rounded: "rounded-full",
   default: "rounded-lg",
-  none: "rounded-none"
+  none: "rounded-none",
 };
 
 export const Button = ({
@@ -43,11 +45,13 @@ export const Button = ({
   border = "default",
   isLoading = false,
   children,
+  type,
   onClick,
   className,
 }: ButtonProps) => {
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={isLoading}
       className={cn(
