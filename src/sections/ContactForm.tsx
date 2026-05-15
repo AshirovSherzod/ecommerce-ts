@@ -1,12 +1,28 @@
 import { Button } from "@/components/ui/Button";
 import { useTelegramMessage } from "@/hooks/useTelegramMessage";
+import { toast } from "react-toastify";
 
 export default function ContactForm() {
-  const { sendMessage, isLoading } = useTelegramMessage();
+  const { sendMessage, isLoading, success } = useTelegramMessage();
+  console.log(success);
 
   const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     sendMessage("Salom");
+
+    if (success) {
+      toast.success("🦄 Wow so easy!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        // transition: Bounce,
+      });
+    }
   };
   return (
     <section className="max-w-310 mx-auto px-4 flex gap-7 my-10">

@@ -7,6 +7,7 @@ import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
 import Cart from "@/pages/Cart";
 import Wishlist from "@/pages/Wishlist";
+import { ToastContainer } from "react-toastify";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+      <ToastContainer />
     </>
   );
 }
