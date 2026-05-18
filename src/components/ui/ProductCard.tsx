@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import Rating from "@/components/ui/Rating";
+import { useWishlistStore } from "@/store";
 import type { Product } from "@/types/products.types";
-import { useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 interface ProductProps {
@@ -9,7 +9,9 @@ interface ProductProps {
 }
 
 export default function ProductCard({ data }: ProductProps) {
-  const [isLiked, setIsLiked] = useState(false);
+  const { addItem, removeItem, isInWishlist } = useWishlistStore();
+
+  const inWishlist = isInWishlist(data.id);
 
   const discountPercentage = data.oldPrice
     ? Math.round(((data.oldPrice - data.price) / data.oldPrice) * 100)
@@ -18,7 +20,11 @@ export default function ProductCard({ data }: ProductProps) {
 
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsLiked(!isLiked);
+    if (inWishlist) {
+      removeItem(data.id);
+    } else {
+      addItem(data);
+    }
   };
 
   return (
@@ -34,7 +40,7 @@ export default function ProductCard({ data }: ProductProps) {
           onClick={handleLikeClick}
           className="absolute w-8 h-8 top-3 flex items-center justify-center bg-white rounded-full -right-full opacity-0 group-hover:right-3 group-hover:opacity-100 duration-500 shadow-[0px_8px_24px_-4px_rgba(15,15,15,0.25)]"
         >
-          {isLiked ? (
+          {inWishlist ? (
             <FaHeart className="text-red-500 text-xl" />
           ) : (
             <FaRegHeart className="text-gray-700 text-xl" />

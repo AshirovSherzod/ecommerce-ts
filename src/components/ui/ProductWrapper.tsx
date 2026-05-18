@@ -1,12 +1,18 @@
 import { Button } from "@/components/ui/Button";
 import ProductCard from "@/components/ui/ProductCard";
-import { useGetProducts } from "@/hooks/useProducts";
+import type { Product } from "@/types/products.types";
 import { useNavigate } from "react-router-dom";
 
-export default function ProductWrapper() {
-  // const [params, setParams] = useState<ProductQueryParams>({});
+interface ProductWrapperProps {
+  data: Product[];
+  isLoading?: boolean;
+}
+
+export default function ProductWrapper({
+  data,
+  isLoading,
+}: ProductWrapperProps) {
   const navigate = useNavigate();
-  const { data, isLoading } = useGetProducts({});
 
   if (isLoading) return <h1>Loading...</h1>;
 
@@ -19,7 +25,7 @@ export default function ProductWrapper() {
         </Button>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 grid-rows-2 gap-6">
-        {data?.data.products.map((product) => (
+        {data?.map((product) => (
           <ProductCard data={product} />
         ))}
       </div>

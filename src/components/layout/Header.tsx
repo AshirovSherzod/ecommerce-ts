@@ -2,6 +2,7 @@ import Sidebar from "@/components/ui/Sidebar";
 import SubHeader from "@/sections/SubHeader";
 import { useState } from "react";
 import { CiSearch, CiShoppingCart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 import { LuMenu } from "react-icons/lu";
 import { PiUserCircleLight } from "react-icons/pi";
 import { Link, NavLink } from "react-router-dom";
@@ -51,9 +52,11 @@ export default function Header() {
             <button className="w-6 h-6">
               <PiUserCircleLight className="text-2xl" />
             </button>
-            <button className="w-6 h-6">
-              <CiShoppingCart className="text-2xl" />
-            </button>
+            <Link to={"/wishlist"}>
+              <button className="w-6 h-6">
+                <FaHeart className="text-2xl" />
+              </button>
+            </Link>
           </div>
         </div>
         {sidebar && (

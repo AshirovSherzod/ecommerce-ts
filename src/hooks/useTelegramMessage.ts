@@ -23,7 +23,7 @@ export const useTelegramMessage = () => {
 
       setSuccess(true);
 
-      toast.success("🦄 Xabar muvaffaqiyatli yuborildi!", {
+      toast.success("Xabar muvaffaqiyatli yuborildi!", {
         position: "top-right",
         autoClose: 3000,
         theme: "light",
@@ -34,7 +34,7 @@ export const useTelegramMessage = () => {
         err instanceof Error ? err.message : "Xato yuz berdi";
       setError(errorMessage);
 
-      toast.error(`❌ Xato: ${errorMessage}`, {
+      toast.error(`Xato: ${errorMessage}`, {
         position: "top-right",
         autoClose: 3000,
         theme: "light",

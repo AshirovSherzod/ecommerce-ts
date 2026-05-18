@@ -8,8 +8,9 @@ import ServiceSect from "@/sections/ServiceSect";
 import { Button } from "@/components/ui/Button";
 import Banner from "@/components/ui/Banner";
 import ProductWrapper from "@/components/ui/ProductWrapper";
+import { useGetProducts } from "@/hooks/useProducts";
 
-const data = [
+const data1 = [
   {
     id: "1",
     img: Articles1,
@@ -28,11 +29,13 @@ const data = [
 ];
 
 export default function Home() {
+  const { data, isLoading } = useGetProducts({});
+
   return (
     <>
       <Hero />
       <CategorySect />
-      <ProductWrapper />
+      <ProductWrapper data={data?.data.products || []} isLoading={isLoading} />
       <ServiceSect />
       <Banner variant="none">
         <p className="font-bold text-[#377DFF] text-[16px]">
@@ -49,7 +52,7 @@ export default function Home() {
           Show More
         </Button>
       </Banner>
-      <ArticlesSect data={data} />
+      <ArticlesSect data={data1} />
     </>
   );
 }
