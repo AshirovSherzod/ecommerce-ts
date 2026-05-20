@@ -1,13 +1,20 @@
 import instagram from "../../assets/icons/instagram-icon.png";
 import facebook from "../../assets/icons/facebook-icon.png";
 import youtube from "../../assets/icons/youtube-icon.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SubFooter from "@/sections/SubFooter";
+import ServiceSect from "@/sections/ServiceSect";
 
 export default function Footer() {
+  const { pathname } = useLocation();
   return (
     <footer className="">
-      <SubFooter />
+      {pathname.includes("/contact") ? (
+        <ServiceSect variant="sc" />
+      ) : (
+        <SubFooter />
+      )}
+
       <div className="bg-black py-15">
         <div className="max-w-310 mx-auto px-5 text-white flex flex-col gap-15">
           <div className="flex items-center justify-between">

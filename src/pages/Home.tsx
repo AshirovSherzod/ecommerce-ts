@@ -36,7 +36,7 @@ export default function Home() {
       <Hero />
       <CategorySect />
       <ProductWrapper data={data?.data.products || []} isLoading={isLoading} />
-      <ServiceSect />
+      <ServiceSect variant="pr" />
       <Banner variant="none">
         <p className="font-bold text-[#377DFF] text-[16px]">
           SALE UP TO 35% OFF
