@@ -2,6 +2,7 @@ import ContactHero from "@/sections/ContactHero";
 import Banner from "@/components/ui/Banner";
 import { Button } from "@/components/ui/Button";
 import ContactForm from "@/sections/ContactForm";
+import ContactSect from "@/sections/ContactSect";
 
 export default function Contact() {
   return (
@@ -18,6 +19,7 @@ export default function Contact() {
           Show More
         </Button>
       </Banner>
+      <ContactSect />
       <ContactForm />
     </>
   );
