@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import Rating from "@/components/ui/Rating";
-import { useWishlistStore } from "@/store";
+import { useCartStore, useWishlistStore } from "@/store";
 import type { Product } from "@/types/products.types";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
@@ -9,22 +9,36 @@ interface ProductProps {
 }
 
 export default function ProductCard({ data }: ProductProps) {
-  const { addItem, removeItem, isInWishlist } = useWishlistStore();
+  const addToWishlist = useWishlistStore((state) => state.addItem);
+  const removeFromWishlist = useWishlistStore((state) => state.removeItem);
+  const inWishlist = useWishlistStore((state) =>
+    state.items.some((item) => item.id === data.id),
+  );
 
-  const inWishlist = isInWishlist(data.id);
+  const addToCart = useCartStore((state) => state.addItem);
+  const inCart = useCartStore((state) =>
+    state.items.some((item) => item.id === data.id),
+  );
 
-  const discountPercentage = data.oldPrice
-    ? Math.round(((data.oldPrice - data.price) / data.oldPrice) * 100)
-    : null;
+  const discountPercentage =
+    data.oldPrice && data.oldPrice > data.price
+      ? Math.round(((data.oldPrice - data.price) / data.oldPrice) * 100)
+      : 0;
   const imageUrl = data.images?.[0] || "/placeholder-product.jpg";
 
-  const handleLikeClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  // Yurakcha ikonkasi — wishlist
+  const toggleWishlist = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     if (inWishlist) {
-      removeItem(data.id);
+      removeFromWishlist(data.id);
     } else {
-      addItem(data);
+      addToWishlist(data);
     }
+  };
+
+  // Pastdagi qora tugma — savatcha
+  const handleAddToCart = () => {
+    addToCart(data, 1);
   };
 
   return (
@@ -37,7 +51,11 @@ export default function ProductCard({ data }: ProductProps) {
           loading="lazy"
         />
         <button
-          onClick={handleLikeClick}
+          onClick={toggleWishlist}
+          type="button"
+          aria-label={
+            inWishlist ? "Wishlist'dan olib tashlash" : "Wishlist'ga qo'shish"
+          }
           className="absolute w-8 h-8 top-3 flex items-center justify-center bg-white rounded-full -right-full opacity-0 group-hover:right-3 group-hover:opacity-100 duration-500 shadow-[0px_8px_24px_-4px_rgba(15,15,15,0.25)]"
         >
           {inWishlist ? (
@@ -46,13 +64,17 @@ export default function ProductCard({ data }: ProductProps) {
             <FaRegHeart className="text-gray-700 text-xl" />
           )}
         </button>
-        {discountPercentage && (
+        {discountPercentage > 0 && (
           <div className="absolute top-3 left-3 bg-[#38CB89] text-white px-4 py-1 rounded-sm text-sm font-semibold">
             -{discountPercentage}%
           </div>
         )}
-        <Button className="absolute -bottom-full group-hover:bottom-1 w-full h-8.5 duration-500">
-          Wishlist
+        <Button
+          onClick={handleAddToCart}
+          type="button"
+          className="absolute -bottom-full group-hover:bottom-1 w-full h-8.5 duration-500"
+        >
+          {inCart ? "Add More" : "Add to Cart"}
         </Button>
       </div>
       <div className="">
