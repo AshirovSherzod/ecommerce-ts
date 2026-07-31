@@ -7,7 +7,7 @@ export default function Wishlist() {
   const data = useWishlistStore((state) => state.items);
 
   return (
-    <main style={{ minHeight: "calc(100vh)" }} className="">
+    <section style={{ minHeight: "calc(100vh - 200px)" }} className="">
       {data.length === 0 ? (
         <Empty
           title="Wishlist is empty"
@@ -17,6 +17,6 @@ export default function Wishlist() {
       ) : (
         <ProductWrapper data={data || []} />
       )}
-    </main>
+    </section>
   );
 }
