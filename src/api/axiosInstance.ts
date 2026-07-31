@@ -37,11 +37,14 @@ axiosInstance.interceptors.response.use(
     }
 
     if (status === 403) {
-      console.log("Ruxsat yo'q");
+      console.warn("Ruxsat yo'q");
     }
 
-    if (status === 500) {
-      console.log("Serverda xato keyinroq uruning");
+    if (status >= 500) {
+      console.warn("Serverda xato keyinroq uruning");
     }
+
+    // Xatoni yuqoriga uzatamiz, aks holda so'rov `undefined` bilan muvaffaqiyatli tugaydi
+    return Promise.reject(error);
   },
 );

@@ -10,11 +10,14 @@ import type {
 import { AxiosError } from "axios";
 
 // ─── Xatolarni ushlash ────────────────────────────────────
-const handleError = (error: unknown) => {
+const handleError = (error: unknown): never => {
   if (error instanceof AxiosError) {
     throw new Error(error.response?.data?.message ?? error.message);
   }
-  throw new Error("Kutilmagan xat yuz berdi");
+  if (error instanceof Error) {
+    throw error;
+  }
+  throw new Error("Kutilmagan xato yuz berdi");
 };
 
 // ─── Barcha Maxsulotlarni olish ────────────────────────────────────
@@ -28,7 +31,7 @@ export const getProducts = async (params: ProductQueryParams) => {
 
     return response.data;
   } catch (error) {
-    throw handleError(error);
+    handleError(error);
   }
 };
 
@@ -41,7 +44,7 @@ export const getProduct = async (id: string) => {
     );
     return response.data;
   } catch (error) {
-    throw handleError(error);
+    handleError(error);
   }
 };
 
@@ -55,7 +58,7 @@ export const postProducts = async (data: CreateProductRequest) => {
     );
     return response.data;
   } catch (error) {
-    throw handleError(error);
+    handleError(error);
   }
 };
 
@@ -69,7 +72,7 @@ export const putProducts = async (id: string, data: UpdateProductRequest) => {
     );
     return response.data;
   } catch (error) {
-    throw handleError(error);
+    handleError(error);
   }
 };
 
@@ -80,6 +83,6 @@ export const deleteProducts = async (id: string) => {
     const response = await axiosInstance.delete(ENDPOINTS.PRODUCTS.DELETE(id));
     return response.data;
   } catch (error) {
-    throw handleError(error);
+    handleError(error);
   }
 };
