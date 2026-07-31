@@ -22,7 +22,9 @@ function Rating({ rating }: RatingProps) {
   return (
     <div className="flex items-center gap-1">
       {stars}
-      <span className="ml-2 text-sm text-gray-600">({rating.toFixed(1)})</span>
+      <span className="ml-2 text-sm text-gray-600">
+        ({normalizedRating.toFixed(1)})
+      </span>
     </div>
   );
 }

@@ -26,7 +26,7 @@ export default function ProductWrapper({
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 grid-rows-2 gap-6">
         {data?.map((product) => (
-          <ProductCard data={product} />
+          <ProductCard key={product.id} data={product} />
         ))}
       </div>
     </section>
