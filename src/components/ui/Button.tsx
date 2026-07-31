@@ -63,7 +63,10 @@ export const Button = ({
         variants[variant],
         sizes[size],
         borders[border],
-        variant === "linked" && borders[border],
+        // linked variant faqat pastki chiziqdan iborat: burchak radiusi
+        // chiziqning uchlarini egib qo'yadi, gorizontal padding esa uni
+        // matndan kengaytirib yuboradi
+        variant === "linked" && "rounded-none px-0",
         className,
       )}
     >
