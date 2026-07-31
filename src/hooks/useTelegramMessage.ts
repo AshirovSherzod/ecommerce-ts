@@ -1,6 +1,12 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
+
+const TOAST_OPTIONS = {
+  position: "top-right",
+  autoClose: 3000,
+  theme: "light",
+} as const;
 
 export const useTelegramMessage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -10,7 +16,17 @@ export const useTelegramMessage = () => {
   const BOT_TOKEN = import.meta.env.VITE_BOT_TOKEN;
   const CHAT_ID = import.meta.env.VITE_CHAT_ID;
 
-  const sendMessage = async (text: string) => {
+  // Yuborish natijasini qaytaramiz, chunki `success` state'i
+  // chaqirilgan joyda darhol yangilanmaydi
+  const sendMessage = async (text: string): Promise<boolean> => {
+    if (!BOT_TOKEN || !CHAT_ID) {
+      const message = "Telegram sozlamalari topilmadi";
+      setSuccess(false);
+      setError(message);
+      toast.error(`Xato: ${message}`, TOAST_OPTIONS);
+      return false;
+    }
+
     try {
       setIsLoading(true);
       setSuccess(false);
@@ -23,22 +39,24 @@ export const useTelegramMessage = () => {
 
       setSuccess(true);
 
-      toast.success("Xabar muvaffaqiyatli yuborildi!", {
-        position: "top-right",
-        autoClose: 3000,
-        theme: "light",
-      });
+      toast.success("Xabar muvaffaqiyatli yuborildi!", TOAST_OPTIONS);
+
+      return true;
     } catch (err) {
       setSuccess(false);
-      const errorMessage =
-        err instanceof Error ? err.message : "Xato yuz berdi";
+
+      let errorMessage = "Xato yuz berdi";
+      if (err instanceof AxiosError) {
+        errorMessage = err.response?.data?.description ?? err.message;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+
       setError(errorMessage);
 
-      toast.error(`Xato: ${errorMessage}`, {
-        position: "top-right",
-        autoClose: 3000,
-        theme: "light",
-      });
+      toast.error(`Xato: ${errorMessage}`, TOAST_OPTIONS);
+
+      return false;
     } finally {
       setIsLoading(false);
     }
