@@ -2,13 +2,13 @@ import { IoClose } from "react-icons/io5";
 
 interface SidebarProps {
   sidebar: boolean;
-  setSidaber: React.Dispatch<React.SetStateAction<boolean>>;
-  children: React.ReactElement;
+  setSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  children: React.ReactNode;
 }
 
 export default function Sidebar({
   sidebar,
-  setSidaber,
+  setSidebar,
   children,
 }: SidebarProps) {
   return (
@@ -20,13 +20,20 @@ export default function Sidebar({
           <h4 className="font-medium text-xl">
             3legant<span className="text-[#6C7275]">.</span>
           </h4>
-          <button onClick={() => setSidaber(false)} className="text-xl">
+          <button
+            type="button"
+            onClick={() => setSidebar(false)}
+            className="text-xl"
+          >
             <IoClose className="text-[#6C7275]" />
           </button>
         </div>
         <div className="py-4">{children}</div>
       </div>
-      <div className="w-full h-screen bg-gray-400/20 backdrop-blur-sm fixed top-0 left-0 z-999"></div>
+      <div
+        onClick={() => setSidebar(false)}
+        className="w-full h-screen bg-gray-400/20 backdrop-blur-sm fixed top-0 left-0 z-999"
+      ></div>
     </div>
   );
 }

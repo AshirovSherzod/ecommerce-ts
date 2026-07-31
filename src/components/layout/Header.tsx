@@ -18,6 +18,8 @@ export default function Header() {
         <div className="max-w-310 px-5 mx-auto flex justify-between items-center py-5">
           <div className="flex gap-1 items-center">
             <button
+              type="button"
+              aria-label="Menyuni ochish"
               className="sm:hidden text-xl"
               onClick={() => setSidebar(true)}
             >
@@ -52,24 +54,25 @@ export default function Header() {
             <button className="w-6 h-6">
               <PiUserCircleLight className="text-2xl" />
             </button>
-            <Link to={"/wishlist"}>
-              <button className="w-6 h-6">
-                <FaHeart className="text-2xl" />
-              </button>
+            <Link to={"/wishlist"} className="w-6 h-6">
+              <FaHeart className="text-2xl" />
             </Link>
           </div>
         </div>
         {sidebar && (
-          <Sidebar sidebar={sidebar} setSidaber={setSidebar}>
+          <Sidebar sidebar={sidebar} setSidebar={setSidebar}>
             <div className="h-full flex flex-col justify-between">
               <div className="flex flex-col gap-4">
                 <form
                   className="w-full h-11 border flex rounded-md"
-                  onChange={(e: React.ChangeEvent<HTMLFormElement>) =>
+                  onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
                     e.preventDefault()
                   }
                 >
-                  <button className="h-11 w-11 flex items-center justify-center text-2xl">
+                  <button
+                    type="submit"
+                    className="h-11 w-11 flex items-center justify-center text-2xl"
+                  >
                     <CiSearch />
                   </button>
                   <input
