@@ -1,15 +1,21 @@
 import Sidebar from "@/components/ui/Sidebar";
 import SubHeader from "@/sections/SubHeader";
 import { useState } from "react";
-import { CiSearch, CiShoppingCart } from "react-icons/ci";
-import { FaHeart } from "react-icons/fa";
+import { CiHeart, CiSearch, CiShoppingCart } from "react-icons/ci";
 import { LuMenu } from "react-icons/lu";
 import { PiUserCircleLight } from "react-icons/pi";
 import { Link, NavLink } from "react-router-dom";
+import { useCartStore, useWishlistStore } from "@/store";
 
 export default function Header() {
   const [sidebar, setSidebar] = useState<boolean>(false);
   const [close, setClose] = useState<boolean>(true);
+
+  const cartCount = useCartStore((state) =>
+    state.items.reduce((total, item) => total + item.quantity, 0),
+  );
+
+  const wishlistCount = useWishlistStore((state) => state.items.length);
 
   return (
     <>
@@ -54,8 +60,21 @@ export default function Header() {
             <button className="w-6 h-6">
               <PiUserCircleLight className="text-2xl" />
             </button>
-            <Link to={"/wishlist"} className="w-6 h-6">
-              <FaHeart className="text-2xl" />
+            <Link to={"/wishlist"} className="w-6 h-6 relative">
+              <CiHeart className="text-2xl" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-2 min-w-4.5 h-4.5 px-1 flex items-center justify-center rounded-full bg-[#141718] text-white text-[10px] font-medium">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+            <Link to={"/cart"} className="w-6 h-6 relative">
+              <CiShoppingCart className="text-2xl" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-2 min-w-4.5 h-4.5 px-1 flex items-center justify-center rounded-full bg-[#141718] text-white text-[10px] font-medium">
+                  {cartCount}
+                </span>
+              )}
             </Link>
           </div>
         </div>
@@ -119,7 +138,7 @@ export default function Header() {
                     <Link onClick={() => setSidebar(false)} to={"/wishlist"}>
                       Wishlist
                       <span>
-                        <CiShoppingCart />
+                        <CiHeart />
                       </span>
                     </Link>
                   </li>
