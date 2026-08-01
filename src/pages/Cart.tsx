@@ -8,6 +8,7 @@ import Empty from "@/components/ui/Empty";
 import { useCartStore } from "@/store";
 import type { CartItem } from "@/types/cart.types";
 import { formatPrice } from "@/utils/formatPrice";
+import { PRODUCT_PLACEHOLDER } from "@/utils/constants";
 import emptyImg from "@/assets/icons/empty.webp";
 
 const SHIPPING_OPTIONS = [
@@ -40,7 +41,7 @@ function CartRow({ item }: CartRowProps) {
       <div className="flex gap-4 items-center">
         <img
           className="w-20 h-25 object-contain object-center bg-[#F3F5F7] rounded-md shrink-0"
-          src={item.images?.[0] || "/placeholder-product.jpg"}
+          src={item.images?.[0] || PRODUCT_PLACEHOLDER}
           alt={item.title}
           loading="lazy"
         />
@@ -65,6 +66,7 @@ function CartRow({ item }: CartRowProps) {
           variant="secondary"
           counter={item.quantity}
           setCounter={setQuantity}
+          min={1}
         />
       </div>
 

@@ -8,6 +8,9 @@ interface CounterProps {
   variant?: Variants;
   counter: number;
   setCounter: React.Dispatch<React.SetStateAction<number>>;
+  // Savatda quantity 1 dan pastga tushsa mahsulot o'chib ketadi,
+  // shuning uchun eng kichik qiymatni sozlash mumkin
+  min?: number;
 }
 
 const variants: Record<Variants, string> = {
@@ -19,6 +22,7 @@ export default function Counter({
   variant = "primary",
   counter,
   setCounter,
+  min = 0,
 }: CounterProps) {
   return (
     <div
@@ -28,14 +32,20 @@ export default function Counter({
       )}
     >
       <button
-        className=""
-        disabled={counter === 0}
+        type="button"
+        aria-label="Kamaytirish"
+        className="disabled:opacity-30 disabled:cursor-not-allowed"
+        disabled={counter <= min}
         onClick={() => setCounter((prev) => prev - 1)}
       >
         <FaMinus />
       </button>
       <p>{counter}</p>
-      <button onClick={() => setCounter((prev) => prev + 1)}>
+      <button
+        type="button"
+        aria-label="Ko'paytirish"
+        onClick={() => setCounter((prev) => prev + 1)}
+      >
         <FaPlus />
       </button>
     </div>
