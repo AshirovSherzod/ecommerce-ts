@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/Button";
 import Rating from "@/components/ui/Rating";
 import { useCartStore, useWishlistStore } from "@/store";
 import type { Product } from "@/types/products.types";
+import { PRODUCT_PLACEHOLDER } from "@/utils/constants";
+import { formatPrice } from "@/utils/formatPrice";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 interface ProductProps {
@@ -24,7 +26,7 @@ export default function ProductCard({ data }: ProductProps) {
     data.oldPrice && data.oldPrice > data.price
       ? Math.round(((data.oldPrice - data.price) / data.oldPrice) * 100)
       : 0;
-  const imageUrl = data.images?.[0] || "/placeholder-product.jpg";
+  const imageUrl = data.images?.[0] || PRODUCT_PLACEHOLDER;
 
   // Yurakcha ikonkasi — wishlist
   const toggleWishlist = (e?: React.MouseEvent) => {
@@ -81,10 +83,12 @@ export default function ProductCard({ data }: ProductProps) {
         <Rating rating={4.5} />
         <h3 className="font-semibold">{data.title}</h3>
         <p className="flex gap-3">
-          <span className="font-semibold">${data.price}</span>
-          {data.oldPrice && (
+          <span className="font-semibold">
+            {formatPrice(data.price, data.currency)}
+          </span>
+          {data.oldPrice !== null && data.oldPrice > data.price && (
             <span className="line-through text-[#6C7275]">
-              ${data.oldPrice}
+              {formatPrice(data.oldPrice, data.currency)}
             </span>
           )}
         </p>

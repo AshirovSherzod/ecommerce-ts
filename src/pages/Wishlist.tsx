@@ -15,7 +15,7 @@ export default function Wishlist() {
           image={img}
         />
       ) : (
-        <ProductWrapper data={data || []} />
+        <ProductWrapper data={data} title="Wishlist" showMore={false} />
       )}
     </section>
   );
