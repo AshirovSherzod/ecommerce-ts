@@ -32,8 +32,9 @@ axiosInstance.interceptors.response.use(
     const status = error.response?.status;
 
     if (status === 401) {
+      // Token yaroqsiz — tozalaymiz. Ilovada hozircha /login sahifasi yo'q,
+      // shuning uchun majburiy redirect qilmaymiz (aks holda 404'ga tushadi)
       localStorage.removeItem("accessToken");
-      window.location.href = "/login";
     }
 
     if (status === 403) {
