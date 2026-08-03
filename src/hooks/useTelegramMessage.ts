@@ -2,12 +2,6 @@ import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const TOAST_OPTIONS = {
-  position: "top-right",
-  autoClose: 3000,
-  theme: "light",
-} as const;
-
 export const useTelegramMessage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -23,7 +17,7 @@ export const useTelegramMessage = () => {
       const message = "Telegram sozlamalari topilmadi";
       setSuccess(false);
       setError(message);
-      toast.error(`Xato: ${message}`, TOAST_OPTIONS);
+      toast.error(`Xato: ${message}`);
       return false;
     }
 
@@ -39,7 +33,7 @@ export const useTelegramMessage = () => {
 
       setSuccess(true);
 
-      toast.success("Xabar muvaffaqiyatli yuborildi!", TOAST_OPTIONS);
+      toast.success("Xabar muvaffaqiyatli yuborildi!");
 
       return true;
     } catch (err) {
@@ -54,7 +48,7 @@ export const useTelegramMessage = () => {
 
       setError(errorMessage);
 
-      toast.error(`Xato: ${errorMessage}`, TOAST_OPTIONS);
+      toast.error(`Xato: ${errorMessage}`);
 
       return false;
     } finally {

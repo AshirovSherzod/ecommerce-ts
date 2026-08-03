@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+/* Toastify mobilda toast'ni ekranga to'liq yopishtiradi (100vw, radiussiz).
+   Chetlaridan bo'shliq qoldirib, sayt uslubiga moslaymiz. */
+@media only screen and (max-width: 480px) {
+  .Toastify__toast-container {
+    width: calc(100vw - 1rem);
+    margin: 0.5rem;
+    padding: 0;
+  }
+
+  .Toastify__toast {
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+  }
+}

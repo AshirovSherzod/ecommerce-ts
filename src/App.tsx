@@ -23,7 +23,12 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="light"
+        newestOnTop
+      />
     </>
   );
 }
