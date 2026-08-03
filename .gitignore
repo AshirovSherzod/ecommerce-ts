@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Refactor oldidan olingan lokal zaxira nusxalar
+backup
+
 # Env
 .env
 .env.*
