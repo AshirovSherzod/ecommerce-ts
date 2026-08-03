@@ -8,12 +8,13 @@ export default function CategorySect() {
   const navigate = useNavigate();
 
   return (
-    <section className="max-w-310 mx-auto px-5 grid grid-cols-2 grid-rows-2 gap-6 w-full h-166 ">
+    // Mobilda ustma-ust, md dan boshlab asl 2x2 to'r
+    <section className="max-w-310 mx-auto px-5 grid grid-cols-1 gap-6 w-full md:grid-cols-2 md:grid-rows-2 md:h-166">
       <div
-        className="row-span-2 bg-no-repeat bg-cover bg-center p-12"
+        className="min-h-75 md:min-h-0 md:row-span-2 bg-no-repeat bg-cover bg-center p-6 sm:p-8 md:p-12"
         style={{ backgroundImage: `url(${livingroom})` }}
       >
-        <h4 className="text-[34px] font-medium">Living Room</h4>
+        <h4 className="text-[28px] sm:text-[34px] font-medium">Living Room</h4>
         <Button
           onClick={() => navigate("/shop")}
           border="none"
@@ -23,10 +24,10 @@ export default function CategorySect() {
         </Button>
       </div>
       <div
-        className="bg-no-repeat bg-cover bg-center w-full h-full p-12 flex flex-col justify-end "
+        className="min-h-60 md:min-h-0 bg-no-repeat bg-cover bg-center w-full h-full p-6 sm:p-8 md:p-12 flex flex-col justify-end"
         style={{ backgroundImage: `url(${bedroom})` }}
       >
-        <h4 className="text-[34px] font-medium">Bed Room</h4>
+        <h4 className="text-[28px] sm:text-[34px] font-medium">Bed Room</h4>
         <Button
           variant="linked"
           border="none"
@@ -37,10 +38,10 @@ export default function CategorySect() {
         </Button>
       </div>
       <div
-        className="col-start-2 bg-no-repeat bg-cover bg-center w-full h-full p-12 flex flex-col justify-end"
+        className="min-h-60 md:min-h-0 md:col-start-2 bg-no-repeat bg-cover bg-center w-full h-full p-6 sm:p-8 md:p-12 flex flex-col justify-end"
         style={{ backgroundImage: `url(${kitchen})` }}
       >
-        <h4 className="text-[34px] font-medium">Kitchen</h4>
+        <h4 className="text-[28px] sm:text-[34px] font-medium">Kitchen</h4>
         <Button
           onClick={() => navigate("/shop")}
           border="none"

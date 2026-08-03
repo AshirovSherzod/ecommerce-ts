@@ -13,11 +13,11 @@ export default function Empty({ image, title, desc }: EmptyProps) {
   return (
     <section
       style={{ minHeight: "calc(100% - 100px)" }}
-      className="mt-15 flex flex-col items-center justify-center gap-2"
+      className="mt-15 px-5 flex flex-col items-center justify-center gap-2 text-center"
     >
-      <img className="w-1/6" src={image} alt="" />
-      <h3>{title}</h3>
-      <p>{desc}</p>
+      <img className="w-40 sm:w-1/6" src={image} alt="" />
+      <h3 className="font-medium text-xl">{title}</h3>
+      <p className="text-[#6C7275]">{desc}</p>
       <Button onClick={() => navigate("/")}>Go To Home</Button>
     </section>
   );
