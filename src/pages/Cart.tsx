@@ -105,11 +105,7 @@ export default function Cart() {
   const total = subtotal + shipping.price;
 
   const handleCheckout = () => {
-    toast.info("Checkout tez orada qo'shiladi", {
-      position: "top-right",
-      autoClose: 3000,
-      theme: "light",
-    });
+    toast.info("Checkout tez orada qo'shiladi");
   };
 
   if (items.length === 0) {
@@ -133,7 +129,7 @@ export default function Cart() {
           </Link>{" "}
           &gt; <span className="text-[#141718]">Cart</span>
         </p>
-        <h2 className="font-medium text-[40px]">Cart</h2>
+        <h2 className="font-medium text-[28px] sm:text-[40px]">Cart</h2>
 
         <ol className="flex flex-wrap justify-center gap-4 sm:gap-10">
           {STEPS.map((step, index) => (

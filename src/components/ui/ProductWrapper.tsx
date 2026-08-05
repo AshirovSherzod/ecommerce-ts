@@ -21,9 +21,9 @@ export default function ProductWrapper({
   const navigate = useNavigate();
 
   return (
-    <section className="max-w-310 mx-auto px-5 flex flex-col gap-10 my-10">
-      <div className="flex justify-between items-center">
-        <h3 className="font-medium text-[40px]">{title}</h3>
+    <section className="max-w-310 mx-auto px-5 flex flex-col gap-6 sm:gap-10 my-10">
+      <div className="flex justify-between items-center gap-4">
+        <h3 className="font-medium text-[28px] sm:text-[40px]">{title}</h3>
         {showMore && (
           <Button onClick={() => navigate("/shop")} variant="linked">
             More Products

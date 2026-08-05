@@ -30,20 +30,12 @@ export default function ContactForm() {
     const message = form.message.trim();
 
     if (!name || !email || !message) {
-      toast.error("Barcha maydonlarni to'ldiring", {
-        position: "top-right",
-        autoClose: 3000,
-        theme: "light",
-      });
+      toast.error("Barcha maydonlarni to'ldiring");
       return;
     }
 
     if (!EMAIL_REGEX.test(email)) {
-      toast.error("Email manzili noto'g'ri", {
-        position: "top-right",
-        autoClose: 3000,
-        theme: "light",
-      });
+      toast.error("Email manzili noto'g'ri");
       return;
     }
 
@@ -57,8 +49,8 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="max-w-310 mx-auto px-4 flex gap-7 my-10">
-      <div className="w-[50%]">
+    <section className="max-w-310 mx-auto px-5 flex flex-col lg:flex-row gap-7 my-10">
+      <div className="w-full lg:w-[50%]">
         <form onSubmit={handleSendMessage} className="flex flex-col gap-6">
           <div className="w-full">
             <label
@@ -110,17 +102,22 @@ export default function ContactForm() {
               onChange={handleChange}
             ></textarea>
           </div>
-          <Button isLoading={isLoading} type="submit" className="w-47">
+          <Button
+            isLoading={isLoading}
+            type="submit"
+            className="w-full sm:w-47"
+          >
             Send Message
           </Button>
         </form>
       </div>
-      <div className="w-[50%]">
+      {/* Mobilda ota-element balandligi bo'lmagani uchun xaritaga aniq
+          balandlik beriladi, lg dan boshlab forma balandligiga cho'ziladi */}
+      <div className="w-full h-75 lg:w-[50%] lg:h-auto">
         <iframe
           title="3legant do'koni joylashuvi"
+          className="w-full h-full"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3290.2799511993253!2d68.03033196493809!3d40.52112785111432!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ad7bf60a0e6dff%3A0xb3a88d3b69714cd0!2s1-maktab!5e0!3m2!1sen!2sus!4v1778663387266!5m2!1sen!2sus"
-          width="100%"
-          height="100%"
           loading="lazy"
         ></iframe>
       </div>

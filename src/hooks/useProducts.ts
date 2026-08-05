@@ -10,18 +10,46 @@ import type {
   ProductQueryParams,
   UpdateProductRequest,
 } from "@/types/products.types";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 export const PRODUCT_KEYS = {
   all: ["products"] as const,
   byId: (id: string) => ["products", id] as const,
   filter: (params: ProductQueryParams) => ["products", params] as const,
+  infinite: (params: ProductQueryParams) =>
+    ["products", "infinite", params] as const,
 };
 
 export const useGetProducts = (params?: ProductQueryParams) => {
   return useQuery({
     queryKey: params ? PRODUCT_KEYS.filter(params) : PRODUCT_KEYS.all,
     queryFn: () => getProducts(params ?? {}),
+    staleTime: 1000 * 60 * 3,
+  });
+};
+
+// Shop sahifasidagi "Show more" uchun — sahifalar ustma-ust yig'iladi
+export const useGetInfiniteProducts = (
+  params: Omit<ProductQueryParams, "page"> = {},
+) => {
+  return useInfiniteQuery({
+    queryKey: PRODUCT_KEYS.infinite(params),
+    queryFn: ({ pageParam }) => getProducts({ ...params, page: pageParam }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const pagination = lastPage?.data.pagination;
+
+      if (!pagination || pagination.page >= pagination.totalPages) {
+        return undefined;
+      }
+
+      return pagination.page + 1;
+    },
     staleTime: 1000 * 60 * 3,
   });
 };
