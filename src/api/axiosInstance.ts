@@ -1,7 +1,19 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 
+const baseURL = import.meta.env.VITE_API_URL;
+
+// Vite `VITE_*` qiymatlarini build paytida bundle ichiga yozadi. Hosting'da
+// o'zgaruvchi berilmasa baseURL bo'sh qoladi va so'rovlar API o'rniga saytning
+// o'z domeniga ketib 404 qaytaradi. Sababi ko'rinib tursin.
+if (!baseURL) {
+  console.error(
+    "VITE_API_URL topilmadi — API so'rovlari noto'g'ri manzilga ketadi. " +
+      "Hosting sozlamalarida muhit o'zgaruvchisini qo'shib, qayta deploy qiling.",
+  );
+}
+
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL,
   timeout: 10_000,
   headers: {
     "Content-Type": "application/json",
