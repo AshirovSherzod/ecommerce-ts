@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/api/axiosInstance";
 import { ENDPOINTS } from "@/api/endpoints";
+import { handleError } from "@/api/handleError";
 import type {
   CreateProductRequest,
   Product,
@@ -7,18 +8,6 @@ import type {
   ProductsListResponse,
   UpdateProductRequest,
 } from "@/types/products.types";
-import { AxiosError } from "axios";
-
-// ─── Xatolarni ushlash ────────────────────────────────────
-const handleError = (error: unknown): never => {
-  if (error instanceof AxiosError) {
-    throw new Error(error.response?.data?.message ?? error.message);
-  }
-  if (error instanceof Error) {
-    throw error;
-  }
-  throw new Error("Kutilmagan xato yuz berdi");
-};
 
 // ─── Barcha Maxsulotlarni olish ────────────────────────────────────
 // GET /products

@@ -1,6 +1,268 @@
+import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { BsFilter, BsGrid3X2Gap, BsGrid3X3Gap, BsList } from "react-icons/bs";
+import { Button } from "@/components/ui/Button";
+import ProductCard from "@/components/ui/ProductCard";
+import { Select } from "@/components/ui/Select";
+import Spinner from "@/components/ui/Spinner";
+import ShopFilters, { type ShopFilterValues } from "@/sections/ShopFilters";
+import ShopHero from "@/sections/ShopHero";
+import { useGetCategories } from "@/hooks/useCategories";
+import { useGetInfiniteProducts, useGetProducts } from "@/hooks/useProducts";
+import type { ProductQueryParams } from "@/types/products.types";
+
+const PAGE_SIZE = 9;
+// Brend ro'yxatini yig'ish uchun alohida so'rov — brend filtri yoqilganda
+// ham to'liq ro'yxat ko'rinib tursin
+const BRAND_SOURCE_LIMIT = 100;
+
+const VIEW_MODES = [
+  {
+    id: "grid-3",
+    label: "3 ustun",
+    icon: BsGrid3X2Gap,
+    className: "grid grid-cols-2 md:grid-cols-3 gap-6",
+  },
+  {
+    id: "grid-4",
+    label: "4 ustun",
+    icon: BsGrid3X3Gap,
+    className: "grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6",
+  },
+  {
+    id: "list",
+    label: "Ro'yxat",
+    icon: BsList,
+    className: "flex flex-col",
+  },
+] as const;
+
+type ViewId = (typeof VIEW_MODES)[number]["id"];
+
+const SORT_OPTIONS = [
+  { id: "newest", label: "Newest" },
+  { id: "price-asc", label: "Price: Low to High" },
+  { id: "price-desc", label: "Price: High to Low" },
+  { id: "name-asc", label: "Name: A-Z" },
+] as const;
+
+type SortId = (typeof SORT_OPTIONS)[number]["id"];
 
 export default function Shop() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [sort, setSort] = useState<SortId>("newest");
+  const [view, setView] = useState<ViewId>("grid-3");
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const values: ShopFilterValues = {
+    category: searchParams.get("category") ?? "",
+    brand: searchParams.get("brand") ?? "",
+    minPrice: searchParams.get("minPrice") ?? "",
+    maxPrice: searchParams.get("maxPrice") ?? "",
+  };
+
+  const handleFilterChange = (patch: Partial<ShopFilterValues>) => {
+    const next = { ...values, ...patch };
+    const params = new URLSearchParams();
+
+    if (next.category) params.set("category", next.category);
+    if (next.brand) params.set("brand", next.brand);
+    if (next.minPrice) params.set("minPrice", next.minPrice);
+    if (next.maxPrice) params.set("maxPrice", next.maxPrice);
+
+    setSearchParams(params);
+  };
+
+  const queryParams = useMemo(() => {
+    const params: Omit<ProductQueryParams, "page"> = { limit: PAGE_SIZE };
+
+    if (values.category) params.categoryId = values.category;
+    if (values.brand) params.brand = values.brand;
+    if (values.minPrice) params.minPrice = Number(values.minPrice);
+    if (values.maxPrice) params.maxPrice = Number(values.maxPrice);
+
+    return params;
+  }, [values.category, values.brand, values.minPrice, values.maxPrice]);
+
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetInfiniteProducts(queryParams);
+
+  const { data: categoryData } = useGetCategories();
+  const { data: brandSource } = useGetProducts({ limit: BRAND_SOURCE_LIMIT });
+
+  const categories = categoryData?.data.categories ?? [];
+
+  const brands = useMemo(() => {
+    const list = brandSource?.data.products ?? [];
+    return [...new Set(list.map((item) => item.brand).filter(Boolean))].sort();
+  }, [brandSource]);
+
+  const products = useMemo(
+    () => data?.pages.flatMap((page) => page?.data.products ?? []) ?? [],
+    [data],
+  );
+
+  // API'da sort parametri yo'q — yuklangan mahsulotlar ustidan saralaymiz
+  const sortedProducts = useMemo(() => {
+    const list = [...products];
+
+    switch (sort) {
+      case "price-asc":
+        return list.sort((a, b) => a.price - b.price);
+      case "price-desc":
+        return list.sort((a, b) => b.price - a.price);
+      case "name-asc":
+        return list.sort((a, b) => a.title.localeCompare(b.title));
+      default:
+        return list.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
+    }
+  }, [products, sort]);
+
+  const total = data?.pages[0]?.data.pagination.total ?? 0;
+  const activeCategory = categories.find(
+    (category) => category.id === values.category,
+  );
+  const heading = activeCategory?.title ?? "All Rooms";
+  const viewConfig =
+    VIEW_MODES.find((mode) => mode.id === view) ?? VIEW_MODES[0];
+
+  const filters = (
+    <ShopFilters
+      values={values}
+      categories={categories}
+      brands={brands}
+      onChange={handleFilterChange}
+      onClear={() => setSearchParams(new URLSearchParams())}
+    />
+  );
+
   return (
-    <></>
-  )
+    <>
+      <ShopHero />
+
+      <section className="max-w-310 mx-auto px-5 my-10 flex flex-col lg:flex-row gap-8">
+        <aside className="hidden lg:block w-65 shrink-0">{filters}</aside>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-6">
+            <div className="flex items-baseline gap-2">
+              <h2 className="font-medium text-2xl sm:text-[28px]">{heading}</h2>
+              {total > 0 && (
+                <span className="text-[14px] text-[#6C7275]">({total})</span>
+              )}
+            </div>
+
+            <div className="flex items-center gap-3 sm:gap-5">
+              <button
+                type="button"
+                onClick={() => setFiltersOpen((prev) => !prev)}
+                className="lg:hidden flex items-center gap-2 h-9 px-3 border border-[#E8ECEF] rounded-md text-[14px]"
+              >
+                <BsFilter className="text-lg" />
+                Filters
+              </button>
+
+              <Select
+                value={sort}
+                options={SORT_OPTIONS}
+                onChange={setSort}
+                label="Sort by"
+                ariaLabel="Saralash"
+                className="w-45"
+              />
+
+              <div className="hidden sm:flex items-center gap-1">
+                {VIEW_MODES.map((mode) => {
+                  const Icon = mode.icon;
+
+                  return (
+                    <button
+                      key={mode.id}
+                      type="button"
+                      aria-label={mode.label}
+                      aria-pressed={view === mode.id}
+                      onClick={() => setView(mode.id)}
+                      className={`w-9 h-9 flex items-center justify-center rounded-md transition-colors ${
+                        view === mode.id
+                          ? "bg-[#F3F5F7] text-[#141718]"
+                          : "text-[#6C7275] hover:text-[#141718]"
+                      }`}
+                    >
+                      <Icon className="text-lg" />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {filtersOpen && (
+            <div className="lg:hidden mb-6 p-4 border border-[#E8ECEF] rounded-md">
+              {filters}
+            </div>
+          )}
+
+          {isLoading ? (
+            <div className="flex justify-center py-20">
+              <Spinner size="xl" color="dark" />
+            </div>
+          ) : isError ? (
+            <p className="py-20 text-center text-[#6C7275]">
+              {error instanceof Error
+                ? error.message
+                : "Mahsulotlarni yuklab bo'lmadi"}
+            </p>
+          ) : sortedProducts.length === 0 ? (
+            <div className="py-20 flex flex-col items-center gap-4">
+              <p className="text-[#6C7275]">
+                Bu filtrlarga mos mahsulot topilmadi
+              </p>
+              <Button
+                variant="secondary"
+                onClick={() => setSearchParams(new URLSearchParams())}
+              >
+                Clear all filters
+              </Button>
+            </div>
+          ) : (
+            <div className={viewConfig.className}>
+              {sortedProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  data={product}
+                  variant={view === "list" ? "list" : "grid"}
+                />
+              ))}
+            </div>
+          )}
+
+          {hasNextPage && (
+            <div className="flex justify-center pt-10">
+              <Button
+                variant="secondary"
+                border="rounded"
+                size="lg"
+                isLoading={isFetchingNextPage}
+                onClick={() => {
+                  void fetchNextPage();
+                }}
+              >
+                Show more
+              </Button>
+            </div>
+          )}
+        </div>
+      </section>
+    </>
+  );
 }
