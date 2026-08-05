@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import shopHero from "@/assets/images/shop-banner.jpg";
+import shopHero from "@/assets/images/shop-banner.webp";
 
 export default function ShopHero() {
   return (

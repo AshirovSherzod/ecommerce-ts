@@ -1,4 +1,4 @@
-import saleImg from "@/assets/images/sale-img.png";
+import saleImg from "@/assets/images/sale-img.webp";
 import { cn } from "@/utils/cn";
 import type { ReactNode } from "react";
 
