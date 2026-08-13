@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 interface ProductWrapperProps {
   data: Product[];
   isLoading?: boolean;
+  isError?: boolean;
+  error?: unknown;
   // Wishlist kabi sahifalarda sarlavha va "More Products" tugmasi boshqacha
   title?: string;
   showMore?: boolean;
@@ -15,6 +17,8 @@ interface ProductWrapperProps {
 export default function ProductWrapper({
   data,
   isLoading,
+  isError,
+  error,
   title = "New Arrivals",
   showMore = true,
 }: ProductWrapperProps) {
@@ -35,9 +39,20 @@ export default function ProductWrapper({
         <div className="flex justify-center py-20">
           <Spinner size="xl" color="dark" />
         </div>
+      ) : isError ? (
+        // Ilgari xato bo'lsa ham bo'sh to'r ko'rinardi — sabab bilinmasdi
+        <p className="py-20 text-center text-[#6C7275]">
+          {error instanceof Error
+            ? error.message
+            : "Mahsulotlarni yuklab bo'lmadi"}
+        </p>
+      ) : data.length === 0 ? (
+        <p className="py-20 text-center text-[#6C7275]">
+          Hozircha mahsulot yo'q
+        </p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6">
-          {data?.map((product) => (
+          {data.map((product) => (
             <ProductCard key={product.id} data={product} />
           ))}
         </div>

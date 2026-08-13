@@ -26,10 +26,12 @@ export const useTelegramMessage = () => {
       setSuccess(false);
       setError(null);
 
-      await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        chat_id: CHAT_ID,
-        text,
-      });
+      await axios.post(
+        `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+        { chat_id: CHAT_ID, text },
+        // Timeout'siz so'rov osilib qolsa tugma abadiy "loading"da turadi
+        { timeout: 10_000 },
+      );
 
       setSuccess(true);
 

@@ -48,6 +48,16 @@ const SORT_OPTIONS = [
 
 type SortId = (typeof SORT_OPTIONS)[number]["id"];
 
+// URL'dagi qiymatni qo'lda o'zgartirish mumkin — `?minPrice=abc` bo'lsa
+// `Number()` NaN qaytaradi va so'rovga `minPrice=NaN` bo'lib ketardi
+const toPrice = (raw: string) => {
+  if (!raw.trim()) return undefined;
+
+  const value = Number(raw);
+
+  return Number.isFinite(value) && value >= 0 ? value : undefined;
+};
+
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [sort, setSort] = useState<SortId>("newest");
@@ -78,8 +88,12 @@ export default function Shop() {
 
     if (values.category) params.categoryId = values.category;
     if (values.brand) params.brand = values.brand;
-    if (values.minPrice) params.minPrice = Number(values.minPrice);
-    if (values.maxPrice) params.maxPrice = Number(values.maxPrice);
+
+    const minPrice = toPrice(values.minPrice);
+    const maxPrice = toPrice(values.maxPrice);
+
+    if (minPrice !== undefined) params.minPrice = minPrice;
+    if (maxPrice !== undefined) params.maxPrice = maxPrice;
 
     return params;
   }, [values.category, values.brand, values.minPrice, values.maxPrice]);

@@ -111,6 +111,7 @@ export function Select<T extends string>({
         type="button"
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-controls={open ? listboxId : undefined}
         aria-label={ariaLabel}
         onClick={() => (open ? setOpen(false) : openMenu())}
         className={cn(

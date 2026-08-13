@@ -11,7 +11,7 @@ export default function Wishlist() {
       {data.length === 0 ? (
         <Empty
           title="Wishlist is empty"
-          desc="You can full this by you like"
+          desc="Save the products you like and find them here later"
           image={img}
         />
       ) : (

@@ -83,7 +83,7 @@ export default function ContactForm() {
               name="email"
               value={form.email}
               onChange={handleChange}
-              placeholder="Your Name"
+              placeholder="Your Email"
             />
           </div>
           <div className="">

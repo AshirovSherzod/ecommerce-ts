@@ -1,6 +1,3 @@
-import Articles1 from "@/assets/images/articles-1.png";
-import Articles2 from "@/assets/images/articles-2.png";
-import Articles3 from "@/assets/images/articles-3.png";
 import ArticlesSect from "@/sections/ArticlesSect";
 import CategorySect from "@/sections/CategorySect";
 import Hero from "@/sections/Hero";
@@ -10,34 +7,22 @@ import { Button } from "@/components/ui/Button";
 import Banner from "@/components/ui/Banner";
 import ProductWrapper from "@/components/ui/ProductWrapper";
 import { useGetProducts } from "@/hooks/useProducts";
-
-const data1 = [
-  {
-    id: "1",
-    img: Articles1,
-    title: "7 ways to decor your home",
-  },
-  {
-    id: "2",
-    img: Articles2,
-    title: "Kitchen organization",
-  },
-  {
-    id: "3",
-    img: Articles3,
-    title: "Decor your bedroom",
-  },
-];
+import { ARTICLES } from "@/data/articles";
 
 export default function Home() {
-  const { data, isLoading } = useGetProducts({});
+  const { data, isLoading, isError, error } = useGetProducts({});
 
   return (
     <>
       <SliderSect />
       <Hero />
       <CategorySect />
-      <ProductWrapper data={data?.data.products || []} isLoading={isLoading} />
+      <ProductWrapper
+        data={data?.data.products ?? []}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
+      />
       <ServiceSect variant="pr" />
       <Banner variant="none">
         <p className="font-bold text-[#377DFF] text-[16px]">
@@ -54,7 +39,7 @@ export default function Home() {
           Show More
         </Button>
       </Banner>
-      <ArticlesSect data={data1} />
+      <ArticlesSect data={ARTICLES} />
     </>
   );
 }

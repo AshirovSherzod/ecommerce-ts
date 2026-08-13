@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 
 interface SidebarProps {
@@ -11,6 +12,25 @@ export default function Sidebar({
   setSidebar,
   children,
 }: SidebarProps) {
+  // Menyu ochiqligida orqadagi sahifa skroll bo'lib ketmasin va
+  // Escape bilan yopilsin
+  useEffect(() => {
+    if (!sidebar) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSidebar(false);
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [sidebar, setSidebar]);
+
   return (
     <>
       {/* Fon: yopiq holatda ham DOM'da turadi (animatsiya uchun), shuning

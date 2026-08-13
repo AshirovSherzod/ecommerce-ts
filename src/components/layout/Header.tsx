@@ -34,6 +34,12 @@ export default function Header() {
     toast.info("Sign In tez orada qo'shiladi");
   };
 
+  // Qidiruv hali ulanmagan — jim turishdan ko'ra sababini aytgan ma'qul
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    toast.info("Qidiruv tez orada qo'shiladi");
+  };
+
   return (
     <>
       {close && <SubHeader setClose={setClose} />}
@@ -66,12 +72,19 @@ export default function Header() {
           {/* Mobilda faqat savat qoladi, qolgan ikonkalar fly menu ichida */}
           <div className="flex gap-5 items-center">
             <button
+              type="button"
               aria-label="Qidiruv"
+              onClick={() => toast.info("Qidiruv tez orada qo'shiladi")}
               className="hidden sm:flex w-6 h-6 items-center"
             >
               <CiSearch className="text-2xl" />
             </button>
-            <button aria-label="Profil" className="hidden sm:block w-6 h-6">
+            <button
+              type="button"
+              aria-label="Profil"
+              onClick={() => toast.info("Profil tez orada qo'shiladi")}
+              className="hidden sm:block w-6 h-6"
+            >
               <PiUserCircleLight className="text-2xl" />
             </button>
             <Link
@@ -101,9 +114,7 @@ export default function Header() {
           <div className="h-full flex flex-col gap-6">
             <form
               className="w-full h-11 border border-[#E8ECEF] rounded-md flex items-center shrink-0"
-              onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
-                e.preventDefault()
-              }
+              onSubmit={handleSearch}
             >
               <button
                 type="submit"

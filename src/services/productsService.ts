@@ -5,6 +5,7 @@ import type {
   CreateProductRequest,
   Product,
   ProductQueryParams,
+  ProductResponse,
   ProductsListResponse,
   UpdateProductRequest,
 } from "@/types/products.types";
@@ -20,7 +21,7 @@ export const getProducts = async (params: ProductQueryParams) => {
 
     return response.data;
   } catch (error) {
-    handleError(error);
+    return handleError(error);
   }
 };
 
@@ -28,12 +29,14 @@ export const getProducts = async (params: ProductQueryParams) => {
 // GET /products/abc-123
 export const getProduct = async (id: string) => {
   try {
-    const response = await axiosInstance.get<Product>(
+    const response = await axiosInstance.get<ProductResponse>(
       ENDPOINTS.PRODUCTS.GET_ONE(id),
     );
-    return response.data;
+    // Javob {data, message, success} ichida o'ralgan — mahsulotning o'zini
+    // qaytarish kerak, aks holda `product.title` undefined bo'lib qoladi
+    return response.data.data;
   } catch (error) {
-    handleError(error);
+    return handleError(error);
   }
 };
 
@@ -47,7 +50,7 @@ export const postProducts = async (data: CreateProductRequest) => {
     );
     return response.data;
   } catch (error) {
-    handleError(error);
+    return handleError(error);
   }
 };
 
@@ -61,7 +64,7 @@ export const putProducts = async (id: string, data: UpdateProductRequest) => {
     );
     return response.data;
   } catch (error) {
-    handleError(error);
+    return handleError(error);
   }
 };
 
@@ -72,6 +75,6 @@ export const deleteProducts = async (id: string) => {
     const response = await axiosInstance.delete(ENDPOINTS.PRODUCTS.DELETE(id));
     return response.data;
   } catch (error) {
-    handleError(error);
+    return handleError(error);
   }
 };
