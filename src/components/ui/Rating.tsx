@@ -1,10 +1,27 @@
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { cn } from "@/utils/cn";
+
+type RatingSize = "sm" | "md";
 
 interface RatingProps {
   rating: number;
+  // Sharh kartochkalarida faqat yulduzchalar kerak, raqamsiz
+  showValue?: boolean;
+  size?: RatingSize;
+  className?: string;
 }
 
-function Rating({ rating }: RatingProps) {
+const sizes: Record<RatingSize, string> = {
+  sm: "text-[12px]",
+  md: "text-base",
+};
+
+function Rating({
+  rating,
+  showValue = true,
+  size = "md",
+  className,
+}: RatingProps) {
   const normalizedRating = Math.max(0, Math.min(5, rating));
 
   const stars = [];
@@ -20,11 +37,13 @@ function Rating({ rating }: RatingProps) {
   }
 
   return (
-    <div className="flex items-center gap-1">
+    <div className={cn("flex items-center gap-1", sizes[size], className)}>
       {stars}
-      <span className="ml-2 text-sm text-gray-600">
-        ({normalizedRating.toFixed(1)})
-      </span>
+      {showValue && (
+        <span className="ml-2 text-sm text-gray-600">
+          ({normalizedRating.toFixed(1)})
+        </span>
+      )}
     </div>
   );
 }

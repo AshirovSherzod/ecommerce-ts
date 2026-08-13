@@ -11,6 +11,17 @@ export interface Product {
   brand: string;
   images: string[];
   createdAt: string;
+  // API hozircha yubormaydi — kelsa, mahsulot sahifasida o'zi paydo bo'ladi
+  sku?: string;
+  measurements?: string;
+  saleEndsAt?: string;
+}
+
+// Bitta mahsulot ham ro'yxat kabi {data, message, success} ichida keladi
+export interface ProductResponse {
+  data: Product;
+  message: string;
+  success: boolean;
 }
 
 export interface ProductsListResponse {

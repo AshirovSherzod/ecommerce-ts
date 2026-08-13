@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/* Mahsulot galereyasidagi rasm lentasi: surish ishlaydi, lekin
+   scrollbar chizig'i kadrni buzib ko'rinmaydi */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Toastify mobilda toast'ni ekranga to'liq yopishtiradi (100vw, radiussiz).
    Chetlaridan bo'shliq qoldirib, sayt uslubiga moslaymiz. */
 @media only screen and (max-width: 480px) {

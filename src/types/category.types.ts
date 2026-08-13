@@ -6,6 +6,12 @@ export interface Category {
   createdAt: string;
 }
 
+export interface CategoryResponse {
+  data: Category;
+  message: string;
+  success: boolean;
+}
+
 export interface CategoryListResponse {
   data: {
     categories: Category[];

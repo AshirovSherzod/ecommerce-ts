@@ -1,7 +1,10 @@
 import { axiosInstance } from "@/api/axiosInstance";
 import { ENDPOINTS } from "@/api/endpoints";
 import { handleError } from "@/api/handleError";
-import type { Category, CategoryListResponse } from "@/types/category.types";
+import type {
+  CategoryListResponse,
+  CategoryResponse,
+} from "@/types/category.types";
 
 // ─── Barcha kategoriyalarni olish ────────────────────────────────────
 // GET /categories
@@ -13,7 +16,7 @@ export const getCategories = async () => {
 
     return response.data;
   } catch (error) {
-    handleError(error);
+    return handleError(error);
   }
 };
 
@@ -21,12 +24,13 @@ export const getCategories = async () => {
 // GET /categories/abc-123
 export const getCategory = async (id: string) => {
   try {
-    const response = await axiosInstance.get<Category>(
+    const response = await axiosInstance.get<CategoryResponse>(
       ENDPOINTS.CATEGORY.GET_ONE(id),
     );
 
-    return response.data;
+    // Bu yerda ham javob o'ralgan holda keladi
+    return response.data.data;
   } catch (error) {
-    handleError(error);
+    return handleError(error);
   }
 };

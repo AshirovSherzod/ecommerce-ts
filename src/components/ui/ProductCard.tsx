@@ -5,6 +5,7 @@ import type { Product } from "@/types/products.types";
 import { PRODUCT_PLACEHOLDER } from "@/utils/constants";
 import { formatPrice } from "@/utils/formatPrice";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 type Variant = "grid" | "list";
 
@@ -13,7 +14,7 @@ interface ProductProps {
   variant?: Variant;
 }
 
-// Shu kun ichida qo'shilgan mahsulotlar "NEW" belgisini oladi
+// So'nggi 30 kun ichida qo'shilgan mahsulotlar "NEW" belgisini oladi
 const NEW_PRODUCT_DAYS = 30;
 
 const isNewProduct = (createdAt: string) => {
@@ -90,21 +91,29 @@ export default function ProductCard({ data, variant = "grid" }: ProductProps) {
     ? "Wishlist'dan olib tashlash"
     : "Wishlist'ga qo'shish";
 
+  const detailUrl = `/shop/${data.id}`;
+
   if (variant === "list") {
     return (
       <div className="flex gap-4 sm:gap-6 py-6 border-b border-[#E8ECEF]">
         <div className="relative w-30 h-35 sm:w-50 sm:h-55 shrink-0 bg-[#F3F5F7] overflow-hidden">
-          <img
-            className="w-full h-full object-contain object-center"
-            src={imageUrl}
-            alt={data.title}
-            loading="lazy"
-          />
+          <Link to={detailUrl} className="block w-full h-full">
+            <img
+              className="w-full h-full object-contain object-center"
+              src={imageUrl}
+              alt={data.title}
+              loading="lazy"
+            />
+          </Link>
           {badges}
         </div>
         <div className="flex flex-col gap-2 min-w-0 flex-1">
           <Rating rating={4.5} />
-          <h3 className="font-semibold">{data.title}</h3>
+          <h3 className="font-semibold">
+            <Link className="hover:underline" to={detailUrl}>
+              {data.title}
+            </Link>
+          </h3>
           <p className="text-[14px] text-[#6C7275] line-clamp-2">
             {data.description}
           </p>
@@ -134,12 +143,16 @@ export default function ProductCard({ data, variant = "grid" }: ProductProps) {
   return (
     <div className="">
       <div className="relative w-full h-50 sm:h-62.5 group overflow-hidden">
-        <img
-          className="w-full h-full object-contain object-center"
-          src={imageUrl}
-          alt={data.title}
-          loading="lazy"
-        />
+        {/* Havola tugmalarni o'rab olmaydi — aks holda tugma link ichida
+            qolib, noto'g'ri HTML va noto'g'ri bosish hosil bo'ladi */}
+        <Link to={detailUrl} className="block w-full h-full">
+          <img
+            className="w-full h-full object-contain object-center"
+            src={imageUrl}
+            alt={data.title}
+            loading="lazy"
+          />
+        </Link>
         <button
           onClick={toggleWishlist}
           type="button"
@@ -163,7 +176,11 @@ export default function ProductCard({ data, variant = "grid" }: ProductProps) {
       </div>
       <div className="">
         <Rating rating={4.5} />
-        <h3 className="font-semibold">{data.title}</h3>
+        <h3 className="font-semibold">
+          <Link className="hover:underline" to={detailUrl}>
+            {data.title}
+          </Link>
+        </h3>
         {price}
       </div>
     </div>
