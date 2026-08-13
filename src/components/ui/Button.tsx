@@ -45,7 +45,9 @@ export const Button = ({
   border = "default",
   isLoading = false,
   children,
-  type,
+  // HTML'da atributsiz tugma forma ichida `submit` bo'lib qoladi va
+  // sahifani beixtiyor yuboradi — shuning uchun aniq `button`
+  type = "button",
   onClick,
   className,
 }: ButtonProps) => {

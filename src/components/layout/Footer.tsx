@@ -9,7 +9,8 @@ export default function Footer() {
   const { pathname } = useLocation();
   return (
     <footer className="">
-      {pathname.includes("/contact") ? (
+      {/* `includes` /shop/contact-lens kabi manzillarga ham tushib ketardi */}
+      {pathname === "/contact" ? (
         <ServiceSect variant="sc" />
       ) : (
         <SubFooter />

@@ -1,7 +1,29 @@
+import { useState } from "react";
 import { MdOutlineMail } from "react-icons/md";
+import { toast } from "react-toastify";
 import subfooter from "@/assets/images/subfooter.png";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function SubFooter() {
+	const [email, setEmail] = useState("");
+
+	// Ilgari tugma bosilganda hech narsa bo'lmasdi — foydalanuvchi
+	// obuna bo'ldimi yo'qmi bilmay qolardi
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		const value = email.trim();
+
+		if (!EMAIL_REGEX.test(value)) {
+			toast.error("Email manzili noto'g'ri");
+			return;
+		}
+
+		setEmail("");
+		toast.success("Obuna uchun rahmat!");
+	};
+
 	return (
 		<section
 			className="w-full min-h-80 py-12 px-5 bg-no-repeat bg-cover bg-center flex flex-col items-center justify-center gap-8"
@@ -17,13 +39,16 @@ export default function SubFooter() {
 			</div>
 			<form
 				className="w-full max-w-122 flex items-center gap-2 border-b py-2"
-				onSubmit={(e) => e.preventDefault()}
+				onSubmit={handleSubmit}
 			>
 				<MdOutlineMail className="text-2xl shrink-0" />
 				<input
 					className="w-full min-w-0 outline-none bg-transparent"
 					placeholder="Email address"
 					type="email"
+					aria-label="Email address"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
 				/>
 				<button type="submit" className="shrink-0">
 					SignUp

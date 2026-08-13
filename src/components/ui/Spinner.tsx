@@ -30,7 +30,7 @@ const ringColors: Record<SpinnerColor, string> = {
 export default function Spinner({
   size = "md",
   color = "gray",
-  label = "Yukanmoqda",
+  label = "Yuklanmoqda",
   className,
 }: SpinnerProps) {
   return (
