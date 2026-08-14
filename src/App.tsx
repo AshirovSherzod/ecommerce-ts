@@ -1,15 +1,20 @@
+import { lazy } from "react";
+import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Layout from "@/components/layout/Layout";
 import ScrollToTop from "@/components/layout/ScrollToTop";
-import Contact from "@/pages/Contact";
-import Home from "@/pages/Home";
-import { Route, Routes } from "react-router-dom";
-import Shop from "./pages/Shop";
-import Product from "@/pages/Product";
-import Blog from "./pages/Blog";
-import NotFound from "./pages/NotFound";
-import Cart from "@/pages/Cart";
-import Wishlist from "@/pages/Wishlist";
-import { ToastContainer } from "react-toastify";
+
+// Har bir marshrut alohida chunk: boshlang'ich yuklamada faqat ochilgan
+// sahifaning kodi keladi. Suspense zaxira ekrani Layout ichida —
+// header va footer darhol chiziladi.
+const Home = lazy(() => import("@/pages/Home"));
+const Shop = lazy(() => import("@/pages/Shop"));
+const Product = lazy(() => import("@/pages/Product"));
+const Blog = lazy(() => import("@/pages/Blog"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const Cart = lazy(() => import("@/pages/Cart"));
+const Wishlist = lazy(() => import("@/pages/Wishlist"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
 
 export default function App() {
   return (
