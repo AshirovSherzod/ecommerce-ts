@@ -3,10 +3,10 @@ import SubHeader from "@/sections/SubHeader";
 import { useState } from "react";
 import { CiHeart, CiSearch, CiShoppingCart } from "react-icons/ci";
 import { LuMenu } from "react-icons/lu";
-import { PiUserCircleLight } from "react-icons/pi";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useCartStore, useWishlistStore } from "@/store";
+import UserMenu from "@/components/layout/UserMenu";
+import { useAuthStore, useCartStore, useWishlistStore } from "@/store";
 import instagram from "@/assets/icons/instagram-icon.png";
 import facebook from "@/assets/icons/facebook-icon.png";
 import youtube from "@/assets/icons/youtube-icon.png";
@@ -20,6 +20,7 @@ const NAV_LINKS = [
 ];
 
 export default function Header() {
+  const navigate = useNavigate();
   const [sidebar, setSidebar] = useState<boolean>(false);
   const [close, setClose] = useState<boolean>(true);
 
@@ -29,9 +30,15 @@ export default function Header() {
 
   const wishlistCount = useWishlistStore((state) => state.items.length);
 
-  const handleSignIn = () => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
+  const signOut = useAuthStore((state) => state.signOut);
+
+  const handleSignOut = () => {
     setSidebar(false);
-    toast.info("Sign In tez orada qo'shiladi");
+    signOut();
+    toast.success("Siz tizimdan chiqdingiz");
+    navigate("/");
   };
 
   // Qidiruv hali ulanmagan — jim turishdan ko'ra sababini aytgan ma'qul
@@ -79,14 +86,7 @@ export default function Header() {
             >
               <CiSearch className="text-2xl" />
             </button>
-            <button
-              type="button"
-              aria-label="Profil"
-              onClick={() => toast.info("Profil tez orada qo'shiladi")}
-              className="hidden sm:block w-6 h-6"
-            >
-              <PiUserCircleLight className="text-2xl" />
-            </button>
+            <UserMenu />
             <Link
               to={"/wishlist"}
               className="hidden sm:block w-6 h-6 relative"
@@ -188,9 +188,27 @@ export default function Header() {
                 </li>
               </ul>
 
-              <Button onClick={handleSignIn} size="lg" className="w-full">
-                Sign In
-              </Button>
+              {isAuthenticated ? (
+                <div className="flex flex-col gap-2">
+                  <p className="text-[14px] text-[#6C7275] truncate">
+                    {user?.firstname || user?.name || user?.username}
+                  </p>
+                  <Button
+                    variant="secondary"
+                    onClick={handleSignOut}
+                    size="lg"
+                    className="w-full"
+                  >
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <Link to="/signin" onClick={() => setSidebar(false)}>
+                  <Button size="lg" className="w-full">
+                    Sign In
+                  </Button>
+                </Link>
+              )}
 
               <div className="flex items-center gap-6">
                 <img className="w-5 h-5" src={instagram} alt="instagram-icon" />

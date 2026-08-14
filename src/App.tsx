@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import GuestOnly from "@/components/layout/GuestOnly";
 import Layout from "@/components/layout/Layout";
 import PageLoader from "@/components/layout/PageLoader";
 import ScrollToTop from "@/components/layout/ScrollToTop";
@@ -29,17 +30,21 @@ export default function App() {
         <Route
           path="/signin"
           element={
-            <Suspense fallback={<PageLoader />}>
-              <SignIn />
-            </Suspense>
+            <GuestOnly>
+              <Suspense fallback={<PageLoader />}>
+                <SignIn />
+              </Suspense>
+            </GuestOnly>
           }
         />
         <Route
           path="/signup"
           element={
-            <Suspense fallback={<PageLoader />}>
-              <SignUp />
-            </Suspense>
+            <GuestOnly>
+              <Suspense fallback={<PageLoader />}>
+                <SignUp />
+              </Suspense>
+            </GuestOnly>
           }
         />
 

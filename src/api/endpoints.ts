@@ -5,6 +5,9 @@ export const ENDPOINTS = {
     REFRESH_TOKEN: "/auth/refresh-token",
     LOGOUT: "/auth/logout",
   },
+  USERS: {
+    ME: "/users/me",
+  },
   PRODUCTS: {
     GET_ALL: "/products",
     GET_ONE: (id: string) => `/products/${id}`,

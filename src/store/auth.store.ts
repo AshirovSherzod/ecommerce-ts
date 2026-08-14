@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import * as authService from "@/services/authService";
 import type { AuthState } from "@/types/auth.types";
+import { AUTH_UNAUTHORIZED } from "@/utils/authEvents";
 import { clearToken, getToken, setToken } from "@/utils/authStorage";
 
 export const useAuthStore = create<AuthState>()(
@@ -60,8 +61,9 @@ export const useAuthStore = create<AuthState>()(
       name: "auth-storage",
       storage: createJSONStorage(() => localStorage),
       // Tokenni bu yerda saqlamaymiz — u authStorage orqali boshqariladi.
-      // Faqat profil ma'lumoti keshlanadi.
-      partialize: (state) => ({ user: state.user }) as AuthState,
+      // Faqat profil ma'lumoti keshlanadi, shuning uchun sahifa ochilishi
+      // bilan ism ko'rinadi va /users/me javobini kutish shart emas.
+      partialize: (state) => ({ user: state.user }),
       // Kesh qolgan, lekin token yo'q bo'lsa — sessiya tugagan
       onRehydrateStorage: () => (state) => {
         if (state && !getToken()) {
@@ -72,3 +74,12 @@ export const useAuthStore = create<AuthState>()(
     },
   ),
 );
+
+// Server 401 qaytarganda sessiyani yopamiz. Aks holda token o'chsa ham
+// store `isAuthenticated: true` bo'lib qolib, foydalanuvchi kirgan
+// ko'rinishda turaverardi — bosgan har bir amali xato bilan tugardi.
+window.addEventListener(AUTH_UNAUTHORIZED, () => {
+  if (!useAuthStore.getState().isAuthenticated) return;
+
+  useAuthStore.setState({ user: null, isAuthenticated: false });
+});

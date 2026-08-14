@@ -45,7 +45,9 @@ export const register = async (data: RegisterRequest) => {
 // GET /users/me — token bilan ishlaydi
 export const getMe = async () => {
   try {
-    const response = await axiosInstance.get<UserResponse>("/users/me");
+    const response = await axiosInstance.get<UserResponse>(
+      ENDPOINTS.USERS.ME,
+    );
 
     return response.data.data;
   } catch (error) {
