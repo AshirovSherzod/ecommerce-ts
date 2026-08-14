@@ -27,6 +27,27 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
+      signUp: async (data, remember) => {
+        const payload = await authService.register(data);
+
+        // Backend darhol token bermasligi mumkin — u holda foydalanuvchi
+        // alohida kirishi kerak, buni chaqiruvchi joy hal qiladi
+        if (!payload.accessToken) return false;
+
+        setToken(payload.accessToken, remember);
+        set({ user: payload.user ?? null, isAuthenticated: true });
+
+        if (!payload.user) {
+          try {
+            set({ user: await authService.getMe() });
+          } catch {
+            // Profil keyinroq yuklanadi
+          }
+        }
+
+        return true;
+      },
+
       signOut: () => {
         void authService.logout();
         clearToken();

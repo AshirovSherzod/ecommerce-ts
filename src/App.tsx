@@ -17,6 +17,7 @@ const Cart = lazy(() => import("@/pages/Cart"));
 const Wishlist = lazy(() => import("@/pages/Wishlist"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const SignIn = lazy(() => import("@/pages/SignIn"));
+const SignUp = lazy(() => import("@/pages/SignUp"));
 
 export default function App() {
   return (
@@ -30,6 +31,14 @@ export default function App() {
           element={
             <Suspense fallback={<PageLoader />}>
               <SignIn />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <SignUp />
             </Suspense>
           }
         />

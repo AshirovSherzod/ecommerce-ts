@@ -5,6 +5,8 @@ import type {
   AuthPayload,
   LoginRequest,
   LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
   User,
   UserResponse,
 } from "@/types/auth.types";
@@ -16,6 +18,21 @@ export const login = async (credentials: LoginRequest) => {
     const response = await axiosInstance.post<LoginResponse>(
       ENDPOINTS.AUTH.LOGIN,
       credentials,
+    );
+
+    return response.data.data;
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
+// ─── Ro'yxatdan o'tish ────────────────────────────────────
+// POST /auth/register
+export const register = async (data: RegisterRequest) => {
+  try {
+    const response = await axiosInstance.post<RegisterResponse>(
+      ENDPOINTS.AUTH.REGISTER,
+      data,
     );
 
     return response.data.data;

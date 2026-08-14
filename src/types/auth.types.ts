@@ -16,6 +16,35 @@ export interface LoginRequest {
   password: string;
 }
 
+// Barcha maydonlar majburiy. email, phone va username unikal bo'lishi
+// kerak, phone formati: +998901234567, parol kamida 8 belgi.
+export interface RegisterRequest {
+  email: string;
+  phone: string;
+  username: string;
+  firstname: string;
+  name: string;
+  password: string;
+}
+
+/**
+ * Register javobining aniq shakli hali tasdiqlanmagan (sinov akkaunti
+ * yo'q). Ba'zi backendlar darhol token beradi, ba'zilari faqat
+ * foydalanuvchini qaytaradi va alohida kirishni talab qiladi — shuning
+ * uchun token ixtiyoriy va chaqiruvchi joy ikkala holatni ham hisobga oladi.
+ */
+export interface RegisterPayload {
+  accessToken?: string;
+  refreshToken?: string;
+  user?: User;
+}
+
+export interface RegisterResponse {
+  data: RegisterPayload;
+  message: string;
+  success: boolean;
+}
+
 export interface AuthPayload {
   accessToken: string;
   refreshToken?: string;
@@ -40,6 +69,8 @@ export interface AuthState {
   isAuthenticated: boolean;
 
   signIn: (credentials: LoginRequest, remember: boolean) => Promise<void>;
+  // `true` — ro'yxatdan o'tish bilan birga sessiya ham ochildi
+  signUp: (data: RegisterRequest, remember: boolean) => Promise<boolean>;
   signOut: () => void;
   setUser: (user: User | null) => void;
 }
