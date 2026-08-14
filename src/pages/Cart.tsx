@@ -2,15 +2,19 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IoClose } from "react-icons/io5";
+import Seo from "@/components/layout/Seo";
 import { Button } from "@/components/ui/Button";
 import Counter from "@/components/ui/Counter";
 import Empty from "@/components/ui/Empty";
 import { useCartStore } from "@/store";
 import type { CartItem } from "@/types/cart.types";
 import { formatPrice } from "@/utils/formatPrice";
-import { PRODUCT_PLACEHOLDER } from "@/utils/constants";
+import { PRODUCT_PLACEHOLDER, STORE_CURRENCY } from "@/utils/constants";
 import emptyImg from "@/assets/icons/empty.webp";
 
+// Narxlar STORE_CURRENCY da. Ilgari bu hech qayerda yozilmagan edi va
+// savat valyutasida formatlanardi — UZS savatda 15 dollarlik yetkazish
+// "15 so'm" bo'lib ko'rinardi.
 const SHIPPING_OPTIONS = [
   { id: "free", label: "Free shipping", price: 0 },
   { id: "express", label: "Express shipping", price: 15 },
@@ -100,9 +104,13 @@ export default function Cart() {
     SHIPPING_OPTIONS.find((option) => option.id === shippingId) ??
     SHIPPING_OPTIONS[0];
 
-  // Savatdagi mahsulotlarning valyutasi (aralash bo'lsa birinchisi olinadi)
-  const currency = items[0]?.currency ?? "USD";
-  const total = subtotal + shipping.price;
+  // Savat bitta valyutada ekani store darajasida kafolatlangan
+  const currency = items[0]?.currency ?? STORE_CURRENCY;
+
+  // Yetkazib berish narxlari STORE_CURRENCY da belgilangan. Savat boshqa
+  // valyutada bo'lsa ularni qo'shib bo'lmaydi — kurs manbai yo'q.
+  const shippingApplies = currency === STORE_CURRENCY;
+  const total = subtotal + (shippingApplies ? shipping.price : 0);
 
   const handleCheckout = () => {
     toast.info("Checkout tez orada qo'shiladi");
@@ -111,6 +119,7 @@ export default function Cart() {
   if (items.length === 0) {
     return (
       <section style={{ minHeight: "calc(100vh - 200px)" }}>
+        <Seo title="Cart" description="Your shopping cart." noIndex />
         <Empty
           title="Cart is empty"
           desc="Looks like you haven't added anything yet"
@@ -122,6 +131,8 @@ export default function Cart() {
 
   return (
     <section className="max-w-310 mx-auto px-5 my-10 flex flex-col gap-10">
+      {/* Savat shaxsiy sahifa — indekslanmaydi */}
+      <Seo title="Cart" description="Your shopping cart." noIndex />
       <div className="flex flex-col items-center gap-6">
         <p className="text-[14px] text-[#6C7275]">
           <Link className="hover:text-[#141718]" to={"/"}>
@@ -187,33 +198,41 @@ export default function Cart() {
         <div className="w-full lg:w-[35%] border border-[#6C7275] rounded-md p-6 flex flex-col gap-6">
           <h3 className="font-medium text-xl">Cart summary</h3>
 
-          <div className="flex flex-col gap-3">
-            {SHIPPING_OPTIONS.map((option) => (
-              <label
-                key={option.id}
-                className={`flex items-center justify-between px-4 py-3 rounded-md cursor-pointer border ${
-                  shippingId === option.id
-                    ? "border-[#141718] bg-[#F3F5F7]"
-                    : "border-[#E8ECEF]"
-                }`}
-              >
-                <span className="flex items-center gap-3 text-[14px]">
-                  <input
-                    className="accent-[#141718]"
-                    type="radio"
-                    name="shipping"
-                    value={option.id}
-                    checked={shippingId === option.id}
-                    onChange={() => setShippingId(option.id)}
-                  />
-                  {option.label}
-                </span>
-                <span className="text-[14px] font-medium">
-                  {formatPrice(option.price, currency)}
-                </span>
-              </label>
-            ))}
-          </div>
+          {shippingApplies ? (
+            <div className="flex flex-col gap-3">
+              {SHIPPING_OPTIONS.map((option) => (
+                <label
+                  key={option.id}
+                  className={`flex items-center justify-between px-4 py-3 rounded-md cursor-pointer border ${
+                    shippingId === option.id
+                      ? "border-[#141718] bg-[#F3F5F7]"
+                      : "border-[#E8ECEF]"
+                  }`}
+                >
+                  <span className="flex items-center gap-3 text-[14px]">
+                    <input
+                      className="accent-[#141718]"
+                      type="radio"
+                      name="shipping"
+                      value={option.id}
+                      checked={shippingId === option.id}
+                      onChange={() => setShippingId(option.id)}
+                    />
+                    {option.label}
+                  </span>
+                  <span className="text-[14px] font-medium">
+                    {/* Har doim o'z valyutasida — savatnikida emas */}
+                    {formatPrice(option.price, STORE_CURRENCY)}
+                  </span>
+                </label>
+              ))}
+            </div>
+          ) : (
+            <p className="px-4 py-3 rounded-md border border-[#E8ECEF] bg-[#F3F5F7] text-[14px] text-[#6C7275]">
+              Yetkazib berish narxlari {STORE_CURRENCY} da belgilangan, savat
+              esa {currency} da. Narx buyurtmani rasmiylashtirishda aniqlanadi.
+            </p>
+          )}
 
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center pb-3 border-b border-[#E8ECEF]">

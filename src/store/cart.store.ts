@@ -10,6 +10,16 @@ export const useCartStore = create<CartState>()(
       // Mahsulot qo'shish
       addItem: (product, quantity = 1) => {
         const items = get().items;
+
+        // Savat bitta valyutada bo'lishi shart. Kurs oladigan manba yo'q,
+        // ya'ni 100 USD va 100 EUR ni qo'shib bo'lmaydi — jimgina noto'g'ri
+        // jami ko'rsatishdan ko'ra qo'shishni rad etgan xavfsizroq.
+        const cartCurrency = items[0]?.currency;
+
+        if (cartCurrency && cartCurrency !== product.currency) {
+          return false;
+        }
+
         const existingItem = items.find((item) => item.id === product.id);
 
         if (existingItem) {
@@ -28,7 +38,11 @@ export const useCartStore = create<CartState>()(
           };
           set({ items: [...items, newItem] });
         }
+
+        return true;
       },
+
+      getCurrency: () => get().items[0]?.currency ?? null,
 
       // Mahsulot o'chirish
       removeItem: (productId) => {
@@ -91,6 +105,8 @@ export const useCartStore = create<CartState>()(
       },
 
       // Jami narx
+      // Savat bitta valyutada ekani `addItem` da kafolatlangani uchun
+      // shunchaki qo'shib chiqish to'g'ri natija beradi
       getTotalPrice: () => {
         return get().items.reduce(
           (total, item) => total + item.price * item.quantity,

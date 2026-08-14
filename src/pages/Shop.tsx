@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { BsFilter, BsGrid3X2Gap, BsGrid3X3Gap, BsList } from "react-icons/bs";
+import Seo from "@/components/layout/Seo";
 import { Button } from "@/components/ui/Button";
 import ProductCard from "@/components/ui/ProductCard";
 import { Select } from "@/components/ui/Select";
@@ -162,6 +163,15 @@ export default function Shop() {
 
   return (
     <>
+      {/* Kategoriya tanlanganda sarlavha ham shunga moslashadi */}
+      <Seo
+        title={activeCategory ? activeCategory.title : "Shop"}
+        description={
+          activeCategory
+            ? `Browse ${activeCategory.title} at 3legant — ${total} products in stock.`
+            : "Browse all products at 3legant — furniture, lighting and home decor with filters by category, brand and price."
+        }
+      />
       <ShopHero />
 
       <section className="max-w-310 mx-auto px-5 my-10 flex flex-col lg:flex-row gap-8">

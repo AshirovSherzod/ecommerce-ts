@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { Button } from "@/components/ui/Button";
 import Counter from "@/components/ui/Counter";
 import Countdown from "@/components/ui/Countdown";
+import Seo from "@/components/layout/Seo";
 import ProductGallery from "@/components/ui/ProductGallery";
 import Rating from "@/components/ui/Rating";
 import Spinner from "@/components/ui/Spinner";
@@ -13,7 +14,11 @@ import { useGetCategory } from "@/hooks/useCategories";
 import { useGetProduct } from "@/hooks/useProducts";
 import { useProductReviews } from "@/hooks/useProductReviews";
 import { useCartStore, useWishlistStore } from "@/store";
-import { SALE_ENDS_AT } from "@/utils/constants";
+import {
+  currencyMismatchMessage,
+  SALE_ENDS_AT,
+  STORE_CURRENCY,
+} from "@/utils/constants";
 import { formatPrice } from "@/utils/formatPrice";
 
 const NEW_PRODUCT_DAYS = 30;
@@ -67,6 +72,7 @@ function ProductDetail({ id }: { id: string }) {
         style={{ minHeight: "calc(100vh - 200px)" }}
         className="px-5 flex flex-col items-center justify-center gap-4 text-center"
       >
+        <Seo title="Product not found" noIndex />
         <h1 className="font-medium text-2xl">Mahsulot topilmadi</h1>
         <p className="text-[#6C7275]">
           {error instanceof Error
@@ -89,7 +95,13 @@ function ProductDetail({ id }: { id: string }) {
     : 0;
 
   const handleAddToCart = () => {
-    addToCart(product, quantity);
+    const cartCurrency = useCartStore.getState().getCurrency();
+
+    if (!addToCart(product, quantity)) {
+      toast.error(currencyMismatchMessage(cartCurrency ?? STORE_CURRENCY));
+      return;
+    }
+
     toast.success("Mahsulot savatga qo'shildi");
   };
 
@@ -119,6 +131,13 @@ function ProductDetail({ id }: { id: string }) {
 
   return (
     <>
+      {/* Ulashilganda mahsulotning o'z nomi, tavsifi va rasmi ko'rinadi */}
+      <Seo
+        title={product.title}
+        description={product.description}
+        image={product.images?.[0]}
+        type="product"
+      />
       <section className="max-w-310 mx-auto px-5 my-5 sm:my-7 flex flex-col gap-5">
         <p className="text-[14px] text-[#6C7275] flex flex-wrap items-center gap-2">
           <Link className="hover:text-[#141718]" to="/">

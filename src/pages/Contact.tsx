@@ -1,3 +1,4 @@
+import Seo from "@/components/layout/Seo";
 import ContactHero from "@/sections/ContactHero";
 import Banner from "@/components/ui/Banner";
 import { Button } from "@/components/ui/Button";
@@ -7,6 +8,10 @@ import ContactSect from "@/sections/ContactSect";
 export default function Contact() {
   return (
     <>
+      <Seo
+        title="Contact Us"
+        description="Get in touch with 3legant — 234 Hai Trieu, Ho Chi Minh City. Phone +84 234 567 890, hello@3legant.com. Support 24/7."
+      />
       <ContactHero />
       <Banner variant="containered">
         <h3 className="font-medium text-[40px] max-w-sm">About Us</h3>
