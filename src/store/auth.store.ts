@@ -1,0 +1,53 @@
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import * as authService from "@/services/authService";
+import type { AuthState } from "@/types/auth.types";
+import { clearToken, getToken, setToken } from "@/utils/authStorage";
+
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      // Sahifa yangilanganda token joyida bo'lsa sessiya davom etadi
+      user: null,
+      isAuthenticated: !!getToken(),
+
+      signIn: async (credentials, remember) => {
+        const payload = await authService.login(credentials);
+
+        setToken(payload.accessToken, remember);
+        set({ user: payload.user ?? null, isAuthenticated: true });
+
+        // Login javobida foydalanuvchi kelmasa alohida so'raymiz
+        if (!payload.user) {
+          try {
+            set({ user: await authService.getMe() });
+          } catch {
+            // Profil yuklanmasa ham sessiya haqiqiy — keyin qayta urinamiz
+          }
+        }
+      },
+
+      signOut: () => {
+        void authService.logout();
+        clearToken();
+        set({ user: null, isAuthenticated: false });
+      },
+
+      setUser: (user) => set({ user }),
+    }),
+    {
+      name: "auth-storage",
+      storage: createJSONStorage(() => localStorage),
+      // Tokenni bu yerda saqlamaymiz — u authStorage orqali boshqariladi.
+      // Faqat profil ma'lumoti keshlanadi.
+      partialize: (state) => ({ user: state.user }) as AuthState,
+      // Kesh qolgan, lekin token yo'q bo'lsa — sessiya tugagan
+      onRehydrateStorage: () => (state) => {
+        if (state && !getToken()) {
+          state.user = null;
+          state.isAuthenticated = false;
+        }
+      },
+    },
+  ),
+);

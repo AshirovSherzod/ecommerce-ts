@@ -1,7 +1,8 @@
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Layout from "@/components/layout/Layout";
+import PageLoader from "@/components/layout/PageLoader";
 import ScrollToTop from "@/components/layout/ScrollToTop";
 
 // Har bir marshrut alohida chunk: boshlang'ich yuklamada faqat ochilgan
@@ -15,12 +16,24 @@ const Contact = lazy(() => import("@/pages/Contact"));
 const Cart = lazy(() => import("@/pages/Cart"));
 const Wishlist = lazy(() => import("@/pages/Wishlist"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
+const SignIn = lazy(() => import("@/pages/SignIn"));
 
 export default function App() {
   return (
     <>
       <ScrollToTop />
       <Routes>
+        {/* Auth sahifalari Layout'dan tashqarida: dizaynda header va footer
+            yo'q, ekranni to'liq egallaydi */}
+        <Route
+          path="/signin"
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <SignIn />
+            </Suspense>
+          }
+        />
+
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="contact" element={<Contact />} />

@@ -1,4 +1,5 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
+import { clearToken, getToken } from "@/utils/authStorage";
 
 const baseURL = import.meta.env.VITE_API_URL;
 
@@ -22,7 +23,8 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem("accessToken");
+    // "Remember me" ga qarab token local yoki sessionStorage'da bo'ladi
+    const token = getToken();
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -46,7 +48,7 @@ axiosInstance.interceptors.response.use(
     if (status === 401) {
       // Token yaroqsiz — tozalaymiz. Ilovada hozircha /login sahifasi yo'q,
       // shuning uchun majburiy redirect qilmaymiz (aks holda 404'ga tushadi)
-      localStorage.removeItem("accessToken");
+      clearToken();
     }
 
     if (status === 403) {
