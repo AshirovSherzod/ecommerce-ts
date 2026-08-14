@@ -2,10 +2,15 @@ import { Button } from "@/components/ui/Button";
 import Rating from "@/components/ui/Rating";
 import { useCartStore, useWishlistStore } from "@/store";
 import type { Product } from "@/types/products.types";
-import { PRODUCT_PLACEHOLDER } from "@/utils/constants";
+import {
+  currencyMismatchMessage,
+  PRODUCT_PLACEHOLDER,
+  STORE_CURRENCY,
+} from "@/utils/constants";
 import { formatPrice } from "@/utils/formatPrice";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 type Variant = "grid" | "list";
 
@@ -56,7 +61,14 @@ export default function ProductCard({ data, variant = "grid" }: ProductProps) {
 
   // Pastdagi qora tugma — savatcha
   const handleAddToCart = () => {
-    addToCart(data, 1);
+    const cartCurrency = useCartStore.getState().getCurrency();
+
+    if (!addToCart(data, 1)) {
+      toast.error(currencyMismatchMessage(cartCurrency ?? STORE_CURRENCY));
+      return;
+    }
+
+    toast.success("Mahsulot savatga qo'shildi");
   };
 
   const badges = (

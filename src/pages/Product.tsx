@@ -13,7 +13,11 @@ import { useGetCategory } from "@/hooks/useCategories";
 import { useGetProduct } from "@/hooks/useProducts";
 import { useProductReviews } from "@/hooks/useProductReviews";
 import { useCartStore, useWishlistStore } from "@/store";
-import { SALE_ENDS_AT } from "@/utils/constants";
+import {
+  currencyMismatchMessage,
+  SALE_ENDS_AT,
+  STORE_CURRENCY,
+} from "@/utils/constants";
 import { formatPrice } from "@/utils/formatPrice";
 
 const NEW_PRODUCT_DAYS = 30;
@@ -89,7 +93,13 @@ function ProductDetail({ id }: { id: string }) {
     : 0;
 
   const handleAddToCart = () => {
-    addToCart(product, quantity);
+    const cartCurrency = useCartStore.getState().getCurrency();
+
+    if (!addToCart(product, quantity)) {
+      toast.error(currencyMismatchMessage(cartCurrency ?? STORE_CURRENCY));
+      return;
+    }
+
     toast.success("Mahsulot savatga qo'shildi");
   };
 

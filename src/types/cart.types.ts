@@ -1,4 +1,4 @@
-import type { Product } from "@/types/products.types";
+import type { Currency, Product } from "@/types/products.types";
 
 export interface CartItem extends Product {
   quantity: number;
@@ -8,7 +8,12 @@ export interface CartItem extends Product {
 export interface CartState {
   items: CartItem[];
 
-  addItem: (product: Product, quantity?: number) => void;
+  // Savatdagi valyuta bilan mos kelmasa `false` qaytaradi — chaqiruvchi
+  // joy foydalanuvchiga sababini tushuntirishi kerak
+  addItem: (product: Product, quantity?: number) => boolean;
+
+  // Savatdagi mahsulotlar valyutasi (savat bo'sh bo'lsa null)
+  getCurrency: () => Currency | null;
 
   removeItem: (productId: number | string) => void;
 

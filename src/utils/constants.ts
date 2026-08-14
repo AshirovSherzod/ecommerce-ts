@@ -1,5 +1,23 @@
+import type { Currency } from "@/types/products.types";
+
 // Rasmi yo'q mahsulotlar uchun zaxira rasm (public/ ichida turadi)
 export const PRODUCT_PLACEHOLDER = "/placeholder-product.svg";
+
+/**
+ * Do'konning asosiy valyutasi. Yetkazib berish narxlari shu valyutada
+ * belgilangan va savat hisob-kitobi shunga tayanadi.
+ *
+ * Valyuta kursini oladigan manba yo'q, shuning uchun turli valyutadagi
+ * summalarni qo'shib bo'lmaydi. Agar katalogda boshqa valyutadagi mahsulot
+ * paydo bo'lsa, savat uni jimgina qo'shib yubormaydi — sababi
+ * `cart.store.ts` dagi izohda.
+ */
+export const STORE_CURRENCY: Currency = "USD";
+
+// Savatga qo'shish rad etilganda ko'rsatiladigan xabar — matn ikki joyda
+// ishlatilgani uchun bitta manbada turadi
+export const currencyMismatchMessage = (cartCurrency: Currency) =>
+  `Savatda ${cartCurrency} valyutasidagi mahsulot bor — boshqa valyutadagini qo'shib bo'lmaydi. Avval savatni tozalang.`;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DEV_SALE_WINDOW_DAYS = 30;
