@@ -1,96 +1,38 @@
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthLayout from "@/components/layout/AuthLayout";
 import Seo from "@/components/layout/Seo";
 import AuthInput from "@/components/ui/AuthInput";
 import { Button } from "@/components/ui/Button";
+import { signUpSchema, type SignUpValues } from "@/schemas/auth.schema";
 import { useAuthStore } from "@/store";
-import type { RegisterRequest } from "@/types/auth.types";
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Backend formati: +998901234567
-const PHONE_REGEX = /^\+998\d{9}$/;
-const MIN_PASSWORD = 8;
-
-type FormState = RegisterRequest;
-type FormErrors = Partial<Record<keyof FormState, string>>;
-
-const EMPTY_FORM: FormState = {
-  name: "",
-  firstname: "",
-  username: "",
-  email: "",
-  phone: "+998",
-  password: "",
-};
-
-const validate = (form: FormState): FormErrors => {
-  const errors: FormErrors = {};
-
-  if (!form.name.trim()) errors.name = "To'liq ismni kiriting";
-  if (!form.firstname.trim()) errors.firstname = "Ismni kiriting";
-
-  if (!form.username.trim()) {
-    errors.username = "Foydalanuvchi nomini kiriting";
-  } else if (form.username.trim().length < 3) {
-    errors.username = "Kamida 3 belgi bo'lishi kerak";
-  }
-
-  if (!form.email.trim()) {
-    errors.email = "Email manzilini kiriting";
-  } else if (!EMAIL_REGEX.test(form.email.trim())) {
-    errors.email = "Email manzili noto'g'ri";
-  }
-
-  if (!PHONE_REGEX.test(form.phone.trim())) {
-    errors.phone = "Format: +998901234567";
-  }
-
-  if (form.password.length < MIN_PASSWORD) {
-    errors.password = `Parol kamida ${MIN_PASSWORD} belgidan iborat bo'lishi kerak`;
-  }
-
-  return errors;
-};
 
 export default function SignUp() {
   const navigate = useNavigate();
   const signUp = useAuthStore((state) => state.signUp);
 
-  const [form, setForm] = useState<FormState>(EMPTY_FORM);
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignUpValues>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      name: "",
+      firstname: "",
+      username: "",
+      email: "",
+      phone: "+998",
+      password: "",
+    },
+  });
 
-  const update =
-    (field: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      setForm((prev) => ({ ...prev, [field]: e.target.value }));
-      // Yozishni boshlagach xato yozuvi darhol ketadi
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
-    };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const found = validate(form);
-
-    if (Object.keys(found).length > 0) {
-      setErrors(found);
-      return;
-    }
-
-    const payload: RegisterRequest = {
-      name: form.name.trim(),
-      firstname: form.firstname.trim(),
-      username: form.username.trim(),
-      email: form.email.trim(),
-      phone: form.phone.trim(),
-      password: form.password,
-    };
-
+  // Sxema `.trim()` qilgani uchun qiymatlar tozalangan holda keladi
+  const onSubmit = async (values: SignUpValues) => {
     try {
-      setIsLoading(true);
-      const signedIn = await signUp(payload, true);
+      const signedIn = await signUp(values, true);
 
       if (signedIn) {
         toast.success("Xush kelibsiz!");
@@ -108,18 +50,12 @@ export default function SignUp() {
           ? error.message
           : "Ro'yxatdan o'tishda xato yuz berdi",
       );
-    } finally {
-      setIsLoading(false);
     }
   };
 
   return (
     <>
-      <Seo
-        title="Sign Up"
-        description="Create a 3legant account."
-        noIndex
-      />
+      <Seo title="Sign Up" description="Create a 3legant account." noIndex />
 
       <AuthLayout>
         <div className="flex flex-col gap-2">
@@ -135,32 +71,33 @@ export default function SignUp() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          className="flex flex-col gap-5"
+        >
           <AuthInput
             label="Full name"
             placeholder="Your full name"
             autoComplete="name"
-            value={form.name}
-            onChange={update("name")}
-            error={errors.name}
+            error={errors.name?.message}
+            {...register("name")}
           />
 
           <AuthInput
             label="First name"
             placeholder="Your first name"
             autoComplete="given-name"
-            value={form.firstname}
-            onChange={update("firstname")}
-            error={errors.firstname}
+            error={errors.firstname?.message}
+            {...register("firstname")}
           />
 
           <AuthInput
             label="Username"
             placeholder="Username"
             autoComplete="username"
-            value={form.username}
-            onChange={update("username")}
-            error={errors.username}
+            error={errors.username?.message}
+            {...register("username")}
           />
 
           <AuthInput
@@ -168,9 +105,8 @@ export default function SignUp() {
             type="email"
             placeholder="Email address"
             autoComplete="email"
-            value={form.email}
-            onChange={update("email")}
-            error={errors.email}
+            error={errors.email?.message}
+            {...register("email")}
           />
 
           <AuthInput
@@ -178,9 +114,8 @@ export default function SignUp() {
             type="tel"
             placeholder="+998901234567"
             autoComplete="tel"
-            value={form.phone}
-            onChange={update("phone")}
-            error={errors.phone}
+            error={errors.phone?.message}
+            {...register("phone")}
           />
 
           <AuthInput
@@ -188,14 +123,13 @@ export default function SignUp() {
             type="password"
             placeholder="Password"
             autoComplete="new-password"
-            value={form.password}
-            onChange={update("password")}
-            error={errors.password}
+            error={errors.password?.message}
+            {...register("password")}
           />
 
           <Button
             type="submit"
-            isLoading={isLoading}
+            isLoading={isSubmitting}
             className="w-full h-12 mt-1"
           >
             Sign Up

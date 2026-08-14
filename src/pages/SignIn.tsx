@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthLayout from "@/components/layout/AuthLayout";
 import Seo from "@/components/layout/Seo";
 import AuthInput from "@/components/ui/AuthInput";
 import { Button } from "@/components/ui/Button";
+import { signInSchema, type SignInValues } from "@/schemas/auth.schema";
 import { useAuthStore } from "@/store";
 import type { LoginRequest } from "@/types/auth.types";
 
@@ -27,33 +29,25 @@ export default function SignIn() {
   const location = useLocation();
   const signIn = useAuthStore((state) => state.signIn);
 
-  const [identifier, setIdentifier] = useState("");
-  const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignInValues>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: { identifier: "", password: "", remember: false },
+  });
 
   // Himoyalangan sahifadan kelgan bo'lsa, kirgandan so'ng o'sha yerga
   // qaytaramiz. Aks holda bosh sahifaga.
   const redirectTo = (location.state as LocationState | null)?.from ?? "/";
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const trimmed = identifier.trim();
-
-    if (!trimmed) {
-      toast.error("Email yoki foydalanuvchi nomini kiriting");
-      return;
-    }
-
-    if (password.length < 8) {
-      toast.error("Parol kamida 8 belgidan iborat bo'lishi kerak");
-      return;
-    }
-
+  const onSubmit = async (values: SignInValues) => {
     try {
-      setIsLoading(true);
-      await signIn(buildCredentials(trimmed, password), remember);
+      await signIn(
+        buildCredentials(values.identifier, values.password),
+        values.remember,
+      );
 
       toast.success("Xush kelibsiz!");
       navigate(redirectTo, { replace: true });
@@ -62,8 +56,6 @@ export default function SignIn() {
       toast.error(
         error instanceof Error ? error.message : "Kirishda xato yuz berdi",
       );
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -89,13 +81,17 @@ export default function SignIn() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          className="flex flex-col gap-6"
+        >
           <AuthInput
             label="Username or email address"
             placeholder="Your username or email address"
             autoComplete="username"
-            value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)}
+            error={errors.identifier?.message}
+            {...register("identifier")}
           />
 
           <AuthInput
@@ -103,8 +99,8 @@ export default function SignIn() {
             type="password"
             placeholder="Password"
             autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            error={errors.password?.message}
+            {...register("password")}
           />
 
           <div className="flex items-center justify-between gap-4">
@@ -112,8 +108,7 @@ export default function SignIn() {
               <input
                 className="w-5 h-5 accent-[#141718]"
                 type="checkbox"
-                checked={remember}
-                onChange={(e) => setRemember(e.target.checked)}
+                {...register("remember")}
               />
               Remember me
             </label>
@@ -127,7 +122,7 @@ export default function SignIn() {
             </button>
           </div>
 
-          <Button type="submit" isLoading={isLoading} className="w-full h-12">
+          <Button type="submit" isLoading={isSubmitting} className="w-full h-12">
             Sign In
           </Button>
         </form>

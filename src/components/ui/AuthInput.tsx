@@ -1,8 +1,10 @@
 import { useId, useState } from "react";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
+// `ComponentPropsWithRef` — react-hook-form `register()` qaytargan `ref` ni
+// ham qabul qilishi uchun (React 19'da ref oddiy prop)
 interface AuthInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "className"> {
+  extends Omit<React.ComponentPropsWithRef<"input">, "className"> {
   /** Ko'rinmaydigan yorliq — placeholder yagona belgi bo'lib qolmasligi uchun */
   label: string;
   error?: string;
