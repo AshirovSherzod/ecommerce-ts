@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IoClose } from "react-icons/io5";
+import Seo from "@/components/layout/Seo";
 import { Button } from "@/components/ui/Button";
 import Counter from "@/components/ui/Counter";
 import Empty from "@/components/ui/Empty";
@@ -118,6 +119,7 @@ export default function Cart() {
   if (items.length === 0) {
     return (
       <section style={{ minHeight: "calc(100vh - 200px)" }}>
+        <Seo title="Cart" description="Your shopping cart." noIndex />
         <Empty
           title="Cart is empty"
           desc="Looks like you haven't added anything yet"
@@ -129,6 +131,8 @@ export default function Cart() {
 
   return (
     <section className="max-w-310 mx-auto px-5 my-10 flex flex-col gap-10">
+      {/* Savat shaxsiy sahifa — indekslanmaydi */}
+      <Seo title="Cart" description="Your shopping cart." noIndex />
       <div className="flex flex-col items-center gap-6">
         <p className="text-[14px] text-[#6C7275]">
           <Link className="hover:text-[#141718]" to={"/"}>

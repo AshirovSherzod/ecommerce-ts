@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
+import Seo from "@/components/layout/Seo";
 import { Button } from "@/components/ui/Button";
 import { ARTICLES } from "@/data/articles";
 
 export default function Blog() {
   return (
     <section className="max-w-310 mx-auto px-5 my-10 flex flex-col gap-6 sm:gap-10">
+      <Seo
+        title="Articles"
+        description="Ideas, guides and inspiration for life at home — decorating, organising and choosing furniture."
+        type="article"
+      />
       <div className="flex flex-col gap-4">
         <p className="text-[14px] text-[#6C7275]">
           <Link className="hover:text-[#141718]" to={"/"}>

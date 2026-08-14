@@ -1,3 +1,4 @@
+import Seo from "@/components/layout/Seo";
 import ArticlesSect from "@/sections/ArticlesSect";
 import CategorySect from "@/sections/CategorySect";
 import Hero from "@/sections/Hero";
@@ -14,6 +15,10 @@ export default function Home() {
 
   return (
     <>
+      <Seo
+        title="3legant"
+        description="Gift and decoration store based in HCMC, Vietnam. Furniture, lighting and home decor with free shipping over $200."
+      />
       <SliderSect />
       <Hero />
       <CategorySect />
