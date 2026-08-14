@@ -47,6 +47,8 @@ The dev server usually starts at http://localhost:5173.
 | `VITE_API_URL` | Base URL of the backend API (used by `axiosInstance`) |
 | `VITE_BOT_TOKEN` | Telegram bot token — the contact form sends messages through this bot |
 | `VITE_CHAT_ID` | Telegram chat ID that receives the messages |
+| `VITE_DEMO_REVIEWS` | Optional. `true`/`false` to force the placeholder reviews on or off. Unset means on in development, off in production |
+| `VITE_SALE_ENDS_AT` | Optional. ISO date for the site-wide sale countdown. Unset means no countdown in production |
 
 > Anything prefixed with `VITE_` is inlined into the bundle and visible in the
 > browser, so the bot token is not a secret here. In a public deployment it
