@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/Button";
 import Rating from "@/components/ui/Rating";
@@ -6,6 +8,12 @@ import RatingInput from "@/components/ui/RatingInput";
 import { Select } from "@/components/ui/Select";
 import { useProductReviews } from "@/hooks/useProductReviews";
 import { useReviewsStore } from "@/store";
+import {
+  replySchema,
+  reviewSchema,
+  type ReplyValues,
+  type ReviewValues,
+} from "@/schemas/review.schema";
 import type { Review } from "@/types/review.types";
 import { cn } from "@/utils/cn";
 
@@ -50,30 +58,33 @@ const getInitials = (name: string) =>
 // ─── Bitta sharh ────────────────────────────────────
 function ReviewCard({ review }: { review: Review }) {
   const [replyOpen, setReplyOpen] = useState(false);
-  const [replyText, setReplyText] = useState("");
 
   const savedName = useReviewsStore((state) => state.authorName);
-  const [replyName, setReplyName] = useState(savedName);
-
   const toggleLike = useReviewsStore((state) => state.toggleLike);
   const addReply = useReviewsStore((state) => state.addReply);
   const liked = useReviewsStore((state) => state.likedIds.includes(review.id));
 
   const likeCount = review.likes + (liked ? 1 : 0);
 
-  const handleReply = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ReplyValues>({
+    resolver: zodResolver(replySchema),
+    defaultValues: { author: savedName, text: "" },
+  });
 
-    const name = replyName.trim();
-    const text = replyText.trim();
+  // Formani ochganda oxirgi ishlatilgan ism bilan to'ldiramiz: kartochka
+  // avval mount bo'lgan bo'lsa defaultValues eskirgan bo'lishi mumkin
+  const openReply = () => {
+    reset({ author: useReviewsStore.getState().authorName, text: "" });
+    setReplyOpen(true);
+  };
 
-    if (!name || !text) {
-      toast.error("Ism va javob matnini to'ldiring");
-      return;
-    }
-
-    addReply(review.id, name, text);
-    setReplyText("");
+  const onReply = (values: ReplyValues) => {
+    addReply(review.id, values.author, values.text);
     setReplyOpen(false);
   };
 
@@ -112,7 +123,7 @@ function ReviewCard({ review }: { review: Review }) {
           </button>
           <button
             type="button"
-            onClick={() => setReplyOpen((prev) => !prev)}
+            onClick={() => (replyOpen ? setReplyOpen(false) : openReply())}
             className="text-[#6C7275] transition-colors hover:text-[#141718]"
           >
             Reply
@@ -120,21 +131,45 @@ function ReviewCard({ review }: { review: Review }) {
         </div>
 
         {replyOpen && (
-          <form onSubmit={handleReply} className="flex flex-col gap-2 pt-2">
+          <form
+            onSubmit={handleSubmit(onReply)}
+            noValidate
+            className="flex flex-col gap-2 pt-2"
+          >
             <input
-              className="h-10 px-3 border border-[#E8ECEF] rounded-md outline-none text-[14px] focus:border-[#141718]"
+              className={cn(
+                "h-10 px-3 border rounded-md outline-none text-[14px] transition-colors",
+                errors.author
+                  ? "border-[#FF5630]"
+                  : "border-[#E8ECEF] focus:border-[#141718]",
+              )}
               placeholder="Ismingiz"
               aria-label="Ismingiz"
-              value={replyName}
-              onChange={(e) => setReplyName(e.target.value)}
+              aria-invalid={!!errors.author}
+              {...register("author")}
             />
+            {errors.author && (
+              <span className="text-[12px] text-[#FF5630]">
+                {errors.author.message}
+              </span>
+            )}
             <textarea
-              className="h-20 p-3 border border-[#E8ECEF] rounded-md outline-none resize-none text-[14px] focus:border-[#141718]"
+              className={cn(
+                "h-20 p-3 border rounded-md outline-none resize-none text-[14px] transition-colors",
+                errors.text
+                  ? "border-[#FF5630]"
+                  : "border-[#E8ECEF] focus:border-[#141718]",
+              )}
               placeholder="Javobingiz"
               aria-label="Javobingiz"
-              value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
+              aria-invalid={!!errors.text}
+              {...register("text")}
             />
+            {errors.text && (
+              <span className="text-[12px] text-[#FF5630]">
+                {errors.text.message}
+              </span>
+            )}
             <div className="flex gap-2">
               <Button type="submit" className="h-9 px-4 text-[14px]">
                 Send
@@ -191,9 +226,18 @@ export default function ProductReviews({
   const [sort, setSort] = useState<SortId>("newest");
   const [visible, setVisible] = useState(PAGE_SIZE);
 
-  const [name, setName] = useState(savedName);
-  const [rating, setRating] = useState(5);
-  const [text, setText] = useState("");
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm<ReviewValues>({
+    resolver: zodResolver(reviewSchema),
+    defaultValues: { author: savedName, rating: 5, text: "" },
+  });
 
   const sorted = useMemo(() => {
     const copy = [...list];
@@ -216,25 +260,12 @@ export default function ProductReviews({
     }
   }, [list, sort]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // Sxema `.trim()` qilgani uchun qiymatlar tozalangan holda keladi
+  const onSubmit = (values: ReviewValues) => {
+    addReview({ productId, ...values });
 
-    const author = name.trim();
-    const body = text.trim();
-
-    if (!author) {
-      toast.error("Ismingizni kiriting");
-      return;
-    }
-
-    if (!body) {
-      toast.error("Sharh matnini yozing");
-      return;
-    }
-
-    addReview({ productId, author, rating, text: body });
-    setText("");
-    setRating(5);
+    // Ism qoladi — ketma-ket sharh yozganda qayta kiritmasin
+    reset({ author: values.author, rating: 5, text: "" });
     toast.success("Sharhingiz uchun rahmat!");
   };
 
@@ -255,27 +286,60 @@ export default function ProductReviews({
 
       {/* ─── Sharh yozish ─── */}
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
         className="flex flex-col gap-3 p-4 border border-[#E8ECEF] rounded-lg"
       >
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-          <input
-            className="h-10 sm:w-60 px-3 border border-[#E8ECEF] rounded-md outline-none text-[14px] focus:border-[#141718]"
-            placeholder="Ismingiz"
-            aria-label="Ismingiz"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+          <div className="flex flex-col gap-1 sm:w-60">
+            <input
+              className={cn(
+                "h-10 px-3 border rounded-md outline-none text-[14px] transition-colors",
+                errors.author
+                  ? "border-[#FF5630]"
+                  : "border-[#E8ECEF] focus:border-[#141718]",
+              )}
+              placeholder="Ismingiz"
+              aria-label="Ismingiz"
+              aria-invalid={!!errors.author}
+              {...register("author")}
+            />
+            {errors.author && (
+              <span className="text-[12px] text-[#FF5630]">
+                {errors.author.message}
+              </span>
+            )}
+          </div>
+
+          {/* RatingInput oddiy input emas, shuning uchun Controller orqali */}
+          <Controller
+            control={control}
+            name="rating"
+            render={({ field }) => (
+              <RatingInput value={field.value} onChange={field.onChange} />
+            )}
           />
-          <RatingInput value={rating} onChange={setRating} />
         </div>
 
-        <textarea
-          className="h-24 p-3 border border-[#E8ECEF] rounded-md outline-none resize-none text-[14px] focus:border-[#141718]"
-          placeholder="Mahsulot haqidagi fikringiz"
-          aria-label="Sharh matni"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        />
+        <div className="flex flex-col gap-1">
+          <textarea
+            className={cn(
+              "h-24 p-3 border rounded-md outline-none resize-none text-[14px] transition-colors",
+              errors.text
+                ? "border-[#FF5630]"
+                : "border-[#E8ECEF] focus:border-[#141718]",
+            )}
+            placeholder="Mahsulot haqidagi fikringiz"
+            aria-label="Sharh matni"
+            aria-invalid={!!errors.text}
+            {...register("text")}
+          />
+          {errors.text && (
+            <span className="text-[12px] text-[#FF5630]">
+              {errors.text.message}
+            </span>
+          )}
+        </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-1">
@@ -284,7 +348,11 @@ export default function ProductReviews({
                 key={emoji}
                 type="button"
                 aria-label={`${emoji} qo'shish`}
-                onClick={() => setText((prev) => prev + emoji)}
+                onClick={() =>
+                  setValue("text", getValues("text") + emoji, {
+                    shouldValidate: true,
+                  })
+                }
                 className="w-8 h-8 rounded-full text-lg leading-none transition-colors hover:bg-[#F3F5F7]"
               >
                 {emoji}
