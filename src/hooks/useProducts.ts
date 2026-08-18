@@ -42,7 +42,7 @@ export const useGetInfiniteProducts = (
     queryFn: ({ pageParam }) => getProducts({ ...params, page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
-      const pagination = lastPage?.data.pagination;
+      const pagination = lastPage?.data?.pagination;
 
       if (!pagination || pagination.page >= pagination.totalPages) {
         return undefined;

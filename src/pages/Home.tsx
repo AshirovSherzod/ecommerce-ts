@@ -23,7 +23,7 @@ export default function Home() {
       <Hero />
       <CategorySect />
       <ProductWrapper
-        data={data?.data.products ?? []}
+        data={data?.data?.products ?? []}
         isLoading={isLoading}
         isError={isError}
         error={error}

@@ -1,4 +1,5 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
+import { ApiError } from "@/api/handleError";
 import { clearToken, getToken } from "@/utils/authStorage";
 import { notifyUnauthorized } from "@/utils/authEvents";
 
@@ -40,6 +41,25 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
+    // API doim JSON qaytarishi kerak. Noto'g'ri manzil, proksi yoki
+    // hosting'ning SPA fallback'i HTML qaytarsa, axios buni muvaffaqiyat
+    // deb hisoblaydi va kod `data.data` ni o'qimoqchi bo'lib qulaydi —
+    // butun sahifa xato ekraniga aylanadi. Shu yerda to'xtatib, oddiy
+    // xatoga aylantiramiz: sahifa o'z "yuklab bo'lmadi" holatini ko'rsatadi.
+    const contentType = response.headers?.["content-type"];
+    const looksLikeJson =
+      typeof contentType !== "string" || contentType.includes("json");
+
+    if (!looksLikeJson || typeof response.data === "string") {
+      return Promise.reject(
+        new ApiError(
+          "Server kutilmagan javob qaytardi — birozdan so'ng qayta urining",
+          response.status,
+          "INVALID_RESPONSE",
+        ),
+      );
+    }
+
     return response;
   },
 
