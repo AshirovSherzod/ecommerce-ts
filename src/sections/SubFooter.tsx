@@ -1,26 +1,28 @@
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { MdOutlineMail } from "react-icons/md";
 import { toast } from "react-toastify";
 import subfooter from "@/assets/images/subfooter.png";
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import {
+	newsletterSchema,
+	type NewsletterValues,
+} from "@/schemas/newsletter.schema";
 
 export default function SubFooter() {
-	const [email, setEmail] = useState("");
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm<NewsletterValues>({
+		resolver: zodResolver(newsletterSchema),
+		defaultValues: { email: "" },
+	});
 
 	// Ilgari tugma bosilganda hech narsa bo'lmasdi — foydalanuvchi
 	// obuna bo'ldimi yo'qmi bilmay qolardi
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		const value = email.trim();
-
-		if (!EMAIL_REGEX.test(value)) {
-			toast.error("Email manzili noto'g'ri");
-			return;
-		}
-
-		setEmail("");
+	const onSubmit = () => {
+		reset();
 		toast.success("Obuna uchun rahmat!");
 	};
 
@@ -38,21 +40,32 @@ export default function SubFooter() {
 				</p>
 			</div>
 			<form
-				className="w-full max-w-122 flex items-center gap-2 border-b py-2"
-				onSubmit={handleSubmit}
+				className="w-full max-w-122 flex flex-col gap-1"
+				onSubmit={handleSubmit(onSubmit)}
+				noValidate
 			>
-				<MdOutlineMail className="text-2xl shrink-0" />
-				<input
-					className="w-full min-w-0 outline-none bg-transparent"
-					placeholder="Email address"
-					type="email"
-					aria-label="Email address"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-				/>
-				<button type="submit" className="shrink-0">
-					SignUp
-				</button>
+				<div
+					className={`flex items-center gap-2 border-b py-2 transition-colors ${
+						errors.email ? "border-[#FF5630]" : ""
+					}`}
+				>
+					<MdOutlineMail className="text-2xl shrink-0" />
+					<input
+						className="w-full min-w-0 outline-none bg-transparent"
+						placeholder="Email address"
+						type="email"
+						aria-label="Email address"
+						aria-invalid={!!errors.email}
+						{...register("email")}
+					/>
+					<button type="submit" className="shrink-0">
+						SignUp
+					</button>
+				</div>
+
+				{errors.email && (
+					<p className="text-[12px] text-[#FF5630]">{errors.email.message}</p>
+				)}
 			</form>
 		</section>
 	);

@@ -1,13 +1,10 @@
 import { z } from "zod";
+import { emailField, requiredText } from "@/schemas/common";
 
 const MIN_PASSWORD = 8;
 
 // Backend formati: +998901234567
 const PHONE_REGEX = /^\+998\d{9}$/;
-
-// `.trim()` faqat tekshirmaydi, qiymatni ham tozalaydi — shuning uchun
-// forma natijasi to'g'ridan-to'g'ri API'ga yuborilishi mumkin
-const requiredText = (message: string) => z.string().trim().min(1, message);
 
 const password = z
   .string()
@@ -28,9 +25,7 @@ export const signUpSchema = z.object({
   username: requiredText("Foydalanuvchi nomini kiriting").pipe(
     z.string().min(3, "Kamida 3 belgi bo'lishi kerak"),
   ),
-  email: requiredText("Email manzilini kiriting").pipe(
-    z.email("Email manzili noto'g'ri"),
-  ),
+  email: emailField(),
   phone: requiredText("Telefon raqamini kiriting").pipe(
     z.string().regex(PHONE_REGEX, "Format: +998901234567"),
   ),

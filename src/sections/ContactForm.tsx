@@ -1,57 +1,45 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import { useTelegramMessage } from "@/hooks/useTelegramMessage";
-import { useState } from "react";
-import { toast } from "react-toastify";
+import { contactSchema, type ContactValues } from "@/schemas/contact.schema";
 
-const INITIAL_FORM = {
-  name: "",
-  email: "",
-  message: "",
-};
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const FIELD_CLASS =
+  "w-full h-10 pl-4 border rounded-md outline-none transition-colors";
 
 export default function ContactForm() {
   const { sendMessage, isLoading } = useTelegramMessage();
-  const [form, setForm] = useState(INITIAL_FORM);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactValues>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: { name: "", email: "", message: "" },
+  });
 
-  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const name = form.name.trim();
-    const email = form.email.trim();
-    const message = form.message.trim();
-
-    if (!name || !email || !message) {
-      toast.error("Barcha maydonlarni to'ldiring");
-      return;
-    }
-
-    if (!EMAIL_REGEX.test(email)) {
-      toast.error("Email manzili noto'g'ri");
-      return;
-    }
-
+  // Sxema `.trim()` qilgani uchun qiymatlar tozalangan holda keladi
+  const onSubmit = async (values: ContactValues) => {
     const isSent = await sendMessage(
-      `Yangi xabar:\nIsm: ${name}\nEmail: ${email}\nXabar: ${message}`,
+      `Yangi xabar:\nIsm: ${values.name}\nEmail: ${values.email}\nXabar: ${values.message}`,
     );
 
-    if (isSent) {
-      setForm(INITIAL_FORM);
-    }
+    if (isSent) reset();
   };
+
+  const borderOf = (hasError: boolean) =>
+    hasError ? "border-[#FF5630]" : "border-[#CBCBCB] focus:border-[#141718]";
 
   return (
     <section className="max-w-310 mx-auto px-5 flex flex-col lg:flex-row gap-7 my-10">
       <div className="w-full lg:w-[50%]">
-        <form onSubmit={handleSendMessage} className="flex flex-col gap-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          className="flex flex-col gap-6"
+        >
           <div className="w-full">
             <label
               className="text-[12px] text-[#6C7275] font-bold"
@@ -60,15 +48,20 @@ export default function ContactForm() {
               FULL NAME
             </label>
             <input
-              className="w-full h-10 pl-4 border border-[#CBCBCB] rounded-md outline-none"
+              className={`${FIELD_CLASS} ${borderOf(!!errors.name)}`}
               type="text"
               id="contact-name"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
               placeholder="Your Name"
+              aria-invalid={!!errors.name}
+              {...register("name")}
             />
+            {errors.name && (
+              <p className="mt-1 text-[12px] text-[#FF5630]">
+                {errors.name.message}
+              </p>
+            )}
           </div>
+
           <div className="w-full">
             <label
               className="text-[12px] text-[#6C7275] font-bold"
@@ -77,15 +70,20 @@ export default function ContactForm() {
               EMAIL ADDRESS
             </label>
             <input
-              className="w-full h-10 pl-4 border border-[#CBCBCB] rounded-md outline-none"
+              className={`${FIELD_CLASS} ${borderOf(!!errors.email)}`}
               type="email"
               id="contact-email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
               placeholder="Your Email"
+              aria-invalid={!!errors.email}
+              {...register("email")}
             />
+            {errors.email && (
+              <p className="mt-1 text-[12px] text-[#FF5630]">
+                {errors.email.message}
+              </p>
+            )}
           </div>
+
           <div className="">
             <label
               className="text-[12px] text-[#6C7275] font-bold"
@@ -94,14 +92,21 @@ export default function ContactForm() {
               MESSAGE
             </label>
             <textarea
-              className="w-full h-35 border resize-none p-4 border-[#CBCBCB] rounded-md outline-none"
+              className={`w-full h-35 border resize-none p-4 rounded-md outline-none transition-colors ${borderOf(
+                !!errors.message,
+              )}`}
               placeholder="Your Message"
-              name="message"
               id="contact-message"
-              value={form.message}
-              onChange={handleChange}
+              aria-invalid={!!errors.message}
+              {...register("message")}
             ></textarea>
+            {errors.message && (
+              <p className="mt-1 text-[12px] text-[#FF5630]">
+                {errors.message.message}
+              </p>
+            )}
           </div>
+
           <Button
             isLoading={isLoading}
             type="submit"
