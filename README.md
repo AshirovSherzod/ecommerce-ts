@@ -37,6 +37,8 @@ The dev server usually starts at http://localhost:5173.
 | `npm run build` | `tsc -b` type-check + production build (`dist/`) |
 | `npm run preview` | Serve the production build locally |
 | `npm run lint` | Run ESLint |
+| `npm test` | Run the unit tests once (Vitest) |
+| `npm run test:watch` | Vitest in watch mode |
 
 ## Environment variables
 
@@ -66,9 +68,10 @@ src/
 ├── hooks/        useProducts, useCategories, useTelegramMessage
 ├── pages/        Home, Shop, Blog, Contact, Cart, Wishlist, NotFound
 ├── provider/     QueryProvider (QueryClient configuration)
+├── schemas/      zod validation schemas (auth, contact, review ...)
 ├── sections/     page sections (Hero, ShopFilters, ContactForm ...)
 ├── services/     API calls (productsService, categoryService)
-├── store/        Zustand stores (cart, wishlist)
+├── store/        Zustand stores (cart, wishlist, reviews, auth)
 ├── types/        API and domain types
 └── utils/        cn (clsx + tailwind-merge), formatPrice, constants
 ```
@@ -86,10 +89,12 @@ import { Button } from "@/components/ui/Button";
 | --- | --- |
 | `/` | Home — slider, categories, services, articles |
 | `/shop` | Catalog: category/brand/price filters, sorting, "Show more" |
+| `/shop/:id` | Product detail — gallery, countdown, tabs, reviews |
 | `/blog` | Articles |
 | `/contact` | Contact form (sent to Telegram) |
 | `/cart` | Cart |
 | `/wishlist` | Wishlist |
+| `/signin`, `/signup` | Auth pages (outside the main layout) |
 | `*` | 404 |
 
 ## Architecture notes
@@ -103,15 +108,47 @@ when `import.meta.env.DEV` is true.
 **The Shop page** uses `useInfiniteQuery` — `getNextPageParam` derives the next
 page from `pagination.totalPages`.
 
-**Client state lives in Zustand.** `cart` and `wishlist` are persisted to
-localStorage via the `persist` middleware (`cart-storage` and
-`wishlist-storage`), so they survive a page reload.
+**Client state lives in Zustand.** `cart`, `wishlist`, `reviews` and `auth` are
+persisted to localStorage via the `persist` middleware, so they survive a page
+reload. The cart is kept to a single currency — there is no exchange-rate
+source, so adding a product in another currency is refused rather than adding
+up numbers that do not belong together.
 
-**axios interceptors.** Requests get a `Bearer` token from
-`localStorage.accessToken`. On a 401 response the token is cleared — there is
-no `/login` page in the app yet, so no redirect happens; 403 and 5xx are logged
-to the console. The error is still rejected upward so callers can surface it
-through `handleError`.
+**Reviews are stored in the browser.** The API has no reviews endpoint yet;
+`useProductReviews` is the single place to swap once it does.
+
+**axios interceptors.** Requests carry a `Bearer` token read through
+`authStorage`, which checks both localStorage and sessionStorage ("Remember
+me" decides which one). A 401 clears the token and emits `auth:unauthorized`,
+which closes the session in the auth store — otherwise the header would keep
+showing a signed-in user whose every action fails. Responses that are not JSON
+are rejected too: a proxy or SPA fallback returning HTML with status 200 used
+to crash the page instead of showing an error state.
+
+**Error boundaries.** One around the router outlet keeps the header and footer
+alive when a page throws, and one at the root catches the rest. Stack traces
+are shown in development only.
+
+## Tests
+
+```bash
+npm test          # runs once
+npm run test:watch
+```
+
+Vitest with a jsdom environment, covering the logic where a silent mistake
+would be expensive:
+
+| Area | Why it is covered |
+| --- | --- |
+| `cart.store` | Money. Totals, quantities, and the guard that keeps a cart in a single currency |
+| `handleError` | The API nests messages under `data.error.message`; reading the wrong key hides every server error |
+| `auth.schema` | Phone format, email, password length — and that values arrive trimmed |
+| `authStorage` | "Remember me" decides local vs session storage; a stale token in the other one would survive sign out |
+| `formatPrice` | Must not throw on an unknown currency |
+
+Tests live next to the code they cover (`src/**/*.test.ts`) and are excluded
+from the production bundle.
 
 ## Build
 
