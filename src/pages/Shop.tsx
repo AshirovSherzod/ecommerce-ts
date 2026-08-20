@@ -112,15 +112,15 @@ export default function Shop() {
   const { data: categoryData } = useGetCategories();
   const { data: brandSource } = useGetProducts({ limit: BRAND_SOURCE_LIMIT });
 
-  const categories = categoryData?.data.categories ?? [];
+  const categories = categoryData?.data?.categories ?? [];
 
   const brands = useMemo(() => {
-    const list = brandSource?.data.products ?? [];
+    const list = brandSource?.data?.products ?? [];
     return [...new Set(list.map((item) => item.brand).filter(Boolean))].sort();
   }, [brandSource]);
 
   const products = useMemo(
-    () => data?.pages.flatMap((page) => page?.data.products ?? []) ?? [],
+    () => data?.pages.flatMap((page) => page?.data?.products ?? []) ?? [],
     [data],
   );
 
@@ -143,7 +143,7 @@ export default function Shop() {
     }
   }, [products, sort]);
 
-  const total = data?.pages[0]?.data.pagination.total ?? 0;
+  const total = data?.pages[0]?.data?.pagination?.total ?? 0;
   const activeCategory = categories.find(
     (category) => category.id === values.category,
   );
