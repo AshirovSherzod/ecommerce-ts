@@ -90,7 +90,7 @@ import { Button } from "@/components/ui/Button";
 | Route | Page |
 | --- | --- |
 | `/` | Home — slider, categories, services, articles |
-| `/shop` | Catalog: category/brand/price filters, sorting, "Show more" |
+| `/shop` | Catalog: search, category/brand/price filters, sorting, "Show more" |
 | `/shop/:id` | Product detail — gallery, countdown, tabs, reviews |
 | `/blog` | Articles |
 | `/contact` | Contact form (sent to Telegram) |
@@ -110,6 +110,12 @@ when `import.meta.env.DEV` is true.
 
 **The Shop page** uses `useInfiniteQuery` — `getNextPageParam` derives the next
 page from `pagination.totalPages`.
+
+**Search runs on the server**, through the API's `search` parameter (`?q=` in
+the URL). It matches title and brand, not description. Doing it client-side
+would have searched only the pages already loaded, so a product on page 3
+would look missing. The query is submitted rather than debounced: fewer
+requests, and no drift between the input, the URL and the running query.
 
 **Client state lives in Zustand.** `cart`, `wishlist`, `reviews` and `auth` are
 persisted to localStorage via the `persist` middleware, so they survive a page
