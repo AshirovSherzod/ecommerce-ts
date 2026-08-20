@@ -95,6 +95,7 @@ import { Button } from "@/components/ui/Button";
 | `/blog` | Articles |
 | `/contact` | Contact form (sent to Telegram) |
 | `/cart` | Cart |
+| `/checkout` | Checkout — customer details, order summary, confirmation |
 | `/wishlist` | Wishlist |
 | `/signin`, `/signup` | Auth pages (outside the main layout) |
 | `*` | 404 |
@@ -115,6 +116,13 @@ persisted to localStorage via the `persist` middleware, so they survive a page
 reload. The cart is kept to a single currency — there is no exchange-rate
 source, so adding a product in another currency is refused rather than adding
 up numbers that do not belong together.
+
+**Orders go to Telegram.** There is no `/orders` endpoint, so a placed order
+is delivered to the shop operator through the same bot the contact form uses.
+The rules that matter: totals are recomputed from the cart at submit time, the
+cart is only cleared after a confirmed send, the order id stays the same across
+retries so a duplicate message is recognisable, and a cart too long for one
+Telegram message is split with the customer and totals kept in the first part.
 
 **Reviews are stored in the browser.** The API has no reviews endpoint yet;
 `useProductReviews` is the single place to swap once it does.
