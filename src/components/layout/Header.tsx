@@ -1,12 +1,15 @@
 import Sidebar from "@/components/ui/Sidebar";
 import SubHeader from "@/sections/SubHeader";
 import { useState } from "react";
-import { CiHeart, CiSearch, CiShoppingCart } from "react-icons/ci";
+import { CiHeart, CiShoppingCart } from "react-icons/ci";
 import { LuMenu } from "react-icons/lu";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import HeaderSearch from "@/components/layout/HeaderSearch";
 import UserMenu from "@/components/layout/UserMenu";
+import SearchBox from "@/components/ui/SearchBox";
 import { useAuthStore, useCartStore, useWishlistStore } from "@/store";
+import { searchUrl } from "@/utils/searchUrl";
 import instagram from "@/assets/icons/instagram-icon.png";
 import facebook from "@/assets/icons/facebook-icon.png";
 import youtube from "@/assets/icons/youtube-icon.png";
@@ -41,12 +44,6 @@ export default function Header() {
     navigate("/");
   };
 
-  // Qidiruv hali ulanmagan — jim turishdan ko'ra sababini aytgan ma'qul
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    toast.info("Qidiruv tez orada qo'shiladi");
-  };
-
   return (
     <>
       {close && <SubHeader setClose={setClose} />}
@@ -78,14 +75,7 @@ export default function Header() {
           </div>
           {/* Mobilda faqat savat qoladi, qolgan ikonkalar fly menu ichida */}
           <div className="flex gap-5 items-center">
-            <button
-              type="button"
-              aria-label="Qidiruv"
-              onClick={() => toast.info("Qidiruv tez orada qo'shiladi")}
-              className="hidden sm:flex w-6 h-6 items-center"
-            >
-              <CiSearch className="text-2xl" />
-            </button>
+            <HeaderSearch />
             <UserMenu />
             <Link
               to={"/wishlist"}
@@ -112,23 +102,14 @@ export default function Header() {
 
         <Sidebar sidebar={sidebar} setSidebar={setSidebar}>
           <div className="h-full flex flex-col gap-6">
-            <form
-              className="w-full h-11 border border-[#E8ECEF] rounded-md flex items-center shrink-0"
-              onSubmit={handleSearch}
-            >
-              <button
-                type="submit"
-                aria-label="Qidirish"
-                className="h-11 w-11 flex items-center justify-center text-2xl"
-              >
-                <CiSearch />
-              </button>
-              <input
-                className="flex-1 min-w-0 pr-3 outline-none"
-                placeholder="Search"
-                type="text"
-              />
-            </form>
+            <SearchBox
+              label="Menyudan qidirish"
+              className="h-11 shrink-0"
+              onSubmit={(term) => {
+                setSidebar(false);
+                navigate(searchUrl(term));
+              }}
+            />
 
             <ul className="shrink-0">
               {NAV_LINKS.map((link) => (

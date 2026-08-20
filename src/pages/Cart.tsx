@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
 import Seo from "@/components/layout/Seo";
 import { Button } from "@/components/ui/Button";
@@ -10,18 +9,13 @@ import { useCartStore } from "@/store";
 import type { CartItem } from "@/types/cart.types";
 import { formatPrice } from "@/utils/formatPrice";
 import { PRODUCT_PLACEHOLDER, STORE_CURRENCY } from "@/utils/constants";
+import {
+  findShipping,
+  shippingAppliesTo,
+  SHIPPING_OPTIONS,
+  type ShippingId,
+} from "@/utils/shipping";
 import emptyImg from "@/assets/icons/empty.webp";
-
-// Narxlar STORE_CURRENCY da. Ilgari bu hech qayerda yozilmagan edi va
-// savat valyutasida formatlanardi — UZS savatda 15 dollarlik yetkazish
-// "15 so'm" bo'lib ko'rinardi.
-const SHIPPING_OPTIONS = [
-  { id: "free", label: "Free shipping", price: 0 },
-  { id: "express", label: "Express shipping", price: 15 },
-  { id: "pickup", label: "Pick Up", price: 21 },
-] as const;
-
-type ShippingId = (typeof SHIPPING_OPTIONS)[number]["id"];
 
 const STEPS = ["Shopping cart", "Checkout details", "Order complete"];
 
@@ -90,6 +84,7 @@ function CartRow({ item }: CartRowProps) {
 
 // ─── Sahifa ────────────────────────────────────
 export default function Cart() {
+  const navigate = useNavigate();
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
 
@@ -100,20 +95,20 @@ export default function Cart() {
     [items],
   );
 
-  const shipping =
-    SHIPPING_OPTIONS.find((option) => option.id === shippingId) ??
-    SHIPPING_OPTIONS[0];
+  const shipping = findShipping(shippingId);
 
   // Savat bitta valyutada ekani store darajasida kafolatlangan
   const currency = items[0]?.currency ?? STORE_CURRENCY;
 
   // Yetkazib berish narxlari STORE_CURRENCY da belgilangan. Savat boshqa
   // valyutada bo'lsa ularni qo'shib bo'lmaydi — kurs manbai yo'q.
-  const shippingApplies = currency === STORE_CURRENCY;
+  const shippingApplies = shippingAppliesTo(currency);
   const total = subtotal + (shippingApplies ? shipping.price : 0);
 
+  // Tanlangan yetkazib berish usuli Checkout'ga o'tadi — mijoz uni
+  // qaytadan tanlashi shart emas
   const handleCheckout = () => {
-    toast.info("Checkout tez orada qo'shiladi");
+    navigate("/checkout", { state: { shippingId } });
   };
 
   if (items.length === 0) {

@@ -41,6 +41,8 @@ export interface ProductsListResponse {
 export interface ProductQueryParams {
   page?: number;
   limit?: number;
+  /** Sarlavha va brend bo'yicha qidiradi (tavsif bo'yicha emas) */
+  search?: string;
   brand?: string;
   categoryId?: string;
   minPrice?: number;

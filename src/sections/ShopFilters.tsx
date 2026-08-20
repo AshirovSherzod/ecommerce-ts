@@ -1,9 +1,11 @@
 import { useId, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import { Button } from "@/components/ui/Button";
+import SearchBox from "@/components/ui/SearchBox";
 import type { Category } from "@/types/category.types";
 
 export interface ShopFilterValues {
+  search: string;
   category: string;
   brand: string;
   minPrice: string;
@@ -142,6 +144,7 @@ export default function ShopFilters({
   onClear,
 }: ShopFiltersProps) {
   const hasActiveFilter =
+    !!values.search ||
     !!values.category ||
     !!values.brand ||
     !!values.minPrice ||
@@ -149,6 +152,17 @@ export default function ShopFilters({
 
   return (
     <div className="flex flex-col">
+      {/* `key` — qidiruv tashqaridan o'zgarsa (masalan header orqali)
+          maydon yangi qiymat bilan qayta chiziladi */}
+      <div className="pb-4 border-b border-[#E8ECEF]">
+        <SearchBox
+          key={values.search}
+          label="Katalogdan qidirish"
+          defaultValue={values.search}
+          onSubmit={(term) => onChange({ search: term })}
+        />
+      </div>
+
       <FilterGroup title="CATEGORIES">
         <RadioRow
           name="category"

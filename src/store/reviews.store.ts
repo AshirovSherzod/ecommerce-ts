@@ -10,6 +10,7 @@ export const useReviewsStore = create<ReviewsState>()(
     (set, get) => ({
       items: [],
       likedIds: [],
+      repliesByReview: {},
       authorName: "",
 
       addReview: ({ productId, author, rating, text }) => {
@@ -31,24 +32,19 @@ export const useReviewsStore = create<ReviewsState>()(
       },
 
       addReply: (reviewId, author, text) => {
+        const reply = {
+          id: crypto.randomUUID(),
+          author,
+          text,
+          createdAt: new Date().toISOString(),
+        };
+
         set((state) => ({
           authorName: author,
-          items: state.items.map((item) =>
-            item.id === reviewId
-              ? {
-                  ...item,
-                  replies: [
-                    ...item.replies,
-                    {
-                      id: crypto.randomUUID(),
-                      author,
-                      text,
-                      createdAt: new Date().toISOString(),
-                    },
-                  ],
-                }
-              : item,
-          ),
+          repliesByReview: {
+            ...state.repliesByReview,
+            [reviewId]: [...(state.repliesByReview[reviewId] ?? []), reply],
+          },
         }));
       },
 

@@ -66,6 +66,7 @@ export default function Shop() {
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const values: ShopFilterValues = {
+    search: searchParams.get("q") ?? "",
     category: searchParams.get("category") ?? "",
     brand: searchParams.get("brand") ?? "",
     minPrice: searchParams.get("minPrice") ?? "",
@@ -76,6 +77,9 @@ export default function Shop() {
     const next = { ...values, ...patch };
     const params = new URLSearchParams();
 
+    // Qidiruv ham saqlanadi: kategoriya tanlaganda qidiruv so'zi
+    // yo'qolib ketsa foydalanuvchi natijani qaytadan izlashi kerak bo'lardi
+    if (next.search) params.set("q", next.search);
     if (next.category) params.set("category", next.category);
     if (next.brand) params.set("brand", next.brand);
     if (next.minPrice) params.set("minPrice", next.minPrice);
@@ -87,6 +91,7 @@ export default function Shop() {
   const queryParams = useMemo(() => {
     const params: Omit<ProductQueryParams, "page"> = { limit: PAGE_SIZE };
 
+    if (values.search) params.search = values.search;
     if (values.category) params.categoryId = values.category;
     if (values.brand) params.brand = values.brand;
 
@@ -97,7 +102,13 @@ export default function Shop() {
     if (maxPrice !== undefined) params.maxPrice = maxPrice;
 
     return params;
-  }, [values.category, values.brand, values.minPrice, values.maxPrice]);
+  }, [
+    values.search,
+    values.category,
+    values.brand,
+    values.minPrice,
+    values.maxPrice,
+  ]);
 
   const {
     data,
@@ -147,7 +158,9 @@ export default function Shop() {
   const activeCategory = categories.find(
     (category) => category.id === values.category,
   );
-  const heading = activeCategory?.title ?? "All Rooms";
+  const heading = values.search
+    ? `"${values.search}" bo'yicha natijalar`
+    : (activeCategory?.title ?? "All Rooms");
   const viewConfig =
     VIEW_MODES.find((mode) => mode.id === view) ?? VIEW_MODES[0];
 
@@ -249,7 +262,9 @@ export default function Shop() {
           ) : sortedProducts.length === 0 ? (
             <div className="py-20 flex flex-col items-center gap-4">
               <p className="text-[#6C7275]">
-                Bu filtrlarga mos mahsulot topilmadi
+                {values.search
+                  ? `"${values.search}" bo'yicha hech narsa topilmadi`
+                  : "Bu filtrlarga mos mahsulot topilmadi"}
               </p>
               <Button
                 variant="secondary"

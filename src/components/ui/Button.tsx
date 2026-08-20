@@ -16,6 +16,8 @@ interface ButtonProps {
   type?: Type;
   onClick?: () => void | Promise<void>;
   className?: string;
+  /** Tugma forma tashqarisida turganda uni id bo'yicha bog'laydi */
+  form?: string;
 }
 
 const variants: Record<Variant, string> = {
@@ -49,11 +51,13 @@ export const Button = ({
   // sahifani beixtiyor yuboradi — shuning uchun aniq `button`
   type = "button",
   onClick,
+  form,
   className,
 }: ButtonProps) => {
   return (
     <button
       type={type}
+      form={form}
       onClick={onClick}
       disabled={isLoading}
       className={cn(

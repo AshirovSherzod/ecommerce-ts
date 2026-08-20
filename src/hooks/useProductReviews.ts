@@ -8,11 +8,20 @@ import { USE_DEMO_REVIEWS } from "@/utils/constants";
 // ishlatadigan komponentlarga tegilmaydi.
 export const useProductReviews = (productId: string) => {
   const items = useReviewsStore((state) => state.items);
+  const repliesByReview = useReviewsStore((state) => state.repliesByReview);
 
   return useMemo(() => {
     const own = items.filter((review) => review.productId === productId);
     const demo = USE_DEMO_REVIEWS ? getDemoReviews(productId) : [];
-    const list = [...own, ...demo];
+
+    // Javoblar alohida xaritadan biriktiriladi — shunda demo va API'dan
+    // kelgan sharhlarga ham javob yozish mumkin.
+    // `review.replies` eski ma'lumot uchun: avval javoblar sharh ichida
+    // saqlanardi, ular yo'qolib qolmasin.
+    const list = [...own, ...demo].map((review) => ({
+      ...review,
+      replies: [...(review.replies ?? []), ...(repliesByReview[review.id] ?? [])],
+    }));
 
     const count = list.length;
     const average = count
@@ -20,5 +29,5 @@ export const useProductReviews = (productId: string) => {
       : 0;
 
     return { list, count, average };
-  }, [items, productId]);
+  }, [items, repliesByReview, productId]);
 };

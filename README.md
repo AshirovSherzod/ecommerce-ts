@@ -39,6 +39,8 @@ The dev server usually starts at http://localhost:5173.
 | `npm run lint` | Run ESLint |
 | `npm test` | Run the unit tests once (Vitest) |
 | `npm run test:watch` | Vitest in watch mode |
+| `npm run test:e2e` | Browser tests (Playwright) |
+| `npm run test:e2e:ui` | Playwright UI mode |
 
 ## Environment variables
 
@@ -88,11 +90,12 @@ import { Button } from "@/components/ui/Button";
 | Route | Page |
 | --- | --- |
 | `/` | Home — slider, categories, services, articles |
-| `/shop` | Catalog: category/brand/price filters, sorting, "Show more" |
+| `/shop` | Catalog: search, category/brand/price filters, sorting, "Show more" |
 | `/shop/:id` | Product detail — gallery, countdown, tabs, reviews |
 | `/blog` | Articles |
 | `/contact` | Contact form (sent to Telegram) |
 | `/cart` | Cart |
+| `/checkout` | Checkout — customer details, order summary, confirmation |
 | `/wishlist` | Wishlist |
 | `/signin`, `/signup` | Auth pages (outside the main layout) |
 | `*` | 404 |
@@ -108,11 +111,24 @@ when `import.meta.env.DEV` is true.
 **The Shop page** uses `useInfiniteQuery` — `getNextPageParam` derives the next
 page from `pagination.totalPages`.
 
+**Search runs on the server**, through the API's `search` parameter (`?q=` in
+the URL). It matches title and brand, not description. Doing it client-side
+would have searched only the pages already loaded, so a product on page 3
+would look missing. The query is submitted rather than debounced: fewer
+requests, and no drift between the input, the URL and the running query.
+
 **Client state lives in Zustand.** `cart`, `wishlist`, `reviews` and `auth` are
 persisted to localStorage via the `persist` middleware, so they survive a page
 reload. The cart is kept to a single currency — there is no exchange-rate
 source, so adding a product in another currency is refused rather than adding
 up numbers that do not belong together.
+
+**Orders go to Telegram.** There is no `/orders` endpoint, so a placed order
+is delivered to the shop operator through the same bot the contact form uses.
+The rules that matter: totals are recomputed from the cart at submit time, the
+cart is only cleared after a confirmed send, the order id stays the same across
+retries so a duplicate message is recognisable, and a cart too long for one
+Telegram message is split with the customer and totals kept in the first part.
 
 **Reviews are stored in the browser.** The API has no reviews endpoint yet;
 `useProductReviews` is the single place to swap once it does.
@@ -149,6 +165,36 @@ would be expensive:
 
 Tests live next to the code they cover (`src/**/*.test.ts`) and are excluded
 from the production bundle.
+
+### Browser tests
+
+```bash
+npm run test:e2e
+```
+
+Playwright starts the dev server itself, so nothing needs to be running first.
+Specs are in `e2e/`, grouped by flow: `smoke` (every route renders), `shop`,
+`product`, `reviews`, `auth`, `forms`, plus `gallery.mobile` which runs on a
+phone viewport.
+
+By default it drives the Edge installed on the machine, so no 150 MB browser
+download is needed. On CI or a machine without Edge:
+
+```bash
+PW_CHANNEL=bundled npx playwright install chromium
+PW_CHANNEL=bundled npm run test:e2e
+```
+
+**Two outbound calls are blocked at the fixture level** (`e2e/fixtures.ts`), so
+a new test cannot trigger them by accident:
+
+| Blocked | Why |
+| --- | --- |
+| `api.telegram.org` | The contact form would send a real message to the bot |
+| `POST /auth/register` | A valid payload would create a real account on the backend that cannot be deleted |
+
+Tests assert on the block counters, so a leak fails the suite rather than
+going unnoticed. Everything else runs against the real API.
 
 ## Build
 

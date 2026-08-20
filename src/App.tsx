@@ -15,6 +15,7 @@ const Product = lazy(() => import("@/pages/Product"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const Cart = lazy(() => import("@/pages/Cart"));
+const Checkout = lazy(() => import("@/pages/Checkout"));
 const Wishlist = lazy(() => import("@/pages/Wishlist"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const SignIn = lazy(() => import("@/pages/SignIn"));
@@ -55,6 +56,7 @@ export default function App() {
           <Route path="shop/:id" element={<Product />} />
           <Route path="blog" element={<Blog />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="*" element={<NotFound />} />
         </Route>
