@@ -25,6 +25,14 @@ export type NewReview = Pick<
 export interface ReviewsState {
   items: Review[];
   likedIds: string[];
+  /**
+   * Javoblar sharhning o'zida emas, alohida xaritada saqlanadi.
+   * Sabab: sharhlar uch manbadan keladi — foydalanuvchi yozgani, demo
+   * ro'yxati va kelajakda API. Faqat birinchisi store'da turadi, shuning
+   * uchun javobni sharh ichiga yozish qolgan ikkisida jimgina yo'qolardi.
+   * `likedIds` allaqachon shu tamoyilda ishlaydi.
+   */
+  repliesByReview: Record<string, ReviewReply[]>;
   // Oxirgi ishlatilgan ism: javob yozganda qayta so'ramaslik uchun
   authorName: string;
 

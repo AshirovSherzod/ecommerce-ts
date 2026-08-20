@@ -39,6 +39,8 @@ The dev server usually starts at http://localhost:5173.
 | `npm run lint` | Run ESLint |
 | `npm test` | Run the unit tests once (Vitest) |
 | `npm run test:watch` | Vitest in watch mode |
+| `npm run test:e2e` | Browser tests (Playwright) |
+| `npm run test:e2e:ui` | Playwright UI mode |
 
 ## Environment variables
 
@@ -149,6 +151,36 @@ would be expensive:
 
 Tests live next to the code they cover (`src/**/*.test.ts`) and are excluded
 from the production bundle.
+
+### Browser tests
+
+```bash
+npm run test:e2e
+```
+
+Playwright starts the dev server itself, so nothing needs to be running first.
+Specs are in `e2e/`, grouped by flow: `smoke` (every route renders), `shop`,
+`product`, `reviews`, `auth`, `forms`, plus `gallery.mobile` which runs on a
+phone viewport.
+
+By default it drives the Edge installed on the machine, so no 150 MB browser
+download is needed. On CI or a machine without Edge:
+
+```bash
+PW_CHANNEL=bundled npx playwright install chromium
+PW_CHANNEL=bundled npm run test:e2e
+```
+
+**Two outbound calls are blocked at the fixture level** (`e2e/fixtures.ts`), so
+a new test cannot trigger them by accident:
+
+| Blocked | Why |
+| --- | --- |
+| `api.telegram.org` | The contact form would send a real message to the bot |
+| `POST /auth/register` | A valid payload would create a real account on the backend that cannot be deleted |
+
+Tests assert on the block counters, so a leak fails the suite rather than
+going unnoticed. Everything else runs against the real API.
 
 ## Build
 
