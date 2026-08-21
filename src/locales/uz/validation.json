@@ -1,0 +1,21 @@
+{
+  "nameRequired": "Ismingizni kiriting",
+  "fullNameRequired": "To'liq ismni kiriting",
+  "firstNameRequired": "Ismni kiriting",
+  "checkoutNameRequired": "Ism va familiyangizni kiriting",
+  "usernameRequired": "Foydalanuvchi nomini kiriting",
+  "usernameMin": "Kamida 3 belgi bo'lishi kerak",
+  "identifierRequired": "Email yoki foydalanuvchi nomini kiriting",
+  "emailRequired": "Email manzilini kiriting",
+  "emailInvalid": "Email manzili noto'g'ri",
+  "phoneRequired": "Telefon raqamini kiriting",
+  "phoneFormat": "Format: +998901234567",
+  "passwordMin": "Parol kamida 8 belgidan iborat bo'lishi kerak",
+  "addressRequired": "Yetkazib berish manzilini kiriting",
+  "addressMin": "Manzilni to'liqroq yozing (kamida 10 belgi)",
+  "messageRequired": "Xabar matnini yozing",
+  "reviewTextRequired": "Sharh matnini yozing",
+  "replyTextRequired": "Javob matnini yozing",
+  "ratingRequired": "Baho tanlang",
+  "noteMax": "Izoh 500 belgidan oshmasligi kerak"
+}

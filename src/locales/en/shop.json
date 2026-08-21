@@ -1,0 +1,105 @@
+{
+  "hero": {
+    "breadcrumb": "Shop",
+    "title": "Shop Page",
+    "subtitle": "Let's design the place you always imagined."
+  },
+  "heading": {
+    "allRooms": "All products",
+    "searchResults": "Results for \"{{term}}\""
+  },
+  "filters": {
+    "title": "Filters",
+    "categories": "CATEGORIES",
+    "price": "PRICE",
+    "brands": "BRANDS",
+    "allRooms": "All",
+    "allBrands": "All brands",
+    "min": "Min",
+    "max": "Max",
+    "apply": "Apply",
+    "clearAll": "Clear all filters",
+    "noCategories": "No categories found",
+    "noBrands": "No brands found"
+  },
+  "sort": {
+    "newest": "Newest",
+    "priceAsc": "Price: Low to High",
+    "priceDesc": "Price: High to Low",
+    "nameAsc": "Name: A-Z",
+    "label": "Sort by"
+  },
+  "view": {
+    "grid3": "3 columns",
+    "grid4": "4 columns",
+    "list": "List"
+  },
+  "empty": {
+    "noMatch": "No products match these filters",
+    "noSearchMatch": "Nothing found for \"{{term}}\""
+  },
+  "product": {
+    "new": "NEW",
+    "notFound": "Product not found",
+    "notFoundDesc": "This product was removed or the address is wrong",
+    "backToShop": "Back to Shop",
+    "measurements": "Measurements",
+    "offerExpires": "Offer expires in:",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds"
+  },
+  "tabs": {
+    "info": "Additional Info",
+    "questions": "Questions",
+    "reviews": "Reviews",
+    "ariaLabel": "Product details",
+    "noQuestions": "There are no questions about this product yet"
+  },
+  "reviews": {
+    "title": "Customer Reviews",
+    "count_one": "{{count}} Review",
+    "count_other": "{{count}} Reviews",
+    "empty": "No reviews yet — be the first to share your thoughts",
+    "namePlaceholder": "Your name",
+    "nameLabel": "Your name",
+    "textPlaceholder": "What do you think about this product",
+    "textLabel": "Review text",
+    "submit": "Write Review",
+    "thanks": "Thank you for your review!",
+    "like": "Like",
+    "reply": "Reply",
+    "replyPlaceholder": "Your reply",
+    "replyLabel": "Your reply",
+    "addEmoji": "Add {{emoji}}",
+    "sortLabel": "Sort reviews",
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "highest": "Highest rating",
+      "lowest": "Lowest rating"
+    },
+    "date": {
+      "today": "today",
+      "yesterday": "yesterday",
+      "days_one": "{{count}} day ago",
+      "days_other": "{{count}} days ago",
+      "weeks_one": "{{count}} week ago",
+      "weeks_other": "{{count}} weeks ago",
+      "months_one": "{{count}} month ago",
+      "months_other": "{{count}} months ago",
+      "years_one": "{{count}} year ago",
+      "years_other": "{{count}} years ago"
+    }
+  },
+  "currencyMismatch": "Your cart already holds items in {{currency}} — a product in another currency cannot be added. Clear the cart first.",
+  "addedToCart": "Product added to the cart",
+  "addToWishlist": "Add to wishlist",
+  "removeFromWishlist": "Remove from wishlist",
+  "addMore": "Add More",
+  "newArrivals": "New Arrivals",
+  "moreProducts": "More Products",
+  "seoDescription": "Browse the 3legant catalog — furniture, lighting and home decor with filters by category, brand and price.",
+  "seoCategory": "{{category}} at 3legant."
+}

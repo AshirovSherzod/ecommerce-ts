@@ -14,11 +14,6 @@ export const PRODUCT_PLACEHOLDER = "/placeholder-product.svg";
  */
 export const STORE_CURRENCY: Currency = "USD";
 
-// Savatga qo'shish rad etilganda ko'rsatiladigan xabar — matn ikki joyda
-// ishlatilgani uchun bitta manbada turadi
-export const currencyMismatchMessage = (cartCurrency: Currency) =>
-  `Savatda ${cartCurrency} valyutasidagi mahsulot bor — boshqa valyutadagini qo'shib bo'lmaydi. Avval savatni tozalang.`;
-
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DEV_SALE_WINDOW_DAYS = 30;
 

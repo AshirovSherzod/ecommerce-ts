@@ -1,0 +1,47 @@
+{
+  "actions": {
+    "addToCart": "Savatga qo'shish",
+    "cancel": "Bekor qilish",
+    "clear": "Tozalash",
+    "close": "Yopish",
+    "continueShopping": "Xaridni davom ettirish",
+    "goHome": "Bosh sahifa",
+    "goToShop": "Do'konga o'tish",
+    "loadMore": "Ko'proq ko'rsatish",
+    "readMore": "Batafsil",
+    "retry": "Qayta urinish",
+    "send": "Yuborish",
+    "showMore": "Ko'proq",
+    "submit": "Yuborish",
+    "wishlist": "Sevimlilar"
+  },
+  "labels": {
+    "brand": "Brend",
+    "category": "Kategoriya",
+    "loading": "Yuklanmoqda",
+    "price": "Narx",
+    "quantity": "Miqdor",
+    "sku": "SKU",
+    "total": "Umumiy"
+  },
+  "a11y": {
+    "decrease": "Kamaytirish",
+    "increase": "Ko'paytirish",
+    "nextImage": "Keyingi rasm",
+    "previousImage": "Oldingi rasm",
+    "showImage": "{{index}}-rasmni ko'rsatish",
+    "hidePassword": "Parolni yashirish",
+    "showPassword": "Parolni ko'rsatish",
+    "rating": "Baho",
+    "star": "{{count}} yulduz",
+    "sort": "Saralash"
+  },
+  "errors": {
+    "unexpected": "Kutilmagan xato yuz berdi",
+    "loadFailed": "Ma'lumotni yuklab bo'lmadi",
+    "productsFailed": "Mahsulotlarni yuklab bo'lmadi"
+  },
+  "empty": {
+    "noProducts": "Hozircha mahsulot yo'q"
+  }
+}

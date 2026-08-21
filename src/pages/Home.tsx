@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Seo from "@/components/layout/Seo";
 import ArticlesSect from "@/sections/ArticlesSect";
 import CategorySect from "@/sections/CategorySect";
@@ -11,14 +12,13 @@ import { useGetProducts } from "@/hooks/useProducts";
 import { ARTICLES } from "@/data/articles";
 
 export default function Home() {
+  const { t } = useTranslation("pages");
+  const { t: tCommon } = useTranslation();
   const { data, isLoading, isError, error } = useGetProducts({});
 
   return (
     <>
-      <Seo
-        title="3legant"
-        description="Gift and decoration store based in HCMC, Vietnam. Furniture, lighting and home decor with free shipping over $200."
-      />
+      <Seo title="3legant" description={t("home.description")} />
       <SliderSect />
       <Hero />
       <CategorySect />
@@ -31,17 +31,14 @@ export default function Home() {
       <ServiceSect variant="pr" />
       <Banner variant="none">
         <p className="font-bold text-[#377DFF] text-[16px]">
-          SALE UP TO 35% OFF
+          {t("home.sale.badge")}
         </p>
         <h3 className="font-medium text-[28px]/[34px] sm:text-[40px] max-w-sm">
-          HUNDREDS of New lower prices!
+          {t("home.sale.title")}
         </h3>
-        <p className="text-base sm:text-xl">
-          It’s more affordable than ever to give every room in your home a
-          stylish makeover
-        </p>
+        <p className="text-base sm:text-xl">{t("home.sale.text")}</p>
         <Button className="w-35" variant="linked">
-          Show More
+          {tCommon("actions.showMore")}
         </Button>
       </Banner>
       <ArticlesSect data={ARTICLES} />

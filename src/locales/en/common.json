@@ -1,0 +1,47 @@
+{
+  "actions": {
+    "addToCart": "Add to Cart",
+    "cancel": "Cancel",
+    "clear": "Clear",
+    "close": "Close",
+    "continueShopping": "Continue shopping",
+    "goHome": "Go to home",
+    "goToShop": "Go to shop",
+    "loadMore": "Load more",
+    "readMore": "Read more",
+    "retry": "Try again",
+    "send": "Send",
+    "showMore": "Show more",
+    "submit": "Submit",
+    "wishlist": "Wishlist"
+  },
+  "labels": {
+    "brand": "Brand",
+    "category": "Category",
+    "loading": "Loading",
+    "price": "Price",
+    "quantity": "Quantity",
+    "sku": "SKU",
+    "total": "Total"
+  },
+  "a11y": {
+    "decrease": "Decrease",
+    "increase": "Increase",
+    "nextImage": "Next image",
+    "previousImage": "Previous image",
+    "showImage": "Show image {{index}}",
+    "hidePassword": "Hide password",
+    "showPassword": "Show password",
+    "rating": "Rating",
+    "star": "{{count}} stars",
+    "sort": "Sort"
+  },
+  "errors": {
+    "unexpected": "An unexpected error occurred",
+    "loadFailed": "Could not load the data",
+    "productsFailed": "Could not load the products"
+  },
+  "empty": {
+    "noProducts": "No products yet"
+  }
+}

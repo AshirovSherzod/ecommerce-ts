@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CountdownProps {
   // ISO sana — chegirma tugash vaqti
@@ -13,6 +14,7 @@ const DAY = HOUR * 24;
 const pad = (value: number) => String(value).padStart(2, "0");
 
 export default function Countdown({ deadline }: CountdownProps) {
+  const { t } = useTranslation("shop");
   const target = new Date(deadline).getTime();
 
   // Qolgan vaqtni state'da emas, render paytida hisoblaymiz — shunda
@@ -34,15 +36,15 @@ export default function Countdown({ deadline }: CountdownProps) {
   if (expired) return null;
 
   const units = [
-    { label: "Days", value: Math.floor(remaining / DAY) },
-    { label: "Hours", value: Math.floor((remaining % DAY) / HOUR) },
-    { label: "Minutes", value: Math.floor((remaining % HOUR) / MINUTE) },
-    { label: "Seconds", value: Math.floor((remaining % MINUTE) / SECOND) },
+    { label: t("product.days"), value: Math.floor(remaining / DAY) },
+    { label: t("product.hours"), value: Math.floor((remaining % DAY) / HOUR) },
+    { label: t("product.minutes"), value: Math.floor((remaining % HOUR) / MINUTE) },
+    { label: t("product.seconds"), value: Math.floor((remaining % MINUTE) / SECOND) },
   ];
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-[13px] text-[#6C7275]">Offer expires in:</p>
+      <p className="text-[13px] text-[#6C7275]">{t("product.offerExpires")}</p>
       <ul className="flex gap-2">
         {units.map((unit) => (
           <li

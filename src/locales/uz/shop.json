@@ -1,0 +1,101 @@
+{
+  "hero": {
+    "breadcrumb": "Do'kon",
+    "title": "Do'kon sahifasi",
+    "subtitle": "Siz orzu qilgan makonni birga yarataylik."
+  },
+  "heading": {
+    "allRooms": "Barcha mahsulotlar",
+    "searchResults": "\"{{term}}\" bo'yicha natijalar"
+  },
+  "filters": {
+    "title": "Filtrlar",
+    "categories": "KATEGORIYALAR",
+    "price": "NARX",
+    "brands": "BRENDLAR",
+    "allRooms": "Barchasi",
+    "allBrands": "Barcha brendlar",
+    "min": "Eng kam",
+    "max": "Eng ko'p",
+    "apply": "Qo'llash",
+    "clearAll": "Filtrlarni tozalash",
+    "noCategories": "Kategoriyalar topilmadi",
+    "noBrands": "Brendlar topilmadi"
+  },
+  "sort": {
+    "newest": "Eng yangi",
+    "priceAsc": "Narx: arzondan qimmatga",
+    "priceDesc": "Narx: qimmatdan arzonga",
+    "nameAsc": "Nomi: A-Z",
+    "label": "Saralash:"
+  },
+  "view": {
+    "grid3": "3 ustun",
+    "grid4": "4 ustun",
+    "list": "Ro'yxat"
+  },
+  "empty": {
+    "noMatch": "Bu filtrlarga mos mahsulot topilmadi",
+    "noSearchMatch": "\"{{term}}\" bo'yicha hech narsa topilmadi"
+  },
+  "product": {
+    "new": "YANGI",
+    "notFound": "Mahsulot topilmadi",
+    "notFoundDesc": "Bu mahsulot o'chirilgan yoki manzil noto'g'ri",
+    "backToShop": "Do'konga qaytish",
+    "measurements": "O'lchamlari",
+    "offerExpires": "Aksiya tugashiga:",
+    "days": "Kun",
+    "hours": "Soat",
+    "minutes": "Daqiqa",
+    "seconds": "Soniya"
+  },
+  "tabs": {
+    "info": "Qo'shimcha ma'lumot",
+    "questions": "Savollar",
+    "reviews": "Sharhlar",
+    "ariaLabel": "Mahsulot tafsilotlari",
+    "noQuestions": "Hozircha bu mahsulot bo'yicha savollar yo'q"
+  },
+  "reviews": {
+    "title": "Mijozlar sharhlari",
+    "count_one": "{{count}} sharh",
+    "count_other": "{{count}} sharh",
+    "empty": "Hozircha sharh yo'q — birinchi bo'lib fikringizni yozing",
+    "namePlaceholder": "Ismingiz",
+    "nameLabel": "Ismingiz",
+    "textPlaceholder": "Mahsulot haqidagi fikringiz",
+    "textLabel": "Sharh matni",
+    "submit": "Sharh yozish",
+    "thanks": "Sharhingiz uchun rahmat!",
+    "like": "Yoqdi",
+    "reply": "Javob berish",
+    "replyPlaceholder": "Javobingiz",
+    "replyLabel": "Javobingiz",
+    "addEmoji": "{{emoji}} qo'shish",
+    "sortLabel": "Sharhlarni saralash",
+    "sort": {
+      "newest": "Eng yangi",
+      "oldest": "Eng eski",
+      "highest": "Yuqori baho",
+      "lowest": "Past baho"
+    },
+    "date": {
+      "today": "bugun",
+      "yesterday": "kecha",
+      "days": "{{count}} kun oldin",
+      "weeks": "{{count}} hafta oldin",
+      "months": "{{count}} oy oldin",
+      "years": "{{count}} yil oldin"
+    }
+  },
+  "currencyMismatch": "Savatda {{currency}} valyutasidagi mahsulot bor — boshqa valyutadagini qo'shib bo'lmaydi. Avval savatni tozalang.",
+  "addedToCart": "Mahsulot savatga qo'shildi",
+  "addToWishlist": "Sevimlilarga qo'shish",
+  "removeFromWishlist": "Sevimlilardan olib tashlash",
+  "addMore": "Yana qo'shish",
+  "newArrivals": "Yangi kelganlar",
+  "moreProducts": "Barcha mahsulotlar",
+  "seoDescription": "3legant katalogi — mebel, yoritish va uy bezaklari. Kategoriya, brend va narx bo'yicha filtrlash.",
+  "seoCategory": "{{category}} — 3legant katalogida."
+}

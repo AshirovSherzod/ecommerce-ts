@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { IoClose } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 interface SidebarProps {
   sidebar: boolean;
@@ -12,6 +13,7 @@ export default function Sidebar({
   setSidebar,
   children,
 }: SidebarProps) {
+  const { t } = useTranslation("layout");
   // Menyu ochiqligida orqadagi sahifa skroll bo'lib ketmasin va
   // Escape bilan yopilsin
   useEffect(() => {
@@ -52,7 +54,7 @@ export default function Sidebar({
           </h4>
           <button
             type="button"
-            aria-label="Menyuni yopish"
+            aria-label={t("header.closeMenu")}
             onClick={() => setSidebar(false)}
             className="text-2xl"
           >

@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import AuthLayout from "@/components/layout/AuthLayout";
 import Seo from "@/components/layout/Seo";
 import AuthInput from "@/components/ui/AuthInput";
@@ -25,6 +26,8 @@ interface LocationState {
 }
 
 export default function SignIn() {
+  const { t } = useTranslation("auth");
+  const { t: tv } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const signIn = useAuthStore((state) => state.signIn);
@@ -49,34 +52,30 @@ export default function SignIn() {
         values.remember,
       );
 
-      toast.success("Xush kelibsiz!");
+      toast.success(t("signIn.welcome"));
       navigate(redirectTo, { replace: true });
     } catch (error) {
       // Server xabari `handleError` orqali keladi ("Invalid credentials")
-      toast.error(
-        error instanceof Error ? error.message : "Kirishda xato yuz berdi",
-      );
+      toast.error(error instanceof Error ? error.message : t("signIn.failed"));
     }
   };
 
   return (
     <>
-      <Seo
-        title="Sign In"
-        description="Sign in to your 3legant account."
-        noIndex
-      />
+      <Seo title={t("signIn.title")} noIndex />
 
       <AuthLayout>
         <div className="flex flex-col gap-2">
-          <h1 className="font-medium text-[32px] sm:text-[40px]">Sign In</h1>
+          <h1 className="font-medium text-[32px] sm:text-[40px]">
+            {t("signIn.title")}
+          </h1>
           <p className="text-[14px] text-[#6C7275]">
-            Don&apos;t have an account yet?{" "}
+            {t("signIn.noAccount")}{" "}
             <Link
               to="/signup"
               className="text-[#38CB89] font-medium hover:underline"
             >
-              Sign Up
+              {t("signIn.signUpLink")}
             </Link>
           </p>
         </div>
@@ -87,19 +86,19 @@ export default function SignIn() {
           className="flex flex-col gap-6"
         >
           <AuthInput
-            label="Username or email address"
-            placeholder="Your username or email address"
+            label={t("signIn.identifier")}
+            placeholder={t("signIn.identifierPlaceholder")}
             autoComplete="username"
-            error={errors.identifier?.message}
+            error={errors.identifier?.message && tv(errors.identifier.message)}
             {...register("identifier")}
           />
 
           <AuthInput
-            label="Password"
+            label={t("signIn.password")}
             type="password"
-            placeholder="Password"
+            placeholder={t("signIn.passwordPlaceholder")}
             autoComplete="current-password"
-            error={errors.password?.message}
+            error={errors.password?.message && tv(errors.password.message)}
             {...register("password")}
           />
 
@@ -110,20 +109,24 @@ export default function SignIn() {
                 type="checkbox"
                 {...register("remember")}
               />
-              Remember me
+              {t("signIn.remember")}
             </label>
 
             <button
               type="button"
-              onClick={() => toast.info("Parolni tiklash tez orada qo'shiladi")}
+              onClick={() => toast.info(t("signIn.forgotSoon"))}
               className="text-[14px] font-medium hover:underline"
             >
-              Forgot password?
+              {t("signIn.forgot")}
             </button>
           </div>
 
-          <Button type="submit" isLoading={isSubmitting} className="w-full h-12">
-            Sign In
+          <Button
+            type="submit"
+            isLoading={isSubmitting}
+            className="w-full h-12"
+          >
+            {t("signIn.submit")}
           </Button>
         </form>
       </AuthLayout>

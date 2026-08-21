@@ -21,7 +21,7 @@ test.describe("Mahsulot sahifasi", () => {
   test("breadcrumb va sarlavha ko'rinadi", async ({ page, goto }) => {
     await goto(`/shop/${MULTI_IMAGE_ID}`);
 
-    await expect(page.locator("main p").first()).toContainText("Home");
+    await expect(page.locator("main p").first()).toContainText("Bosh sahifa");
     await expect(page.locator("main h1")).not.toBeEmpty();
   });
 
@@ -53,7 +53,7 @@ test.describe("Mahsulot sahifasi", () => {
     await goto("/shop/00000000-0000-0000-0000-000000000000");
 
     await expectNoCrash(page);
-    await expect(page.locator("main")).toContainText("Product not found");
+    await expect(page.locator("main")).toContainText("Mahsulot topilmadi");
   });
 });
 
@@ -67,19 +67,19 @@ test.describe("Savat va wishlist", () => {
     const title = await page.locator("main h1").innerText();
 
     await page.getByLabel("Ko'paytirish").click();
-    await page.getByRole("button", { name: "Add to Cart" }).click();
+    await page.getByRole("button", { name: "Savatga qo'shish" }).click();
 
     await expect(page.locator("header")).toContainText("2");
 
     await goto("/cart");
     await expect(page.locator("main")).toContainText(title);
-    await expect(page.locator("main")).toContainText("Subtotal");
+    await expect(page.locator("main")).toContainText("Mahsulotlar");
   });
 
   test("yetkazib berish narxi o'z valyutasida ko'rsatiladi", async ({ page, goto }) => {
     // Haqiqiy xato: 15 dollarlik yetkazish savat valyutasida formatlanardi
     await goto(`/shop/${MULTI_IMAGE_ID}`);
-    await page.getByRole("button", { name: "Add to Cart" }).click();
+    await page.getByRole("button", { name: "Savatga qo'shish" }).click();
 
     await goto("/cart");
 
@@ -90,7 +90,7 @@ test.describe("Savat va wishlist", () => {
     await goto(`/shop/${MULTI_IMAGE_ID}`);
     const title = await page.locator("main h1").innerText();
 
-    await page.getByRole("button", { name: "Wishlist" }).click();
+    await page.getByRole("button", { name: "Sevimlilar" }).click();
     await goto("/wishlist");
 
     await expect(page.locator("main")).toContainText(title);

@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "home": "Bosh sahifa",
+    "shop": "Do'kon",
+    "blog": "Blog",
+    "contact": "Bog'lanish"
+  },
+  "header": {
+    "openMenu": "Menyuni ochish",
+    "closeMenu": "Menyuni yopish",
+    "search": "Qidiruv",
+    "signIn": "Kirish",
+    "signOut": "Chiqish",
+    "profileMenu": "Profil menyusi",
+    "cart": "Savat",
+    "wishlist": "Sevimlilar",
+    "account": "Hisob",
+    "signedOut": "Siz tizimdan chiqdingiz",
+    "language": "Til"
+  },
+  "search": {
+    "placeholder": "Mahsulot qidirish",
+    "label": "Mahsulot qidirish",
+    "catalogLabel": "Katalogdan qidirish",
+    "menuLabel": "Menyudan qidirish",
+    "submit": "{{label}}: qidirish",
+    "clear": "{{label}}: tozalash"
+  },
+  "promo": {
+    "text": "Butun do'konda 30% chegirma — cheklangan muddat!",
+    "cta": "Xarid qilish",
+    "close": "Yopish"
+  },
+  "footer": {
+    "tagline": "Sovg'a va bezak do'koni",
+    "copyright": "Mualliflik huquqi © 2023 3legant. Barcha huquqlar himoyalangan",
+    "privacy": "Maxfiylik siyosati",
+    "terms": "Foydalanish shartlari"
+  },
+  "newsletter": {
+    "title": "Yangiliklarimizga obuna bo'ling",
+    "subtitle": "Chegirmalar, yangi mahsulotlar va aksiyalar haqida birinchi bo'lib biling",
+    "placeholder": "Email manzilingiz",
+    "submit": "Obuna",
+    "success": "Obuna uchun rahmat!"
+  },
+  "services": {
+    "shipping": {
+      "title": "Bepul yetkazib berish",
+      "desc": "$200 dan yuqori buyurtmalarga"
+    },
+    "money": {
+      "title": "Pulni qaytarish",
+      "desc": "30 kun kafolat"
+    },
+    "secure": {
+      "title": "Xavfsiz to'lov",
+      "desc": "Stripe orqali himoyalangan"
+    },
+    "support": {
+      "title": "24/7 qo'llab-quvvatlash",
+      "desc": "Telefon va email orqali"
+    }
+  },
+  "slider": {
+    "prev": "Oldingi slayd",
+    "next": "Keyingi slayd",
+    "goTo": "{{index}}-slaydga o'tish"
+  }
+}

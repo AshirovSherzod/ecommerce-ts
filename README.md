@@ -16,6 +16,7 @@ a Telegram bot.
 | HTTP | axios (instance with interceptors) |
 | Forms | react-hook-form + zod (`@hookform/resolvers`) |
 | Notifications | react-toastify |
+| i18n | i18next + react-i18next (uz / ru / en) |
 
 ## Getting started
 
@@ -67,7 +68,9 @@ src/
 ├── components/
 │   ├── layout/   Header, Footer, Layout (Outlet)
 │   └── ui/       Button, Select, ProductCard, Counter, Rating, Sidebar, Spinner ...
+├── i18n/         i18next setup, language list, bundled resources
 ├── hooks/        useProducts, useCategories, useTelegramMessage
+├── locales/      uz/, ru/, en/ — one JSON per namespace
 ├── pages/        Home, Shop, Blog, Contact, Cart, Wishlist, NotFound
 ├── provider/     QueryProvider (QueryClient configuration)
 ├── schemas/      zod validation schemas (auth, contact, review ...)
@@ -129,6 +132,22 @@ The rules that matter: totals are recomputed from the cart at submit time, the
 cart is only cleared after a confirmed send, the order id stays the same across
 retries so a duplicate message is recognisable, and a cart too long for one
 Telegram message is split with the customer and totals kept in the first part.
+
+**Three languages, Uzbek by default.** `src/locales/<lang>/<namespace>.json`
+holds the text; the namespaces (`common`, `layout`, `shop`, `cart`, `auth`,
+`pages`, `validation`) keep one file from growing without bound. The browser
+language is deliberately *not* detected: most customers expect Uzbek while
+their browser is often set to ru or en. The choice is kept in localStorage and
+mirrored onto `<html lang>`.
+
+Translations are bundled rather than fetched on demand — all three together are
+small, and a network round-trip would show a visible flash on every switch.
+
+zod schemas store translation *keys* (`"validation:emailRequired"`), not
+sentences, because a schema is a module-level constant and cannot call a hook;
+the component renders `t(errors.x.message)`. The shipping label sent to the
+shop operator over Telegram stays in a fixed language on purpose — it should
+not change with the customer's UI language.
 
 **Reviews are stored in the browser.** The API has no reviews endpoint yet;
 `useProductReviews` is the single place to swap once it does.

@@ -1,0 +1,21 @@
+{
+  "nameRequired": "Enter your name",
+  "fullNameRequired": "Enter your full name",
+  "firstNameRequired": "Enter your first name",
+  "checkoutNameRequired": "Enter your first and last name",
+  "usernameRequired": "Enter a username",
+  "usernameMin": "At least 3 characters",
+  "identifierRequired": "Enter your email or username",
+  "emailRequired": "Enter your email address",
+  "emailInvalid": "That email address is not valid",
+  "phoneRequired": "Enter your phone number",
+  "phoneFormat": "Format: +998901234567",
+  "passwordMin": "Password must be at least 8 characters",
+  "addressRequired": "Enter the delivery address",
+  "addressMin": "Please give a fuller address (at least 10 characters)",
+  "messageRequired": "Write your message",
+  "reviewTextRequired": "Write your review",
+  "replyTextRequired": "Write your reply",
+  "ratingRequired": "Pick a rating",
+  "noteMax": "The note must not exceed 500 characters"
+}

@@ -10,7 +10,7 @@ test.describe("Contact formasi", () => {
     page,
     blocked,
   }) => {
-    await page.getByRole("button", { name: "Send Message" }).click();
+    await page.getByRole("button", { name: "Xabar yuborish" }).click();
 
     await expect(page.getByText("Ismingizni kiriting")).toBeVisible();
     await expect(page.getByText("Email manzilini kiriting")).toBeVisible();
@@ -24,14 +24,14 @@ test.describe("Contact formasi", () => {
     await page.locator("#contact-name").fill("Sherzod");
     await page.locator("#contact-email").fill("notanemail");
     await page.locator("#contact-message").fill("Salom");
-    await page.getByRole("button", { name: "Send Message" }).click();
+    await page.getByRole("button", { name: "Xabar yuborish" }).click();
 
     await expect(page.getByText("Email manzili noto'g'ri")).toBeVisible();
     expect(blocked.telegram).toBe(0);
   });
 
   test("tuzatilgach xato yozuvi yo'qoladi", async ({ page }) => {
-    await page.getByRole("button", { name: "Send Message" }).click();
+    await page.getByRole("button", { name: "Xabar yuborish" }).click();
     await expect(page.getByText("Email manzilini kiriting")).toBeVisible();
 
     await page.locator("#contact-email").fill("sherzod@example.com");
@@ -40,10 +40,10 @@ test.describe("Contact formasi", () => {
   });
 
   test("email maydonining placeholder'i to'g'ri", async ({ page }) => {
-    // Haqiqiy xato: email maydonida "Your Name" yozilgan edi
+    // Haqiqiy xato: email maydonida ism placeholder'i yozilgan edi
     await expect(page.locator("#contact-email")).toHaveAttribute(
       "placeholder",
-      "Your Email",
+      "Email manzilingiz",
     );
   });
 });
@@ -55,22 +55,22 @@ test.describe("Newsletter", () => {
   });
 
   test("bo'sh emailni rad etadi", async ({ page }) => {
-    await page.getByRole("button", { name: "SignUp" }).click();
+    await page.getByRole("button", { name: "Obuna" }).click();
 
     await expect(page.getByText("Email manzilini kiriting")).toBeVisible();
   });
 
   test("noto'g'ri emailni rad etadi", async ({ page }) => {
-    await page.getByLabel("Email address").fill("bad@");
-    await page.getByRole("button", { name: "SignUp" }).click();
+    await page.getByLabel("Email manzilingiz").fill("bad@");
+    await page.getByRole("button", { name: "Obuna" }).click();
 
     await expect(page.getByText("Email manzili noto'g'ri")).toBeVisible();
   });
 
   test("to'g'ri email qabul qilinadi va maydon tozalanadi", async ({ page }) => {
-    const field = page.getByLabel("Email address");
+    const field = page.getByLabel("Email manzilingiz");
     await field.fill("ok@example.com");
-    await page.getByRole("button", { name: "SignUp" }).click();
+    await page.getByRole("button", { name: "Obuna" }).click();
 
     await expect(
       page.locator(".Toastify__toast").filter({ hasText: "Obuna uchun rahmat" }),
@@ -87,9 +87,9 @@ test.describe("Footer", () => {
     goto,
   }) => {
     await goto("/contact");
-    await expect(page.locator("footer")).not.toContainText("Join Our Newsletter");
+    await expect(page.locator("footer")).not.toContainText("Yangiliklarimizga obuna bo'ling");
 
     await goto("/");
-    await expect(page.locator("footer")).toContainText("Join Our Newsletter");
+    await expect(page.locator("footer")).toContainText("Yangiliklarimizga obuna bo'ling");
   });
 });

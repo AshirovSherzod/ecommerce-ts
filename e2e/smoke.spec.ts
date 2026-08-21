@@ -32,15 +32,15 @@ test.describe("Smoke: barcha marshrutlar ochiladi", () => {
   test("404 sahifasi noto'g'ri manzilda chiqadi", async ({ page, goto }) => {
     await goto("/bunday-sahifa-yoq");
 
-    await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Go To Home" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Sahifa topilmadi" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Bosh sahifa" })).toBeVisible();
   });
 
   test("sahifa almashganda skroll tepaga qaytadi", async ({ page, goto }) => {
     await goto("/");
     await page.evaluate(() => window.scrollTo(0, 1500));
 
-    await page.getByRole("link", { name: "Shop", exact: true }).first().click();
+    await page.getByRole("link", { name: "Do'kon", exact: true }).first().click();
     await page.waitForURL("**/shop");
 
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(50);

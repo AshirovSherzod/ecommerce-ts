@@ -75,7 +75,7 @@ test.describe("Qidiruv: Shop sahifasi", () => {
   test("'Clear all filters' qidiruvni ham tozalaydi", async ({ page, goto }) => {
     await goto("/shop?q=zzzzqwertyyoq");
 
-    await page.getByRole("button", { name: "Clear all filters" }).first().click();
+    await page.getByRole("button", { name: "Filtrlarni tozalash" }).first().click();
 
     await expect.poll(() => page.url()).not.toContain("q=");
   });

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import SearchBox from "@/components/ui/SearchBox";
 import { searchUrl } from "@/utils/searchUrl";
 
@@ -9,6 +10,7 @@ import { searchUrl } from "@/utils/searchUrl";
  * maketda header'da doimiy input yo'q, faqat ikonka.
  */
 export default function HeaderSearch() {
+  const { t } = useTranslation("layout");
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -45,7 +47,7 @@ export default function HeaderSearch() {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        aria-label="Qidiruv"
+        aria-label={t("header.search")}
         aria-expanded={open}
         className="w-6 h-6 flex items-center"
       >
@@ -54,7 +56,12 @@ export default function HeaderSearch() {
 
       {open && (
         <div className="absolute right-0 top-full mt-3 w-75 bg-white border border-[#E8ECEF] rounded-md shadow-[0px_8px_24px_-4px_rgba(15,15,15,0.12)] p-2 z-50">
-          <SearchBox autoFocus onSubmit={handleSubmit} className="border-0" />
+          <SearchBox
+            autoFocus
+            label={t("search.label")}
+            onSubmit={handleSubmit}
+            className="border-0"
+          />
         </div>
       )}
     </div>

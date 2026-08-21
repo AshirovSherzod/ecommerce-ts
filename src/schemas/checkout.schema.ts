@@ -5,16 +5,16 @@ import { emailField, requiredText } from "@/schemas/common";
 const PHONE_REGEX = /^\+998\d{9}$/;
 
 export const checkoutSchema = z.object({
-  name: requiredText("Ism va familiyangizni kiriting"),
-  phone: requiredText("Telefon raqamini kiriting").pipe(
-    z.string().regex(PHONE_REGEX, "Format: +998901234567"),
+  name: requiredText("validation:checkoutNameRequired"),
+  phone: requiredText("validation:phoneRequired").pipe(
+    z.string().regex(PHONE_REGEX, "validation:phoneFormat"),
   ),
-  address: requiredText("Yetkazib berish manzilini kiriting").pipe(
-    z.string().min(10, "Manzilni to'liqroq yozing (kamida 10 belgi)"),
+  address: requiredText("validation:addressRequired").pipe(
+    z.string().min(10, "validation:addressMin"),
   ),
   // Ixtiyoriy: bo'sh qoldirilsa tekshirilmaydi
   email: z.union([z.literal(""), emailField()]),
-  note: z.string().trim().max(500, "Izoh 500 belgidan oshmasligi kerak"),
+  note: z.string().trim().max(500, "validation:noteMax"),
 });
 
 export type CheckoutValues = z.infer<typeof checkoutSchema>;

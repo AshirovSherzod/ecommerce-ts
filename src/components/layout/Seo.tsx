@@ -1,7 +1,8 @@
+import { useTranslation } from "react-i18next";
+
 const SITE_NAME = "3legant";
 
-const DEFAULT_DESCRIPTION =
-  "3legant — gift and decoration store. Furniture, lighting and home decor.";
+
 
 interface SeoProps {
   /** Sahifa nomi. Sayt nomi avtomatik qo'shiladi. */
@@ -21,24 +22,29 @@ interface SeoProps {
  */
 export default function Seo({
   title,
-  description = DEFAULT_DESCRIPTION,
+  description,
   image,
   type = "website",
   noIndex = false,
 }: SeoProps) {
+  const { t, i18n } = useTranslation("pages");
+
   const fullTitle = title === SITE_NAME ? title : `${title} — ${SITE_NAME}`;
+  const text = description ?? t("home.description");
 
   return (
     <>
       <title>{fullTitle}</title>
-      <meta name="description" content={description} />
+      <meta name="description" content={text} />
+      {/* Ulashilganda ijtimoiy tarmoq sarlavhani qaysi tilda ekanini bilsin */}
+      <meta property="og:locale" content={i18n.language} />
 
       {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:type" content={type} />
       <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
+      <meta property="og:description" content={text} />
       {image && <meta property="og:image" content={image} />}
 
       <meta

@@ -1,0 +1,63 @@
+{
+  "title": "Cart",
+  "steps": {
+    "cart": "Shopping cart",
+    "details": "Checkout details",
+    "complete": "Order complete"
+  },
+  "table": {
+    "product": "PRODUCT",
+    "quantity": "QUANTITY",
+    "price": "PRICE",
+    "subtotal": "SUBTOTAL"
+  },
+  "empty": {
+    "title": "Cart is empty",
+    "desc": "Looks like you haven't added anything yet"
+  },
+  "remove": "Remove",
+  "clear": "Clear cart",
+  "summary": {
+    "title": "Cart summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "separate": "quoted separately",
+    "separateNote": "Shipping is priced in {{store}} while the cart is in {{cart}}. The cost is confirmed when the order is placed.",
+    "separateAgreed": "agreed separately"
+  },
+  "shipping": {
+    "free": "Free shipping",
+    "express": "Express shipping",
+    "pickup": "Pick Up"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "breadcrumb": "Checkout",
+    "customerTitle": "Delivery details",
+    "shippingTitle": "Shipping method",
+    "orderTitle": "Order summary",
+    "name": "FULL NAME",
+    "namePlaceholder": "Your full name",
+    "phone": "PHONE",
+    "email": "EMAIL (optional)",
+    "address": "ADDRESS",
+    "addressPlaceholder": "City, district, street, house and apartment",
+    "note": "NOTE (optional)",
+    "notePlaceholder": "Delivery time or any other request",
+    "submit": "Place order",
+    "disclaimer": "The order goes to the shop operator and they will contact you.",
+    "emptyTitle": "Cart is empty",
+    "emptyDesc": "Pick a product before placing an order.",
+    "cartEmptied": "The cart became empty — the order was not sent",
+    "notConfigured": "Could not send the order: the shop configuration is incomplete. Please get in touch by phone.",
+    "sendFailed": "Order not sent: {{reason}}",
+    "sendFailedGeneric": "Order not sent, please try again"
+  },
+  "complete": {
+    "title": "Complete!",
+    "received": "Your order has been received",
+    "callback": "We will call {{phone}} shortly."
+  },
+  "checkoutBtn": "Checkout"
+}
