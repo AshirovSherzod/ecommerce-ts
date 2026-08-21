@@ -215,6 +215,22 @@ a new test cannot trigger them by accident:
 Tests assert on the block counters, so a leak fails the suite rather than
 going unnoticed. Everything else runs against the real API.
 
+## Continuous integration
+
+[.github/workflows/ci.yml](.github/workflows/ci.yml) runs on every push to
+`master` and on every pull request: lint, unit tests, and `npm run build` —
+which starts with `tsc -b`, so types are covered without a separate step.
+
+**The browser tests are deliberately not in CI.** They talk to the real API,
+which would mean putting the API address into repository secrets and paying
+fifteen minutes of runner time per pull request for a suite whose failures are
+usually about the backend being slow rather than the change under review. Run
+them locally instead:
+
+```bash
+npm run test:e2e
+```
+
 ## Build
 
 ```bash
