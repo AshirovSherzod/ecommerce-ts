@@ -2,14 +2,21 @@ import type { Currency } from "@/types/products.types";
 import { STORE_CURRENCY } from "@/utils/constants";
 
 /**
+ * `label` do'kon operatoriga ketadigan buyurtma xabarida ishlatiladi va
+ * interfeys tilidan qat'i nazar o'zgarmaydi; `key` esa UI tarjimasi uchun.
  * Narxlar STORE_CURRENCY da. Ro'yxat Cart va Checkout uchun bitta joyda —
  * ikki nusxa bo'lsa ular vaqt o'tib bir-biridan farq qilib qolishi va
  * mijoz savatda bir narx, buyurtmada boshqasini ko'rishi mumkin edi.
  */
 export const SHIPPING_OPTIONS = [
-  { id: "free", label: "Free shipping", price: 0 },
-  { id: "express", label: "Express shipping", price: 15 },
-  { id: "pickup", label: "Pick Up", price: 21 },
+  { id: "free", key: "shipping.free", label: "Free shipping", price: 0 },
+  {
+    id: "express",
+    key: "shipping.express",
+    label: "Express shipping",
+    price: 15,
+  },
+  { id: "pickup", key: "shipping.pickup", label: "Pick Up", price: 21 },
 ] as const;
 
 export type ShippingId = (typeof SHIPPING_OPTIONS)[number]["id"];

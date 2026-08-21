@@ -1,0 +1,47 @@
+{
+  "actions": {
+    "addToCart": "В корзину",
+    "cancel": "Отмена",
+    "clear": "Очистить",
+    "close": "Закрыть",
+    "continueShopping": "Продолжить покупки",
+    "goHome": "На главную",
+    "goToShop": "В магазин",
+    "loadMore": "Показать ещё",
+    "readMore": "Подробнее",
+    "retry": "Попробовать снова",
+    "send": "Отправить",
+    "showMore": "Ещё",
+    "submit": "Отправить",
+    "wishlist": "Избранное"
+  },
+  "labels": {
+    "brand": "Бренд",
+    "category": "Категория",
+    "loading": "Загрузка",
+    "price": "Цена",
+    "quantity": "Количество",
+    "sku": "Артикул",
+    "total": "Итого"
+  },
+  "a11y": {
+    "decrease": "Уменьшить",
+    "increase": "Увеличить",
+    "nextImage": "Следующее фото",
+    "previousImage": "Предыдущее фото",
+    "showImage": "Показать фото {{index}}",
+    "hidePassword": "Скрыть пароль",
+    "showPassword": "Показать пароль",
+    "rating": "Оценка",
+    "star": "{{count}} звёзд",
+    "sort": "Сортировка"
+  },
+  "errors": {
+    "unexpected": "Произошла непредвиденная ошибка",
+    "loadFailed": "Не удалось загрузить данные",
+    "productsFailed": "Не удалось загрузить товары"
+  },
+  "empty": {
+    "noProducts": "Пока нет товаров"
+  }
+}

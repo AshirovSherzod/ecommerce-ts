@@ -1,0 +1,103 @@
+{
+  "hero": {
+    "breadcrumb": "Магазин",
+    "title": "Магазин",
+    "subtitle": "Создадим пространство, о котором вы мечтали."
+  },
+  "heading": {
+    "allRooms": "Все товары",
+    "searchResults": "Результаты по запросу «{{term}}»"
+  },
+  "filters": {
+    "title": "Фильтры",
+    "categories": "КАТЕГОРИИ",
+    "price": "ЦЕНА",
+    "brands": "БРЕНДЫ",
+    "allRooms": "Все",
+    "allBrands": "Все бренды",
+    "min": "От",
+    "max": "До",
+    "apply": "Применить",
+    "clearAll": "Сбросить фильтры",
+    "noCategories": "Категории не найдены",
+    "noBrands": "Бренды не найдены"
+  },
+  "sort": {
+    "newest": "Сначала новые",
+    "priceAsc": "Цена: по возрастанию",
+    "priceDesc": "Цена: по убыванию",
+    "nameAsc": "Название: А-Я",
+    "label": "Сортировка:"
+  },
+  "view": {
+    "grid3": "3 колонки",
+    "grid4": "4 колонки",
+    "list": "Список"
+  },
+  "empty": {
+    "noMatch": "По этим фильтрам ничего не найдено",
+    "noSearchMatch": "По запросу «{{term}}» ничего не найдено"
+  },
+  "product": {
+    "new": "НОВОЕ",
+    "notFound": "Товар не найден",
+    "notFoundDesc": "Товар удалён или адрес указан неверно",
+    "backToShop": "Вернуться в магазин",
+    "measurements": "Размеры",
+    "offerExpires": "До конца акции:",
+    "days": "Дней",
+    "hours": "Часов",
+    "minutes": "Минут",
+    "seconds": "Секунд"
+  },
+  "tabs": {
+    "info": "Доп. информация",
+    "questions": "Вопросы",
+    "reviews": "Отзывы",
+    "ariaLabel": "Детали товара",
+    "noQuestions": "По этому товару пока нет вопросов"
+  },
+  "reviews": {
+    "title": "Отзывы покупателей",
+    "count_one": "{{count}} отзыв",
+    "count_few": "{{count}} отзыва",
+    "count_many": "{{count}} отзывов",
+    "count_other": "{{count}} отзывов",
+    "empty": "Отзывов пока нет — оставьте первый",
+    "namePlaceholder": "Ваше имя",
+    "nameLabel": "Ваше имя",
+    "textPlaceholder": "Что вы думаете о товаре",
+    "textLabel": "Текст отзыва",
+    "submit": "Оставить отзыв",
+    "thanks": "Спасибо за отзыв!",
+    "like": "Нравится",
+    "reply": "Ответить",
+    "replyPlaceholder": "Ваш ответ",
+    "replyLabel": "Ваш ответ",
+    "addEmoji": "Добавить {{emoji}}",
+    "sortLabel": "Сортировка отзывов",
+    "sort": {
+      "newest": "Сначала новые",
+      "oldest": "Сначала старые",
+      "highest": "Высокая оценка",
+      "lowest": "Низкая оценка"
+    },
+    "date": {
+      "today": "сегодня",
+      "yesterday": "вчера",
+      "days": "{{count}} дн. назад",
+      "weeks": "{{count}} нед. назад",
+      "months": "{{count}} мес. назад",
+      "years": "{{count}} г. назад"
+    }
+  },
+  "currencyMismatch": "В корзине уже есть товар в валюте {{currency}} — товар в другой валюте добавить нельзя. Сначала очистите корзину.",
+  "addedToCart": "Товар добавлен в корзину",
+  "addToWishlist": "Добавить в избранное",
+  "removeFromWishlist": "Убрать из избранного",
+  "addMore": "Добавить ещё",
+  "newArrivals": "Новинки",
+  "moreProducts": "Все товары",
+  "seoDescription": "Каталог 3legant — мебель, освещение и декор. Фильтры по категории, бренду и цене.",
+  "seoCategory": "{{category}} — в каталоге 3legant."
+}

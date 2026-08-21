@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import shopHero from "@/assets/images/shop-banner.webp";
 
 export default function ShopHero() {
+  const { t } = useTranslation("shop");
+
   return (
     <section className="max-w-310 mx-auto px-5 mt-5 flex flex-col gap-4">
       <p className="text-[14px] text-[#6C7275]">
         <Link className="hover:text-[#141718]" to={"/"}>
           Home
         </Link>{" "}
-        &gt; <span className="text-[#141718]">Shop</span>
+        &gt; <span className="text-[#141718]">{t("hero.breadcrumb")}</span>
       </p>
 
       <div
@@ -16,10 +19,10 @@ export default function ShopHero() {
         style={{ backgroundImage: `url(${shopHero})` }}
       >
         <h1 className="font-medium text-[32px]/[38px] sm:text-[44px]/[50px] lg:text-[54px]/[60px]">
-          Shop Page
+          {t("hero.title")}
         </h1>
         <p className="text-[14px] sm:text-[16px]">
-          Let&apos;s design the place you always imagined.
+          {t("hero.subtitle")}
         </p>
       </div>
     </section>

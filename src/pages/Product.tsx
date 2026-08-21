@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+
 import { Button } from "@/components/ui/Button";
 import Counter from "@/components/ui/Counter";
 import Countdown from "@/components/ui/Countdown";
@@ -14,11 +16,7 @@ import { useGetCategory } from "@/hooks/useCategories";
 import { useGetProduct } from "@/hooks/useProducts";
 import { useProductReviews } from "@/hooks/useProductReviews";
 import { useCartStore, useWishlistStore } from "@/store";
-import {
-  currencyMismatchMessage,
-  SALE_ENDS_AT,
-  STORE_CURRENCY,
-} from "@/utils/constants";
+import { SALE_ENDS_AT, STORE_CURRENCY } from "@/utils/constants";
 import { formatPrice } from "@/utils/formatPrice";
 
 const NEW_PRODUCT_DAYS = 30;
@@ -40,6 +38,10 @@ export default function Product() {
 }
 
 function ProductDetail({ id }: { id: string }) {
+  const { t } = useTranslation("shop");
+  const { t: tCommon } = useTranslation();
+  const { t: tLayout } = useTranslation("layout");
+
   const [quantity, setQuantity] = useState(1);
 
   const { data: product, isLoading, isError, error } = useGetProduct(id);
@@ -72,15 +74,15 @@ function ProductDetail({ id }: { id: string }) {
         style={{ minHeight: "calc(100vh - 200px)" }}
         className="px-5 flex flex-col items-center justify-center gap-4 text-center"
       >
-        <Seo title="Product not found" noIndex />
-        <h1 className="font-medium text-2xl">Mahsulot topilmadi</h1>
+        <Seo title={t("product.notFound")} noIndex />
+        <h1 className="font-medium text-2xl">{t("product.notFound")}</h1>
         <p className="text-[#6C7275]">
           {error instanceof Error
             ? error.message
-            : "Bu mahsulot o'chirilgan yoki manzil noto'g'ri"}
+            : t("product.notFoundDesc")}
         </p>
         <Link to="/shop">
-          <Button>Back to Shop</Button>
+          <Button>{t("product.backToShop")}</Button>
         </Link>
       </section>
     );
@@ -98,11 +100,13 @@ function ProductDetail({ id }: { id: string }) {
     const cartCurrency = useCartStore.getState().getCurrency();
 
     if (!addToCart(product, quantity)) {
-      toast.error(currencyMismatchMessage(cartCurrency ?? STORE_CURRENCY));
+      toast.error(
+        t("currencyMismatch", { currency: cartCurrency ?? STORE_CURRENCY }),
+      );
       return;
     }
 
-    toast.success("Mahsulot savatga qo'shildi");
+    toast.success(t("addedToCart"));
   };
 
   const toggleWishlist = () => {
@@ -118,7 +122,7 @@ function ProductDetail({ id }: { id: string }) {
     <div className="absolute top-3 left-3 flex flex-col items-start gap-2">
       {isNewProduct(product.createdAt) && (
         <span className="bg-white text-[#141718] px-3 py-1 rounded-sm text-[12px] font-semibold">
-          NEW
+          {t("product.new")}
         </span>
       )}
       {discountPercentage > 0 && (
@@ -141,11 +145,11 @@ function ProductDetail({ id }: { id: string }) {
       <section className="max-w-310 mx-auto px-5 my-5 sm:my-7 flex flex-col gap-5">
         <p className="text-[14px] text-[#6C7275] flex flex-wrap items-center gap-2">
           <Link className="hover:text-[#141718]" to="/">
-            Home
+            {tLayout("nav.home")}
           </Link>
           <span>&rsaquo;</span>
           <Link className="hover:text-[#141718]" to="/shop">
-            Shop
+            {tLayout("nav.shop")}
           </Link>
           {category && (
             <>
@@ -178,7 +182,7 @@ function ProductDetail({ id }: { id: string }) {
               <div className="flex items-center gap-3">
                 <Rating rating={reviews.average} showValue={false} size="sm" />
                 <span className="text-[13px] text-[#6C7275]">
-                  {reviews.count} {reviews.count === 1 ? "Review" : "Reviews"}
+                  {t("reviews.count", { count: reviews.count })}
                 </span>
               </div>
               <h1 className="font-medium text-[22px] sm:text-[26px]/[32px]">
@@ -230,12 +234,12 @@ function ProductDetail({ id }: { id: string }) {
                     ) : (
                       <FaRegHeart />
                     )}
-                    Wishlist
+                    {tCommon("actions.wishlist")}
                   </button>
                 </div>
 
                 <Button onClick={handleAddToCart} className="w-full h-11">
-                  Add to Cart
+                  {tCommon("actions.addToCart")}
                 </Button>
               </div>
             </div>

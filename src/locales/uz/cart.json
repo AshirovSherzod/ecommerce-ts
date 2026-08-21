@@ -1,0 +1,63 @@
+{
+  "title": "Savat",
+  "steps": {
+    "cart": "Savat",
+    "details": "Ma'lumotlar",
+    "complete": "Buyurtma tayyor"
+  },
+  "table": {
+    "product": "MAHSULOT",
+    "quantity": "MIQDOR",
+    "price": "NARX",
+    "subtotal": "JAMI"
+  },
+  "empty": {
+    "title": "Savat bo'sh",
+    "desc": "Hali hech narsa qo'shmagansiz"
+  },
+  "remove": "O'chirish",
+  "clear": "Savatni tozalash",
+  "summary": {
+    "title": "Savat xulosasi",
+    "subtotal": "Mahsulotlar",
+    "shipping": "Yetkazib berish",
+    "total": "Umumiy",
+    "separate": "alohida",
+    "separateNote": "Yetkazib berish narxlari {{store}} da belgilangan, savat esa {{cart}} da. Narx buyurtmani rasmiylashtirishda aniqlanadi.",
+    "separateAgreed": "alohida kelishiladi"
+  },
+  "shipping": {
+    "free": "Bepul yetkazib berish",
+    "express": "Tezkor yetkazib berish",
+    "pickup": "O'zi olib ketish"
+  },
+  "checkout": {
+    "title": "Buyurtma berish",
+    "breadcrumb": "Buyurtma",
+    "customerTitle": "Yetkazib berish ma'lumoti",
+    "shippingTitle": "Yetkazib berish usuli",
+    "orderTitle": "Buyurtma tarkibi",
+    "name": "ISM VA FAMILIYA",
+    "namePlaceholder": "Ism va familiyangiz",
+    "phone": "TELEFON",
+    "email": "EMAIL (ixtiyoriy)",
+    "address": "MANZIL",
+    "addressPlaceholder": "Shahar, tuman, ko'cha, uy va xonadon raqami",
+    "note": "IZOH (ixtiyoriy)",
+    "notePlaceholder": "Yetkazib berish vaqti yoki boshqa istak",
+    "submit": "Buyurtma berish",
+    "disclaimer": "Buyurtma do'kon operatoriga yuboriladi va u siz bilan bog'lanadi.",
+    "emptyTitle": "Savat bo'sh",
+    "emptyDesc": "Buyurtma berish uchun avval mahsulot tanlang.",
+    "cartEmptied": "Savat bo'shab qoldi — buyurtma yuborilmadi",
+    "notConfigured": "Buyurtmani yuborib bo'lmadi: do'kon sozlamalari to'liq emas. Iltimos telefon orqali bog'laning.",
+    "sendFailed": "Buyurtma yuborilmadi: {{reason}}",
+    "sendFailedGeneric": "Buyurtma yuborilmadi, qayta urinib ko'ring"
+  },
+  "complete": {
+    "title": "Tayyor!",
+    "received": "Buyurtmangiz qabul qilindi",
+    "callback": "Tez orada {{phone}} raqamiga qo'ng'iroq qilamiz."
+  },
+  "checkoutBtn": "Buyurtma berish"
+}

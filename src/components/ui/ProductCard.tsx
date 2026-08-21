@@ -2,15 +2,13 @@ import { Button } from "@/components/ui/Button";
 import Rating from "@/components/ui/Rating";
 import { useCartStore, useWishlistStore } from "@/store";
 import type { Product } from "@/types/products.types";
-import {
-  currencyMismatchMessage,
-  PRODUCT_PLACEHOLDER,
-  STORE_CURRENCY,
-} from "@/utils/constants";
+import { PRODUCT_PLACEHOLDER, STORE_CURRENCY } from "@/utils/constants";
 import { formatPrice } from "@/utils/formatPrice";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+
 
 type Variant = "grid" | "list";
 
@@ -31,6 +29,9 @@ const isNewProduct = (createdAt: string) => {
 };
 
 export default function ProductCard({ data, variant = "grid" }: ProductProps) {
+  const { t } = useTranslation("shop");
+  const { t: tCommon } = useTranslation();
+
   const addToWishlist = useWishlistStore((state) => state.addItem);
   const removeFromWishlist = useWishlistStore((state) => state.removeItem);
   const inWishlist = useWishlistStore((state) =>
@@ -64,18 +65,20 @@ export default function ProductCard({ data, variant = "grid" }: ProductProps) {
     const cartCurrency = useCartStore.getState().getCurrency();
 
     if (!addToCart(data, 1)) {
-      toast.error(currencyMismatchMessage(cartCurrency ?? STORE_CURRENCY));
+      toast.error(
+        t("currencyMismatch", { currency: cartCurrency ?? STORE_CURRENCY }),
+      );
       return;
     }
 
-    toast.success("Mahsulot savatga qo'shildi");
+    toast.success(t("addedToCart"));
   };
 
   const badges = (
     <div className="absolute top-3 left-3 flex flex-col items-start gap-2">
       {isNew && (
         <span className="bg-white text-[#141718] px-3 py-1 rounded-sm text-[12px] font-semibold">
-          NEW
+          {t("product.new")}
         </span>
       )}
       {discountPercentage > 0 && (
@@ -100,8 +103,8 @@ export default function ProductCard({ data, variant = "grid" }: ProductProps) {
   );
 
   const wishlistLabel = inWishlist
-    ? "Wishlist'dan olib tashlash"
-    : "Wishlist'ga qo'shish";
+    ? t("removeFromWishlist")
+    : t("addToWishlist");
 
   const detailUrl = `/shop/${data.id}`;
 
@@ -132,7 +135,7 @@ export default function ProductCard({ data, variant = "grid" }: ProductProps) {
           {price}
           <div className="flex items-center gap-3 mt-auto pt-2">
             <Button onClick={handleAddToCart} className="w-40 h-9">
-              {inCart ? "Add More" : "Add to Cart"}
+              {inCart ? t("addMore") : tCommon("actions.addToCart")}
             </Button>
             <button
               onClick={toggleWishlist}
@@ -183,7 +186,7 @@ export default function ProductCard({ data, variant = "grid" }: ProductProps) {
           type="button"
           className="absolute bottom-1 md:-bottom-full md:group-hover:bottom-1 w-full h-8.5 duration-500"
         >
-          {inCart ? "Add More" : "Add to Cart"}
+          {inCart ? t("addMore") : tCommon("actions.addToCart")}
         </Button>
       </div>
       <div className="">

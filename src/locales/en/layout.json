@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "home": "Home",
+    "shop": "Shop",
+    "blog": "Blog",
+    "contact": "Contact Us"
+  },
+  "header": {
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "search": "Search",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "profileMenu": "Profile menu",
+    "cart": "Cart",
+    "wishlist": "Wishlist",
+    "account": "Account",
+    "signedOut": "You have been signed out",
+    "language": "Language"
+  },
+  "search": {
+    "placeholder": "Search products",
+    "label": "Search products",
+    "catalogLabel": "Search the catalog",
+    "menuLabel": "Search from the menu",
+    "submit": "{{label}}: search",
+    "clear": "{{label}}: clear"
+  },
+  "promo": {
+    "text": "30% off storewide — Limited time!",
+    "cta": "Shop Now",
+    "close": "Close"
+  },
+  "footer": {
+    "tagline": "Gift & Decoration Store",
+    "copyright": "Copyright © 2023 3legant. All rights reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  },
+  "newsletter": {
+    "title": "Join Our Newsletter",
+    "subtitle": "Sign up for deals, new products and promotions",
+    "placeholder": "Email address",
+    "submit": "Sign Up",
+    "success": "Thanks for subscribing!"
+  },
+  "services": {
+    "shipping": {
+      "title": "Free Shipping",
+      "desc": "Order above $200"
+    },
+    "money": {
+      "title": "Money-back",
+      "desc": "30 days guarantee"
+    },
+    "secure": {
+      "title": "Secure Payments",
+      "desc": "Secured by Stripe"
+    },
+    "support": {
+      "title": "24/7 Support",
+      "desc": "Phone and email support"
+    }
+  },
+  "slider": {
+    "prev": "Previous slide",
+    "next": "Next slide",
+    "goTo": "Go to slide {{index}}"
+  }
+}

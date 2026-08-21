@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import Seo from "@/components/layout/Seo";
 import { Button } from "@/components/ui/Button";
 import { checkoutSchema, type CheckoutValues } from "@/schemas/checkout.schema";
@@ -22,12 +23,14 @@ import {
   type ShippingId,
 } from "@/utils/shipping";
 
-const STEPS = ["Shopping cart", "Checkout details", "Order complete"];
+const STEP_KEYS = ["steps.cart", "steps.details", "steps.complete"];
 
 function Steps({ current }: { current: number }) {
+  const { t } = useTranslation("cart");
+
   return (
     <ol className="flex flex-wrap justify-center gap-4 sm:gap-10">
-      {STEPS.map((step, index) => (
+      {STEP_KEYS.map((step, index) => (
         <li
           key={step}
           className={`flex items-center gap-2 text-[14px] sm:text-base ${
@@ -43,7 +46,7 @@ function Steps({ current }: { current: number }) {
           >
             {index + 1}
           </span>
-          {step}
+          {t(step)}
         </li>
       ))}
     </ol>
@@ -52,48 +55,53 @@ function Steps({ current }: { current: number }) {
 
 // ─── Buyurtma qabul qilindi ────────────────────────────────────
 function OrderComplete({ order }: { order: Order }) {
+  const { t } = useTranslation("cart");
+  const { t: tCommon } = useTranslation();
   const money = (value: number) => formatPrice(value, order.currency);
 
   return (
     <section className="max-w-310 mx-auto px-5 my-10 flex flex-col gap-10">
-      <Seo title="Order complete" description="Your order was placed." noIndex />
+      <Seo title={t("complete.title")} noIndex />
 
       <div className="flex flex-col items-center gap-6">
-        <h1 className="font-medium text-[28px] sm:text-[40px]">Complete!</h1>
+        <h1 className="font-medium text-[28px] sm:text-[40px]">
+          {t("complete.title")}
+        </h1>
         <Steps current={2} />
       </div>
 
       <div className="max-w-125 w-full mx-auto flex flex-col gap-6 border border-[#E8ECEF] rounded-lg p-6">
         <div className="flex flex-col gap-2 text-center">
-          <p className="text-[#6C7275]">Buyurtmangiz qabul qilindi</p>
+          <p className="text-[#6C7275]">{t("complete.received")}</p>
           <p className="font-medium text-2xl">#{order.id}</p>
           <p className="text-[14px] text-[#6C7275]">
-            Tez orada {order.customer.phone} raqamiga qo&apos;ng&apos;iroq
-            qilamiz.
+            {t("complete.callback", { phone: order.customer.phone })}
           </p>
         </div>
 
         <dl className="flex flex-col gap-2 pt-4 border-t border-[#E8ECEF] text-[14px]">
           <div className="flex justify-between">
-            <dt className="text-[#6C7275]">Mahsulotlar</dt>
+            <dt className="text-[#6C7275]">{t("summary.subtotal")}</dt>
             <dd>{money(order.subtotal)}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-[#6C7275]">Yetkazib berish</dt>
+            <dt className="text-[#6C7275]">{t("summary.shipping")}</dt>
             <dd>
               {order.shipping.applies
                 ? money(order.shipping.price)
-                : "alohida kelishiladi"}
+                : t("summary.separateAgreed")}
             </dd>
           </div>
           <div className="flex justify-between pt-2 border-t border-[#E8ECEF]">
-            <dt className="font-medium text-base">Umumiy</dt>
+            <dt className="font-medium text-base">{t("summary.total")}</dt>
             <dd className="font-medium text-base">{money(order.total)}</dd>
           </div>
         </dl>
 
         <Link to="/shop">
-          <Button className="w-full h-11">Continue shopping</Button>
+          <Button className="w-full h-11">
+            {tCommon("actions.continueShopping")}
+          </Button>
         </Link>
       </div>
     </section>
@@ -102,6 +110,8 @@ function OrderComplete({ order }: { order: Order }) {
 
 // ─── Sahifa ────────────────────────────────────
 export default function Checkout() {
+  const { t } = useTranslation("cart");
+  const { t: tCommon } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -128,7 +138,13 @@ export default function Checkout() {
     formState: { errors, isSubmitting },
   } = useForm<CheckoutValues>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: { name: "", phone: "+998", address: "", email: "", note: "" },
+    defaultValues: {
+      name: "",
+      phone: "+998",
+      address: "",
+      email: "",
+      note: "",
+    },
   });
 
   const subtotal = useMemo(
@@ -152,13 +168,11 @@ export default function Checkout() {
         style={{ minHeight: "calc(100vh - 200px)" }}
         className="px-5 flex flex-col items-center justify-center gap-4 text-center"
       >
-        <Seo title="Checkout" noIndex />
-        <h1 className="font-medium text-2xl">Savat bo&apos;sh</h1>
-        <p className="text-[#6C7275]">
-          Buyurtma berish uchun avval mahsulot tanlang.
-        </p>
+        <Seo title={t("checkout.title")} noIndex />
+        <h1 className="font-medium text-2xl">{t("checkout.emptyTitle")}</h1>
+        <p className="text-[#6C7275]">{t("checkout.emptyDesc")}</p>
         <Link to="/shop">
-          <Button>Go To Shop</Button>
+          <Button>{tCommon("actions.goToShop")}</Button>
         </Link>
       </section>
     );
@@ -170,15 +184,13 @@ export default function Checkout() {
     const currentItems = useCartStore.getState().items;
 
     if (currentItems.length === 0) {
-      toast.error("Savat bo'shab qoldi — buyurtma yuborilmadi");
+      toast.error(t("checkout.cartEmptied"));
       navigate("/cart");
       return;
     }
 
     if (!isTelegramConfigured()) {
-      toast.error(
-        "Buyurtmani yuborib bo'lmadi: do'kon sozlamalari to'liq emas. Iltimos telefon orqali bog'laning.",
-      );
+      toast.error(t("checkout.notConfigured"));
       return;
     }
 
@@ -222,8 +234,8 @@ export default function Checkout() {
       // forma to'ldirilgan holicha qoladi — mijoz qayta urina oladi
       toast.error(
         error instanceof Error
-          ? `Buyurtma yuborilmadi: ${error.message}`
-          : "Buyurtma yuborilmadi, qayta urinib ko'ring",
+          ? t("checkout.sendFailed", { reason: error.message })
+          : t("checkout.sendFailedGeneric"),
       );
       return;
     }
@@ -239,16 +251,19 @@ export default function Checkout() {
 
   return (
     <section className="max-w-310 mx-auto px-5 my-10 flex flex-col gap-10">
-      <Seo title="Checkout" description="Complete your order." noIndex />
+      <Seo title={t("checkout.title")} noIndex />
 
       <div className="flex flex-col items-center gap-6">
         <p className="text-[14px] text-[#6C7275]">
           <Link className="hover:text-[#141718]" to="/cart">
-            Cart
+            {t("title")}
           </Link>{" "}
-          &gt; <span className="text-[#141718]">Checkout</span>
+          &gt;{" "}
+          <span className="text-[#141718]">{t("checkout.breadcrumb")}</span>
         </p>
-        <h1 className="font-medium text-[28px] sm:text-[40px]">Checkout</h1>
+        <h1 className="font-medium text-[28px] sm:text-[40px]">
+          {t("checkout.breadcrumb")}
+        </h1>
         <Steps current={1} />
       </div>
 
@@ -260,28 +275,36 @@ export default function Checkout() {
           noValidate
           className="w-full lg:w-[60%] flex flex-col gap-5"
         >
-          <h2 className="font-medium text-xl">Yetkazib berish ma&apos;lumoti</h2>
+          <h2 className="font-medium text-xl">{t("checkout.customerTitle")}</h2>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[12px] text-[#6C7275] font-bold" htmlFor="co-name">
-              ISM VA FAMILIYA
+            <label
+              className="text-[12px] text-[#6C7275] font-bold"
+              htmlFor="co-name"
+            >
+              {t("checkout.name")}
             </label>
             <input
               id="co-name"
               className={fieldClass(!!errors.name)}
-              placeholder="Sherzod Ashirov"
+              placeholder={t("checkout.namePlaceholder")}
               autoComplete="name"
               aria-invalid={!!errors.name}
               {...register("name")}
             />
             {errors.name && (
-              <span className="text-[12px] text-[#FF5630]">{errors.name.message}</span>
+              <span className="text-[12px] text-[#FF5630]">
+                {tCommon(errors.name.message ?? "")}
+              </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[12px] text-[#6C7275] font-bold" htmlFor="co-phone">
-              TELEFON
+            <label
+              className="text-[12px] text-[#6C7275] font-bold"
+              htmlFor="co-phone"
+            >
+              {t("checkout.phone")}
             </label>
             <input
               id="co-phone"
@@ -292,13 +315,18 @@ export default function Checkout() {
               {...register("phone")}
             />
             {errors.phone && (
-              <span className="text-[12px] text-[#FF5630]">{errors.phone.message}</span>
+              <span className="text-[12px] text-[#FF5630]">
+                {tCommon(errors.phone.message ?? "")}
+              </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[12px] text-[#6C7275] font-bold" htmlFor="co-email">
-              EMAIL (ixtiyoriy)
+            <label
+              className="text-[12px] text-[#6C7275] font-bold"
+              htmlFor="co-email"
+            >
+              {t("checkout.email")}
             </label>
             <input
               id="co-email"
@@ -309,7 +337,9 @@ export default function Checkout() {
               {...register("email")}
             />
             {errors.email && (
-              <span className="text-[12px] text-[#FF5630]">{errors.email.message}</span>
+              <span className="text-[12px] text-[#FF5630]">
+                {tCommon(errors.email.message ?? "")}
+              </span>
             )}
           </div>
 
@@ -318,7 +348,7 @@ export default function Checkout() {
               className="text-[12px] text-[#6C7275] font-bold"
               htmlFor="co-address"
             >
-              MANZIL
+              {t("checkout.address")}
             </label>
             <textarea
               id="co-address"
@@ -327,20 +357,23 @@ export default function Checkout() {
                   ? "border-[#FF5630]"
                   : "border-[#E8ECEF] focus:border-[#141718]"
               }`}
-              placeholder="Shahar, tuman, ko'cha, uy va xonadon raqami"
+              placeholder={t("checkout.addressPlaceholder")}
               aria-invalid={!!errors.address}
               {...register("address")}
             />
             {errors.address && (
               <span className="text-[12px] text-[#FF5630]">
-                {errors.address.message}
+                {tCommon(errors.address.message ?? "")}
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[12px] text-[#6C7275] font-bold" htmlFor="co-note">
-              IZOH (ixtiyoriy)
+            <label
+              className="text-[12px] text-[#6C7275] font-bold"
+              htmlFor="co-note"
+            >
+              {t("checkout.note")}
             </label>
             <textarea
               id="co-note"
@@ -349,17 +382,21 @@ export default function Checkout() {
                   ? "border-[#FF5630]"
                   : "border-[#E8ECEF] focus:border-[#141718]"
               }`}
-              placeholder="Yetkazib berish vaqti yoki boshqa istak"
+              placeholder={t("checkout.notePlaceholder")}
               {...register("note")}
             />
             {errors.note && (
-              <span className="text-[12px] text-[#FF5630]">{errors.note.message}</span>
+              <span className="text-[12px] text-[#FF5630]">
+                {tCommon(errors.note.message ?? "")}
+              </span>
             )}
           </div>
 
           {shippingApplies && (
             <div className="flex flex-col gap-3">
-              <h2 className="font-medium text-xl">Yetkazib berish usuli</h2>
+              <h2 className="font-medium text-xl">
+                {t("checkout.shippingTitle")}
+              </h2>
               {SHIPPING_OPTIONS.map((option) => (
                 <label
                   key={option.id}
@@ -378,7 +415,7 @@ export default function Checkout() {
                       checked={shippingId === option.id}
                       onChange={() => setShippingId(option.id)}
                     />
-                    {option.label}
+                    {t(option.key)}
                   </span>
                   <span className="text-[14px] font-medium">
                     {formatPrice(option.price, STORE_CURRENCY)}
@@ -391,11 +428,14 @@ export default function Checkout() {
 
         {/* ─── Buyurtma xulosasi ─── */}
         <aside className="w-full lg:w-[40%] border border-[#6C7275] rounded-md p-6 flex flex-col gap-6">
-          <h2 className="font-medium text-xl">Buyurtma</h2>
+          <h2 className="font-medium text-xl">{t("checkout.orderTitle")}</h2>
 
           <ul className="flex flex-col gap-3">
             {items.map((item) => (
-              <li key={item.id} className="flex justify-between gap-4 text-[14px]">
+              <li
+                key={item.id}
+                className="flex justify-between gap-4 text-[14px]"
+              >
                 <span className="min-w-0">
                   <span className="block truncate">{item.title}</span>
                   <span className="text-[#6C7275]">
@@ -411,25 +451,29 @@ export default function Checkout() {
 
           <div className="flex flex-col gap-2 pt-4 border-t border-[#E8ECEF] text-[14px]">
             <div className="flex justify-between">
-              <span className="text-[#6C7275]">Mahsulotlar</span>
+              <span className="text-[#6C7275]">{t("summary.subtotal")}</span>
               <span>{money(subtotal)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#6C7275]">Yetkazib berish</span>
+              <span className="text-[#6C7275]">{t("summary.shipping")}</span>
               <span>
                 {shippingApplies
                   ? formatPrice(shipping.price, STORE_CURRENCY)
-                  : "alohida"}
+                  : t("summary.separate")}
               </span>
             </div>
             {!shippingApplies && (
               <p className="text-[12px] text-[#6C7275]">
-                Yetkazib berish narxlari {STORE_CURRENCY} da belgilangan, savat
-                esa {currency} da. Narx buyurtmani qabul qilishda aniqlanadi.
+                {t("summary.separateNote", {
+                  store: STORE_CURRENCY,
+                  cart: currency,
+                })}
               </p>
             )}
             <div className="flex justify-between pt-2 border-t border-[#E8ECEF]">
-              <span className="font-medium text-base">Umumiy</span>
+              <span className="font-medium text-base">
+                {t("summary.total")}
+              </span>
               <span className="font-medium text-base">{money(total)}</span>
             </div>
           </div>
@@ -440,12 +484,11 @@ export default function Checkout() {
             isLoading={isSubmitting}
             className="w-full h-11"
           >
-            Buyurtma berish
+            {t("checkout.submit")}
           </Button>
 
           <p className="text-[12px] text-[#6C7275] text-center">
-            Buyurtma do&apos;kon operatoriga yuboriladi va u siz bilan
-            bog&apos;lanadi.
+            {t("checkout.disclaimer")}
           </p>
         </aside>
       </div>

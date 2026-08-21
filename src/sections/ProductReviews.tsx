@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import Rating from "@/components/ui/Rating";
 import RatingInput from "@/components/ui/RatingInput";
@@ -14,14 +15,15 @@ import {
   type ReplyValues,
   type ReviewValues,
 } from "@/schemas/review.schema";
+import type { TFunction } from "i18next";
 import type { Review } from "@/types/review.types";
 import { cn } from "@/utils/cn";
 
 const SORT_OPTIONS = [
-  { id: "newest", label: "Newest" },
-  { id: "oldest", label: "Oldest" },
-  { id: "highest", label: "Highest rating" },
-  { id: "lowest", label: "Lowest rating" },
+  { id: "newest", key: "reviews.sort.newest" },
+  { id: "oldest", key: "reviews.sort.oldest" },
+  { id: "highest", key: "reviews.sort.highest" },
+  { id: "lowest", key: "reviews.sort.lowest" },
 ] as const;
 
 type SortId = (typeof SORT_OPTIONS)[number]["id"];
@@ -31,20 +33,24 @@ const QUICK_EMOJIS = ["❤️", "🙌", "👍", "😊", "😍", "🔥"];
 
 const DAY = 24 * 60 * 60 * 1000;
 
-const formatDate = (iso: string) => {
+// `t` parametr sifatida uzatiladi — komponentdan tashqarida hook chaqirib
+// bo'lmaydi, til almashganda esa qayta render bo'lib yangi qiymat keladi
+const formatDate = (iso: string, t: TFunction) => {
   const time = new Date(iso).getTime();
 
   if (Number.isNaN(time)) return "";
 
   const days = Math.floor((Date.now() - time) / DAY);
 
-  if (days <= 0) return "bugun";
-  if (days === 1) return "kecha";
-  if (days < 7) return `${days} kun oldin`;
-  if (days < 30) return `${Math.floor(days / 7)} hafta oldin`;
-  if (days < 365) return `${Math.floor(days / 30)} oy oldin`;
+  if (days <= 0) return t("reviews.date.today");
+  if (days === 1) return t("reviews.date.yesterday");
+  if (days < 7) return t("reviews.date.days", { count: days });
+  if (days < 30)
+    return t("reviews.date.weeks", { count: Math.floor(days / 7) });
+  if (days < 365)
+    return t("reviews.date.months", { count: Math.floor(days / 30) });
 
-  return `${Math.floor(days / 365)} yil oldin`;
+  return t("reviews.date.years", { count: Math.floor(days / 365) });
 };
 
 const getInitials = (name: string) =>
@@ -57,6 +63,8 @@ const getInitials = (name: string) =>
 
 // ─── Bitta sharh ────────────────────────────────────
 function ReviewCard({ review }: { review: Review }) {
+  const { t } = useTranslation("shop");
+  const { t: tv } = useTranslation();
   const [replyOpen, setReplyOpen] = useState(false);
 
   const savedName = useReviewsStore((state) => state.authorName);
@@ -101,7 +109,7 @@ function ReviewCard({ review }: { review: Review }) {
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <h4 className="font-semibold">{review.author}</h4>
           <span className="text-[12px] text-[#6C7275]">
-            {formatDate(review.createdAt)}
+            {formatDate(review.createdAt, t)}
           </span>
         </div>
 
@@ -119,14 +127,15 @@ function ReviewCard({ review }: { review: Review }) {
               liked ? "text-[#141718] font-medium" : "text-[#6C7275]",
             )}
           >
-            Like{likeCount > 0 && ` (${likeCount})`}
+            {t("reviews.like")}
+            {likeCount > 0 && ` (${likeCount})`}
           </button>
           <button
             type="button"
             onClick={() => (replyOpen ? setReplyOpen(false) : openReply())}
             className="text-[#6C7275] transition-colors hover:text-[#141718]"
           >
-            Reply
+            {t("reviews.reply")}
           </button>
         </div>
 
@@ -143,14 +152,14 @@ function ReviewCard({ review }: { review: Review }) {
                   ? "border-[#FF5630]"
                   : "border-[#E8ECEF] focus:border-[#141718]",
               )}
-              placeholder="Ismingiz"
-              aria-label="Ismingiz"
+              placeholder={t("reviews.namePlaceholder")}
+              aria-label={t("reviews.nameLabel")}
               aria-invalid={!!errors.author}
               {...register("author")}
             />
             {errors.author && (
               <span className="text-[12px] text-[#FF5630]">
-                {errors.author.message}
+                {tv(errors.author.message ?? "")}
               </span>
             )}
             <textarea
@@ -160,26 +169,26 @@ function ReviewCard({ review }: { review: Review }) {
                   ? "border-[#FF5630]"
                   : "border-[#E8ECEF] focus:border-[#141718]",
               )}
-              placeholder="Javobingiz"
-              aria-label="Javobingiz"
+              placeholder={t("reviews.replyPlaceholder")}
+              aria-label={t("reviews.replyLabel")}
               aria-invalid={!!errors.text}
               {...register("text")}
             />
             {errors.text && (
               <span className="text-[12px] text-[#FF5630]">
-                {errors.text.message}
+                {tv(errors.text.message ?? "")}
               </span>
             )}
             <div className="flex gap-2">
               <Button type="submit" className="h-9 px-4 text-[14px]">
-                Send
+                {tv("actions.send")}
               </Button>
               <Button
                 variant="secondary"
                 onClick={() => setReplyOpen(false)}
                 className="h-9 px-4 text-[14px]"
               >
-                Cancel
+                {tv("actions.cancel")}
               </Button>
             </div>
           </form>
@@ -194,7 +203,7 @@ function ReviewCard({ review }: { review: Review }) {
                     {reply.author}
                   </span>
                   <span className="text-[12px] text-[#6C7275]">
-                    {formatDate(reply.createdAt)}
+                    {formatDate(reply.createdAt, t)}
                   </span>
                 </div>
                 <p className="text-[14px]/[22px] text-[#6C7275]">
@@ -219,6 +228,8 @@ export default function ProductReviews({
   productId,
   productTitle,
 }: ProductReviewsProps) {
+  const { t } = useTranslation("shop");
+  const { t: tv } = useTranslation();
   const { list, count, average } = useProductReviews(productId);
   const addReview = useReviewsStore((state) => state.addReview);
   const savedName = useReviewsStore((state) => state.authorName);
@@ -266,19 +277,19 @@ export default function ProductReviews({
 
     // Ism qoladi — ketma-ket sharh yozganda qayta kiritmasin
     reset({ author: values.author, rating: 5, text: "" });
-    toast.success("Sharhingiz uchun rahmat!");
+    toast.success(t("reviews.thanks"));
   };
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <h2 className="font-medium text-2xl sm:text-[28px]">
-          Customer Reviews
+          {t("reviews.title")}
         </h2>
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <Rating rating={average} showValue={false} size="sm" />
           <span className="text-[14px] text-[#6C7275]">
-            {count} {count === 1 ? "Review" : "Reviews"}
+            {t("reviews.count", { count })}
           </span>
           <span className="text-[14px] text-[#141718]">{productTitle}</span>
         </div>
@@ -299,14 +310,14 @@ export default function ProductReviews({
                   ? "border-[#FF5630]"
                   : "border-[#E8ECEF] focus:border-[#141718]",
               )}
-              placeholder="Ismingiz"
-              aria-label="Ismingiz"
+              placeholder={t("reviews.namePlaceholder")}
+              aria-label={t("reviews.nameLabel")}
               aria-invalid={!!errors.author}
               {...register("author")}
             />
             {errors.author && (
               <span className="text-[12px] text-[#FF5630]">
-                {errors.author.message}
+                {tv(errors.author.message ?? "")}
               </span>
             )}
           </div>
@@ -329,14 +340,14 @@ export default function ProductReviews({
                 ? "border-[#FF5630]"
                 : "border-[#E8ECEF] focus:border-[#141718]",
             )}
-            placeholder="Mahsulot haqidagi fikringiz"
-            aria-label="Sharh matni"
+            placeholder={t("reviews.textPlaceholder")}
+            aria-label={t("reviews.textLabel")}
             aria-invalid={!!errors.text}
             {...register("text")}
           />
           {errors.text && (
             <span className="text-[12px] text-[#FF5630]">
-              {errors.text.message}
+              {tv(errors.text.message ?? "")}
             </span>
           )}
         </div>
@@ -347,7 +358,7 @@ export default function ProductReviews({
               <button
                 key={emoji}
                 type="button"
-                aria-label={`${emoji} qo'shish`}
+                aria-label={t("reviews.addEmoji", { emoji })}
                 onClick={() =>
                   setValue("text", getValues("text") + emoji, {
                     shouldValidate: true,
@@ -361,31 +372,30 @@ export default function ProductReviews({
           </div>
 
           <Button type="submit" className="h-10 px-5">
-            Write Review
+            {t("reviews.submit")}
           </Button>
         </div>
       </form>
 
       {/* ─── Ro'yxat ─── */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="font-medium text-xl">
-          {count} {count === 1 ? "Review" : "Reviews"}
-        </h3>
+        <h3 className="font-medium text-xl">{t("reviews.count", { count })}</h3>
         {count > 1 && (
           <Select
             value={sort}
-            options={SORT_OPTIONS}
+            options={SORT_OPTIONS.map((option) => ({
+              id: option.id,
+              label: t(option.key),
+            }))}
             onChange={setSort}
-            ariaLabel="Sharhlarni saralash"
+            ariaLabel={t("reviews.sortLabel")}
             className="w-45"
           />
         )}
       </div>
 
       {count === 0 ? (
-        <p className="py-10 text-center text-[#6C7275]">
-          Hozircha sharh yo'q — birinchi bo'lib fikringizni yozing
-        </p>
+        <p className="py-10 text-center text-[#6C7275]">{t("reviews.empty")}</p>
       ) : (
         <>
           <div className="flex flex-col">
@@ -402,7 +412,7 @@ export default function ProductReviews({
                 onClick={() => setVisible((prev) => prev + PAGE_SIZE)}
                 className="px-8"
               >
-                Load more
+                {tv("actions.loadMore")}
               </Button>
             </div>
           )}

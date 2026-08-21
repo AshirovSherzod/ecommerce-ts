@@ -1,12 +1,13 @@
 import { useState } from "react";
 import ProductReviews from "@/sections/ProductReviews";
 import type { Product } from "@/types/products.types";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/utils/cn";
 
 const TABS = [
-  { id: "info", label: "Additional Info" },
-  { id: "questions", label: "Questions" },
-  { id: "reviews", label: "Reviews" },
+  { id: "info", key: "tabs.info" },
+  { id: "questions", key: "tabs.questions" },
+  { id: "reviews", key: "tabs.reviews" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -29,6 +30,9 @@ export default function ProductTabs({
   product,
   categoryTitle,
 }: ProductTabsProps) {
+  const { t } = useTranslation("shop");
+  const { t: tCommon } = useTranslation();
+
   // Rasmda ochiq turgani "Reviews" — asosiy mazmun shu yerda
   const [tab, setTab] = useState<TabId>("reviews");
 
@@ -36,7 +40,7 @@ export default function ProductTabs({
     <section className="max-w-310 mx-auto px-5 my-10 flex flex-col gap-8">
       <div
         role="tablist"
-        aria-label="Mahsulot tafsilotlari"
+        aria-label={t("tabs.ariaLabel")}
         className="flex gap-6 sm:gap-10 border-b border-[#E8ECEF] overflow-x-auto no-scrollbar"
       >
         {TABS.map((item) => (
@@ -55,7 +59,7 @@ export default function ProductTabs({
                 : "border-transparent text-[#6C7275] hover:text-[#141718]",
             )}
           >
-            {item.label}
+            {t(item.key)}
           </button>
         ))}
       </div>
@@ -72,14 +76,14 @@ export default function ProductTabs({
               {product.description}
             </p>
             <dl className="flex flex-col">
-              <SpecRow label="Brand" value={product.brand || "—"} />
+              <SpecRow label={tCommon("labels.brand")} value={product.brand || "—"} />
               <SpecRow
-                label="SKU"
+                label={tCommon("labels.sku")}
                 value={product.sku ?? product.id.slice(0, 8).toUpperCase()}
               />
-              <SpecRow label="Category" value={categoryTitle ?? "—"} />
+              <SpecRow label={tCommon("labels.category")} value={categoryTitle ?? "—"} />
               {product.measurements && (
-                <SpecRow label="Measurements" value={product.measurements} />
+                <SpecRow label={t("product.measurements")} value={product.measurements} />
               )}
             </dl>
           </div>
@@ -87,7 +91,7 @@ export default function ProductTabs({
 
         {tab === "questions" && (
           <p className="py-10 text-center text-[#6C7275]">
-            Hozircha bu mahsulot bo'yicha savollar yo'q
+            {t("tabs.noQuestions")}
           </p>
         )}
 

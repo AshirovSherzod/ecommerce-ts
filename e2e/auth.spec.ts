@@ -10,20 +10,23 @@ const USER = {
   name: "Sinov Foydalanuvchi",
 };
 
+// Yorliqlar interfeys tilida — standart til o'zbekcha
 const VALID_SIGNUP = {
-  "Full name": "Sinov Foydalanuvchi",
-  "First name": "Sinov",
-  Username: "sinovuser",
-  "Email address": "sinov@example.com",
-  "Phone number": "+998901234567",
-  Password: "password123",
+  "To'liq ism": "Sinov Foydalanuvchi",
+  Ism: "Sinov",
+  "Foydalanuvchi nomi": "sinovuser",
+  "Email manzil": "sinov@example.com",
+  "Telefon raqam": "+998901234567",
+  Parol: "password123",
 };
 
 const fillSignUp = async (page: Page, overrides: Record<string, string> = {}) => {
   const values = { ...VALID_SIGNUP, ...overrides };
 
   for (const [label, value] of Object.entries(values)) {
-    await page.getByLabel(label).fill(value);
+    // `exact` shart: "Ism" — "To'liq ism" ichida, "Parol" esa
+    // "Parolni ko'rsatish" tugmasining yorlig'i ichida uchraydi
+    await page.getByLabel(label, { exact: true }).fill(value);
   }
 };
 
@@ -60,7 +63,7 @@ test.describe("Sign In", () => {
   });
 
   test("bo'sh forma maydon ostida xato ko'rsatadi", async ({ page }) => {
-    await page.getByRole("button", { name: "Sign In" }).click();
+    await page.getByRole("button", { name: "Kirish", exact: true }).click();
 
     await expect(
       page.getByText("Email yoki foydalanuvchi nomini kiriting"),
@@ -68,15 +71,15 @@ test.describe("Sign In", () => {
   });
 
   test("qisqa parolni rad etadi", async ({ page }) => {
-    await page.getByLabel("Username or email address").fill("test@example.com");
-    await page.getByLabel("Password").fill("123");
-    await page.getByRole("button", { name: "Sign In" }).click();
+    await page.getByLabel("Foydalanuvchi nomi yoki email").fill("test@example.com");
+    await page.getByLabel("Parol", { exact: true }).fill("123");
+    await page.getByRole("button", { name: "Kirish", exact: true }).click();
 
     await expect(page.getByText(/kamida 8 belgi/)).toBeVisible();
   });
 
   test("parolni ko'rsatish tugmasi ishlaydi", async ({ page }) => {
-    const password = page.getByLabel("Password");
+    const password = page.getByLabel("Parol", { exact: true });
     await password.fill("maxfiy123");
 
     await expect(password).toHaveAttribute("type", "password");
@@ -87,9 +90,9 @@ test.describe("Sign In", () => {
   // Haqiqiy API: server o'z xabarini ko'rsatishi kerak, axios'ning
   // umumiy "Request failed with status code 401" matnini emas
   test("noto'g'ri parolda server xabari chiqadi", async ({ page }) => {
-    await page.getByLabel("Username or email address").fill("yoq@example.com");
-    await page.getByLabel("Password").fill("notogriparol123");
-    await page.getByRole("button", { name: "Sign In" }).click();
+    await page.getByLabel("Foydalanuvchi nomi yoki email").fill("yoq@example.com");
+    await page.getByLabel("Parol", { exact: true }).fill("notogriparol123");
+    await page.getByRole("button", { name: "Kirish", exact: true }).click();
 
     await expect(
       page
@@ -116,12 +119,12 @@ test.describe("Sign Up", () => {
     page,
   }) => {
     await expect(page.locator("form input")).toHaveCount(6);
-    await expect(page.getByLabel("Phone number")).toHaveValue("+998");
+    await expect(page.getByLabel("Telefon raqam", { exact: true })).toHaveValue("+998");
   });
 
   test("har maydon uchun alohida xato ko'rsatadi", async ({ page, blocked }) => {
-    await page.getByLabel("Phone number").fill("");
-    await page.getByRole("button", { name: "Sign Up" }).click();
+    await page.getByLabel("Telefon raqam", { exact: true }).fill("");
+    await page.getByRole("button", { name: "Ro'yxatdan o'tish", exact: true }).click();
 
     await expect(page.getByText("To'liq ismni kiriting")).toBeVisible();
     await expect(page.getByText("Foydalanuvchi nomini kiriting")).toBeVisible();
@@ -133,8 +136,8 @@ test.describe("Sign Up", () => {
   });
 
   test("noto'g'ri telefon formatini rad etadi", async ({ page, blocked }) => {
-    await fillSignUp(page, { "Phone number": "901234567" });
-    await page.getByRole("button", { name: "Sign Up" }).click();
+    await fillSignUp(page, { "Telefon raqam": "901234567" });
+    await page.getByRole("button", { name: "Ro'yxatdan o'tish", exact: true }).click();
 
     await expect(page.getByText("Format: +998901234567")).toBeVisible();
     expect(blocked.register).toBe(0);
@@ -145,7 +148,7 @@ test.describe("Sign Up", () => {
     blocked,
   }) => {
     await fillSignUp(page);
-    await page.getByRole("button", { name: "Sign Up" }).click();
+    await page.getByRole("button", { name: "Ro'yxatdan o'tish", exact: true }).click();
 
     // So'rov fixture darajasida ushlanadi — backendda akkaunt yaratilmaydi
     await expect(
@@ -181,7 +184,7 @@ test.describe("Sessiya holati", () => {
 
     await expect(page.getByRole("menu")).toContainText("Sinov");
     await expect(page.getByRole("menu")).toContainText(USER.email);
-    await expect(page.getByRole("menuitem", { name: "Sign Out" })).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: "Chiqish" })).toBeVisible();
   });
 
   test("menyu Escape bilan yopiladi", async ({ page }) => {
@@ -205,7 +208,7 @@ test.describe("Sessiya holati", () => {
     await seedSession(page);
 
     await page.getByRole("button", { name: "Profil menyusi" }).click();
-    await page.getByRole("menuitem", { name: "Sign Out" }).click();
+    await page.getByRole("menuitem", { name: "Chiqish" }).click();
 
     await expect(page.getByRole("link", { name: "Kirish" })).toBeVisible();
     const token = await page.evaluate(() =>

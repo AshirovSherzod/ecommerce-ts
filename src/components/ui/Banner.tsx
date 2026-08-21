@@ -23,11 +23,9 @@ export default function Banner({ children, variant }: SaleUpProps) {
       )}
     >
       <div className="w-full h-60 sm:h-80 md:w-[50%] md:h-full overflow-hidden">
-        <img
-          className="w-full h-full object-cover"
-          src={saleImg}
-          alt="Sale Promotion Banner"
-        />
+        {/* Bezak rasm: ma'noni yonidagi matn tashiydi, shuning uchun bo'sh
+            `alt` — aks holda ekran o'quvchi bir xil narsani ikki marta o'qiydi */}
+        <img className="w-full h-full object-cover" src={saleImg} alt="" />
       </div>
       <div className="w-full md:w-[50%] md:h-full px-6 py-10 sm:px-10 md:px-12 lg:px-18.5 bg-[#F3F5F7] flex flex-col justify-center gap-4">
         {children}

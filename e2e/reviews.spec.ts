@@ -18,20 +18,20 @@ test.describe("Sharhlar", () => {
 
   test("uchta tab bor va Reviews ochiq turadi", async ({ page }) => {
     await expect(page.getByRole("tab")).toHaveCount(3);
-    await expect(page.getByRole("tab", { selected: true })).toHaveText("Reviews");
+    await expect(page.getByRole("tab", { selected: true })).toHaveText("Sharhlar");
   });
 
   test("Additional Info'da texnik ma'lumot bor, tepada takrorlanmaydi", async ({
     page,
   }) => {
-    await page.getByRole("tab", { name: "Additional Info" }).click();
+    await page.getByRole("tab", { name: "Qo'shimcha ma'lumot" }).click();
 
     await expect(page.locator('[role="tabpanel"]')).toContainText("SKU");
     await expect(page.locator("main section").first()).not.toContainText("SKU");
   });
 
   test("bo'sh forma maydon ostida xato ko'rsatadi", async ({ page }) => {
-    await page.getByRole("button", { name: "Write Review" }).click();
+    await page.getByRole("button", { name: "Sharh yozish" }).click();
 
     await expect(page.getByText("Ismingizni kiriting")).toBeVisible();
     await expect(page.getByText("Sharh matnini yozing")).toBeVisible();
@@ -46,7 +46,7 @@ test.describe("Sharhlar", () => {
     await page.getByLabel("Ismingiz").first().fill("Sinov Foydalanuvchi");
     await page.getByLabel("2 yulduz").click();
     await page.getByLabel("Sharh matni").fill("E2E sinov sharhi");
-    await page.getByRole("button", { name: "Write Review" }).click();
+    await page.getByRole("button", { name: "Sharh yozish" }).click();
 
     await expect.poll(() => totalReviews(page)).toBe(before + 1);
     await expect(page.locator("article").first()).toContainText("Sinov Foydalanuvchi");
@@ -67,7 +67,7 @@ test.describe("Sharhlar", () => {
   });
 
   test("Like bosilganda hisob oshadi", async ({ page }) => {
-    const like = page.locator("article").first().getByRole("button", { name: /^Like/ });
+    const like = page.locator("article").first().getByRole("button", { name: /^Yoqdi/ });
     const before = await like.innerText();
 
     await like.click();
@@ -78,15 +78,15 @@ test.describe("Sharhlar", () => {
   test("javob yozish ishlaydi va validatsiya qiladi", async ({ page }) => {
     const card = page.locator("article").first();
 
-    await card.getByRole("button", { name: "Reply" }).click();
+    await card.getByRole("button", { name: "Javob berish" }).click();
     await card.getByLabel("Ismingiz").fill("");
-    await card.getByRole("button", { name: "Send" }).click();
+    await card.getByRole("button", { name: "Yuborish" }).click();
 
     await expect(page.getByText("Javob matnini yozing")).toBeVisible();
 
     await card.getByLabel("Ismingiz").fill("Sherzod");
     await card.getByLabel("Javobingiz").fill("Rahmat!");
-    await card.getByRole("button", { name: "Send" }).click();
+    await card.getByRole("button", { name: "Yuborish" }).click();
 
     await expect(card).toContainText("Rahmat!");
   });

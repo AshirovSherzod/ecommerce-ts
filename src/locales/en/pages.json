@@ -1,0 +1,89 @@
+{
+  "home": {
+    "heroTitle1": "Simply Unique",
+    "heroTitle2": "Simply Better",
+    "heroText": "<0>3legant</0> is a gift & decorations store based in HCMC, Vietnam. Est since 2019.",
+    "description": "Gift and decoration store. Furniture, lighting and home decor with free shipping over $200.",
+    "categories": {
+      "living": "Living Room",
+      "bedroom": "Bed Room",
+      "kitchen": "Kitchen",
+      "shopNow": "Shop Now"
+    },
+    "sale": {
+      "badge": "SALE UP TO 35% OFF",
+      "title": "HUNDREDS of New lower prices!",
+      "text": "It's more affordable than ever to give every room in your home a stylish makeover"
+    },
+    "articles": {
+      "title": "Articles",
+      "more": "More Articles"
+    }
+  },
+  "blog": {
+    "title": "Articles",
+    "breadcrumb": "Blog",
+    "subtitle": "Ideas, guides and inspiration for life at home.",
+    "description": "Ideas, guides and inspiration for life at home — decorating, organising and choosing furniture."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "heroTitle": "We believe in sustainable decor. We're passionate about life at home.",
+    "heroText": "Our collection features timeless furniture, with natural fabrics, curved lines, plenty of mirrors and classic design, which can be incorporated into any decor project. The pieces enchant for their sobriety, to last for generations.",
+    "about": {
+      "title": "About Us",
+      "text": "3legant is a gift & decorations store based in HCMC, Vietnam. Est since 2019. Our customer service is always prepared to support you 24/7"
+    },
+    "info": {
+      "address": "Address",
+      "addressValue": "234 Hai Trieu, Ho Chi Minh City, Viet Nam",
+      "phone": "Contact Us",
+      "phoneValue": "+84 234 567 890",
+      "email": "Email",
+      "emailValue": "hello@3legant.com"
+    },
+    "form": {
+      "name": "FULL NAME",
+      "namePlaceholder": "Your Name",
+      "email": "EMAIL ADDRESS",
+      "emailPlaceholder": "Your Email",
+      "message": "MESSAGE",
+      "messagePlaceholder": "Your Message",
+      "submit": "Send Message",
+      "sent": "Message sent successfully!",
+      "failed": "Error: {{reason}}"
+    },
+    "description": "Get in touch with 3legant — 234 Hai Trieu, Ho Chi Minh City. Phone +84 234 567 890, hello@3legant.com."
+  },
+  "wishlist": {
+    "title": "Wishlist",
+    "emptyTitle": "Wishlist is empty",
+    "emptyDesc": "Save the products you like and find them here later",
+    "description": "Products you saved for later."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "desc": "The page you are looking for was moved or never existed.",
+    "description": "The page you are looking for was moved or never existed."
+  },
+  "error": {
+    "title": "Something went wrong",
+    "desc": "An unexpected error occurred while showing this page. Try again — if it keeps happening, come back in a little while.",
+    "reload": "Reload the page",
+    "details": "Technical details (dev only)"
+  },
+  "articles": {
+    "1": {
+      "title": "7 ways to decor your home",
+      "excerpt": "Small changes with a big effect: light, textiles and a few well chosen pieces."
+    },
+    "2": {
+      "title": "Kitchen organization",
+      "excerpt": "Keep the surfaces clear and everything you use daily within arm's reach."
+    },
+    "3": {
+      "title": "Decor your bedroom",
+      "excerpt": "A calm palette, soft lighting and natural fabrics make the room restful."
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "home": {
+    "heroTitle1": "Oddiy va o'ziga xos",
+    "heroTitle2": "Oddiy va yaxshiroq",
+    "heroText": "<0>3legant</0> — Vetnamning HCMC shahridagi sovg'a va bezak do'koni. 2019-yildan beri faoliyatda.",
+    "description": "Sovg'a va bezak do'koni. Mebel, yoritish va uy bezaklari, $200 dan yuqori buyurtmalarga bepul yetkazib berish.",
+    "categories": {
+      "living": "Mehmonxona",
+      "bedroom": "Yotoqxona",
+      "kitchen": "Oshxona",
+      "shopNow": "Xarid qilish"
+    },
+    "sale": {
+      "badge": "35% GACHA CHEGIRMA",
+      "title": "YUZLAB mahsulotga yangi past narxlar!",
+      "text": "Uyingizning har bir xonasini yangilash hech qachon bunchalik arzon bo'lmagan"
+    },
+    "articles": {
+      "title": "Maqolalar",
+      "more": "Barcha maqolalar"
+    }
+  },
+  "blog": {
+    "title": "Maqolalar",
+    "breadcrumb": "Blog",
+    "subtitle": "Uy uchun g'oyalar, qo'llanmalar va ilhom.",
+    "description": "Uy uchun g'oyalar, qo'llanmalar va ilhom — bezash, tartibga solish va mebel tanlash."
+  },
+  "contact": {
+    "title": "Bog'lanish",
+    "heroTitle": "Biz barqaror bezakka ishonamiz. Uydagi hayotga mehr qo'yganmiz.",
+    "heroText": "Bizning to'plamimizda tabiiy matolar, yumshoq chiziqlar, ko'zgular va klassik dizayn — bularning barchasi istalgan loyihaga mos keladi. Bu buyumlar soddaligi bilan maftun etadi va avloddan avlodga o'tadi.",
+    "about": {
+      "title": "Biz haqimizda",
+      "text": "3legant — Vetnamning HCMC shahridagi sovg'a va bezak do'koni. 2019-yildan beri faoliyatda. Mijozlarga xizmat ko'rsatish bo'limimiz 24/7 yordamga tayyor"
+    },
+    "info": {
+      "address": "Manzil",
+      "addressValue": "234 Hai Trieu, Ho Chi Minh City, Viet Nam",
+      "phone": "Telefon",
+      "phoneValue": "+84 234 567 890",
+      "email": "Email",
+      "emailValue": "hello@3legant.com"
+    },
+    "form": {
+      "name": "TO'LIQ ISM",
+      "namePlaceholder": "Ismingiz",
+      "email": "EMAIL MANZIL",
+      "emailPlaceholder": "Email manzilingiz",
+      "message": "XABAR",
+      "messagePlaceholder": "Xabaringiz",
+      "submit": "Xabar yuborish",
+      "sent": "Xabar muvaffaqiyatli yuborildi!",
+      "failed": "Xato: {{reason}}"
+    },
+    "description": "3legant bilan bog'laning — 234 Hai Trieu, Ho Chi Minh City. Telefon +84 234 567 890, hello@3legant.com."
+  },
+  "wishlist": {
+    "title": "Sevimlilar",
+    "emptyTitle": "Sevimlilar ro'yxati bo'sh",
+    "emptyDesc": "Yoqqan mahsulotlarni saqlang va keyinroq shu yerdan toping",
+    "description": "Keyinroq uchun saqlagan mahsulotlaringiz."
+  },
+  "notFound": {
+    "title": "Sahifa topilmadi",
+    "desc": "Siz izlayotgan sahifa ko'chirilgan yoki umuman mavjud bo'lmagan.",
+    "description": "Siz izlayotgan sahifa ko'chirilgan yoki umuman mavjud bo'lmagan."
+  },
+  "error": {
+    "title": "Nimadir noto'g'ri ketdi",
+    "desc": "Sahifani ko'rsatishda kutilmagan xato yuz berdi. Qayta urinib ko'ring — muammo takrorlansa, birozdan so'ng qaytib keling.",
+    "reload": "Sahifani yangilash",
+    "details": "Texnik tafsilot (faqat dev)"
+  },
+  "articles": {
+    "1": {
+      "title": "Uyni bezashning 7 usuli",
+      "excerpt": "Kichik o'zgarishlar, katta samara: yorug'lik, matolar va bir nechta puxta tanlangan buyum."
+    },
+    "2": {
+      "title": "Oshxonani tartibga solish",
+      "excerpt": "Ish yuzalarini bo'sh saqlang, har kuni ishlatadigan narsalar esa qo'l yetadigan joyda tursin."
+    },
+    "3": {
+      "title": "Yotoqxonangizni bezang",
+      "excerpt": "Xotirjam ranglar, mayin yorug'lik va tabiiy matolar xonani orom maskaniga aylantiradi."
+    }
+  }
+}

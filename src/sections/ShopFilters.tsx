@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import SearchBox from "@/components/ui/SearchBox";
 import type { Category } from "@/types/category.types";
@@ -96,6 +97,7 @@ interface PriceFilterProps {
 // faqat "Apply" bosilganda yuqoriga uzatiladi. Tashqaridan (masalan "Clear
 // all") o'zgarganda ota-komponent `key` orqali qayta mount qiladi.
 function PriceFilter({ min, max, onApply }: PriceFilterProps) {
+  const { t } = useTranslation("shop");
   const [minDraft, setMinDraft] = useState(min);
   const [maxDraft, setMaxDraft] = useState(max);
 
@@ -112,8 +114,8 @@ function PriceFilter({ min, max, onApply }: PriceFilterProps) {
           type="number"
           min={0}
           inputMode="numeric"
-          placeholder="Min"
-          aria-label="Eng past narx"
+          placeholder={t("filters.min")}
+          aria-label={t("filters.min")}
           value={minDraft}
           onChange={(e) => setMinDraft(e.target.value)}
         />
@@ -123,8 +125,8 @@ function PriceFilter({ min, max, onApply }: PriceFilterProps) {
           type="number"
           min={0}
           inputMode="numeric"
-          placeholder="Max"
-          aria-label="Eng yuqori narx"
+          placeholder={t("filters.max")}
+          aria-label={t("filters.max")}
           value={maxDraft}
           onChange={(e) => setMaxDraft(e.target.value)}
         />
@@ -143,6 +145,9 @@ export default function ShopFilters({
   onChange,
   onClear,
 }: ShopFiltersProps) {
+  const { t } = useTranslation("shop");
+  const { t: tLayout } = useTranslation("layout");
+
   const hasActiveFilter =
     !!values.search ||
     !!values.category ||
@@ -157,16 +162,16 @@ export default function ShopFilters({
       <div className="pb-4 border-b border-[#E8ECEF]">
         <SearchBox
           key={values.search}
-          label="Katalogdan qidirish"
+          label={tLayout("search.catalogLabel")}
           defaultValue={values.search}
           onSubmit={(term) => onChange({ search: term })}
         />
       </div>
 
-      <FilterGroup title="CATEGORIES">
+      <FilterGroup title={t("filters.categories")}>
         <RadioRow
           name="category"
-          label="All Rooms"
+          label={t("filters.allRooms")}
           checked={!values.category}
           onSelect={() => onChange({ category: "" })}
         />
@@ -181,11 +186,11 @@ export default function ShopFilters({
           />
         ))}
         {categories.length === 0 && (
-          <p className="text-[13px] text-[#6C7275]">Kategoriyalar topilmadi</p>
+          <p className="text-[13px] text-[#6C7275]">{t("filters.noCategories")}</p>
         )}
       </FilterGroup>
 
-      <FilterGroup title="PRICE">
+      <FilterGroup title={t("filters.price")}>
         <PriceFilter
           key={`${values.minPrice}-${values.maxPrice}`}
           min={values.minPrice}
@@ -194,10 +199,10 @@ export default function ShopFilters({
         />
       </FilterGroup>
 
-      <FilterGroup title="BRAND">
+      <FilterGroup title={t("filters.brands")}>
         <RadioRow
           name="brand"
-          label="All Brands"
+          label={t("filters.allBrands")}
           checked={!values.brand}
           onSelect={() => onChange({ brand: "" })}
         />
@@ -211,7 +216,7 @@ export default function ShopFilters({
           />
         ))}
         {brands.length === 0 && (
-          <p className="text-[13px] text-[#6C7275]">Brendlar topilmadi</p>
+          <p className="text-[13px] text-[#6C7275]">{t("filters.noBrands")}</p>
         )}
       </FilterGroup>
 
@@ -221,7 +226,7 @@ export default function ShopFilters({
           onClick={onClear}
           className="mt-4 text-[14px] text-[#6C7275] hover:text-[#141718] border-b w-fit"
         >
-          Clear all filters
+          {t("filters.clearAll")}
         </button>
       )}
     </div>

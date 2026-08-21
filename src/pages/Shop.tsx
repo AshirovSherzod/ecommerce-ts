@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { BsFilter, BsGrid3X2Gap, BsGrid3X3Gap, BsList } from "react-icons/bs";
+import { useTranslation } from "react-i18next";
 import Seo from "@/components/layout/Seo";
 import { Button } from "@/components/ui/Button";
 import ProductCard from "@/components/ui/ProductCard";
@@ -20,19 +21,19 @@ const BRAND_SOURCE_LIMIT = 100;
 const VIEW_MODES = [
   {
     id: "grid-3",
-    label: "3 ustun",
+    key: "view.grid3",
     icon: BsGrid3X2Gap,
     className: "grid grid-cols-2 md:grid-cols-3 gap-6",
   },
   {
     id: "grid-4",
-    label: "4 ustun",
+    key: "view.grid4",
     icon: BsGrid3X3Gap,
     className: "grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6",
   },
   {
     id: "list",
-    label: "Ro'yxat",
+    key: "view.list",
     icon: BsList,
     className: "flex flex-col",
   },
@@ -41,10 +42,10 @@ const VIEW_MODES = [
 type ViewId = (typeof VIEW_MODES)[number]["id"];
 
 const SORT_OPTIONS = [
-  { id: "newest", label: "Newest" },
-  { id: "price-asc", label: "Price: Low to High" },
-  { id: "price-desc", label: "Price: High to Low" },
-  { id: "name-asc", label: "Name: A-Z" },
+  { id: "newest", key: "sort.newest" },
+  { id: "price-asc", key: "sort.priceAsc" },
+  { id: "price-desc", key: "sort.priceDesc" },
+  { id: "name-asc", key: "sort.nameAsc" },
 ] as const;
 
 type SortId = (typeof SORT_OPTIONS)[number]["id"];
@@ -60,6 +61,9 @@ const toPrice = (raw: string) => {
 };
 
 export default function Shop() {
+  const { t } = useTranslation("shop");
+  const { t: tCommon } = useTranslation();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [sort, setSort] = useState<SortId>("newest");
   const [view, setView] = useState<ViewId>("grid-3");
@@ -159,8 +163,8 @@ export default function Shop() {
     (category) => category.id === values.category,
   );
   const heading = values.search
-    ? `"${values.search}" bo'yicha natijalar`
-    : (activeCategory?.title ?? "All Rooms");
+    ? t("heading.searchResults", { term: values.search })
+    : (activeCategory?.title ?? t("heading.allRooms"));
   const viewConfig =
     VIEW_MODES.find((mode) => mode.id === view) ?? VIEW_MODES[0];
 
@@ -178,11 +182,11 @@ export default function Shop() {
     <>
       {/* Kategoriya tanlanganda sarlavha ham shunga moslashadi */}
       <Seo
-        title={activeCategory ? activeCategory.title : "Shop"}
+        title={activeCategory ? activeCategory.title : t("hero.breadcrumb")}
         description={
           activeCategory
-            ? `Browse ${activeCategory.title} at 3legant — ${total} products in stock.`
-            : "Browse all products at 3legant — furniture, lighting and home decor with filters by category, brand and price."
+            ? t("seoCategory", { category: activeCategory.title })
+            : t("seoDescription")
         }
       />
       <ShopHero />
@@ -206,15 +210,18 @@ export default function Shop() {
                 className="lg:hidden flex items-center gap-2 h-9 px-3 border border-[#E8ECEF] rounded-md text-[14px]"
               >
                 <BsFilter className="text-lg" />
-                Filters
+                {t("filters.title")}
               </button>
 
               <Select
                 value={sort}
-                options={SORT_OPTIONS}
+                options={SORT_OPTIONS.map((option) => ({
+                  id: option.id,
+                  label: t(option.key),
+                }))}
                 onChange={setSort}
-                label="Sort by"
-                ariaLabel="Saralash"
+                label={t("sort.label")}
+                ariaLabel={tCommon("a11y.sort")}
                 className="w-45"
               />
 
@@ -226,7 +233,7 @@ export default function Shop() {
                     <button
                       key={mode.id}
                       type="button"
-                      aria-label={mode.label}
+                      aria-label={t(mode.key)}
                       aria-pressed={view === mode.id}
                       onClick={() => setView(mode.id)}
                       className={`w-9 h-9 flex items-center justify-center rounded-md transition-colors ${
@@ -257,20 +264,20 @@ export default function Shop() {
             <p className="py-20 text-center text-[#6C7275]">
               {error instanceof Error
                 ? error.message
-                : "Mahsulotlarni yuklab bo'lmadi"}
+                : tCommon("errors.productsFailed")}
             </p>
           ) : sortedProducts.length === 0 ? (
             <div className="py-20 flex flex-col items-center gap-4">
               <p className="text-[#6C7275]">
                 {values.search
-                  ? `"${values.search}" bo'yicha hech narsa topilmadi`
-                  : "Bu filtrlarga mos mahsulot topilmadi"}
+                  ? t("empty.noSearchMatch", { term: values.search })
+                  : t("empty.noMatch")}
               </p>
               <Button
                 variant="secondary"
                 onClick={() => setSearchParams(new URLSearchParams())}
               >
-                Clear all filters
+                {t("filters.clearAll")}
               </Button>
             </div>
           ) : (
@@ -296,7 +303,7 @@ export default function Shop() {
                   void fetchNextPage();
                 }}
               >
-                Show more
+                {tCommon("actions.showMore")}
               </Button>
             </div>
           )}

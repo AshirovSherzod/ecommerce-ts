@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PiUserCircleLight } from "react-icons/pi";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/store";
 
 /** Ismni ko'rsatish uchun: to'liq ism -> ism -> username */
@@ -9,9 +10,10 @@ const displayNameOf = (user: {
   firstname?: string;
   name?: string;
   username?: string;
-}) => user.firstname || user.name || user.username || "Account";
+}) => user.firstname || user.name || user.username || "";
 
 export default function UserMenu() {
+  const { t } = useTranslation("layout");
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
@@ -47,7 +49,7 @@ export default function UserMenu() {
     return (
       <Link
         to="/signin"
-        aria-label="Kirish"
+        aria-label={t("header.signIn")}
         className="hidden sm:block w-6 h-6"
       >
         <PiUserCircleLight className="text-2xl" />
@@ -58,7 +60,7 @@ export default function UserMenu() {
   const handleSignOut = () => {
     setOpen(false);
     signOut();
-    toast.success("Siz tizimdan chiqdingiz");
+    toast.success(t("header.signedOut"));
     navigate("/");
   };
 
@@ -67,7 +69,7 @@ export default function UserMenu() {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        aria-label="Profil menyusi"
+        aria-label={t("header.profileMenu")}
         aria-haspopup="menu"
         aria-expanded={open}
         className="w-6 h-6 block"
@@ -82,7 +84,7 @@ export default function UserMenu() {
         >
           <div className="px-4 py-3 border-b border-[#E8ECEF]">
             <p className="font-medium text-[14px] truncate">
-              {user ? displayNameOf(user) : "Account"}
+              {(user && displayNameOf(user)) || t("header.account")}
             </p>
             {user?.email && (
               <p className="text-[12px] text-[#6C7275] truncate">
@@ -97,7 +99,7 @@ export default function UserMenu() {
             onClick={handleSignOut}
             className="w-full px-4 py-3 text-left text-[14px] hover:bg-[#F3F5F7] transition-colors"
           >
-            Sign Out
+            {t("header.signOut")}
           </button>
         </div>
       )}

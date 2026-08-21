@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { cn } from "@/utils/cn";
 import type React from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
@@ -27,6 +28,8 @@ export default function Counter({
   min = 0,
   className,
 }: CounterProps) {
+  const { t } = useTranslation();
+
   return (
     <div
       className={cn(
@@ -37,7 +40,7 @@ export default function Counter({
     >
       <button
         type="button"
-        aria-label="Kamaytirish"
+        aria-label={t("a11y.decrease")}
         className="disabled:opacity-30 disabled:cursor-not-allowed"
         disabled={counter <= min}
         onClick={() => setCounter((prev) => prev - 1)}
@@ -47,7 +50,7 @@ export default function Counter({
       <p>{counter}</p>
       <button
         type="button"
-        aria-label="Ko'paytirish"
+        aria-label={t("a11y.increase")}
         onClick={() => setCounter((prev) => prev + 1)}
       >
         <FaPlus />

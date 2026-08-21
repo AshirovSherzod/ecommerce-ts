@@ -1,0 +1,21 @@
+{
+  "nameRequired": "Введите ваше имя",
+  "fullNameRequired": "Введите полное имя",
+  "firstNameRequired": "Введите имя",
+  "checkoutNameRequired": "Введите имя и фамилию",
+  "usernameRequired": "Введите имя пользователя",
+  "usernameMin": "Минимум 3 символа",
+  "identifierRequired": "Введите email или имя пользователя",
+  "emailRequired": "Введите email",
+  "emailInvalid": "Неверный email",
+  "phoneRequired": "Введите номер телефона",
+  "phoneFormat": "Формат: +998901234567",
+  "passwordMin": "Пароль должен быть не короче 8 символов",
+  "addressRequired": "Введите адрес доставки",
+  "addressMin": "Укажите адрес подробнее (минимум 10 символов)",
+  "messageRequired": "Напишите текст сообщения",
+  "reviewTextRequired": "Напишите текст отзыва",
+  "replyTextRequired": "Напишите текст ответа",
+  "ratingRequired": "Выберите оценку",
+  "noteMax": "Комментарий не должен превышать 500 символов"
+}

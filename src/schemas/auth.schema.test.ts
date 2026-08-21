@@ -67,12 +67,13 @@ describe("signUpSchema", () => {
     ).toBe(false);
   });
 
-  it("bo'sh telefon uchun format emas, 'kiriting' xabarini beradi", () => {
-    // Bo'sh maydonga "Format: +998901234567" ko'rsatish chalg'itardi
+  it("bo'sh telefon uchun format emas, 'kiriting' kalitini beradi", () => {
+    // Bo'sh maydonga "Format: +998901234567" ko'rsatish chalg'itardi.
+    // Sxema tarjima kalitini saqlaydi, matnni komponent `t()` bilan chiqaradi.
     const result = signUpSchema.safeParse({ ...validSignUp, phone: "" });
 
     expect(result.success).toBe(false);
-    expect(result.error?.issues[0].message).toContain("kiriting");
+    expect(result.error?.issues[0].message).toBe("validation:phoneRequired");
   });
 });
 

@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { useTelegramMessage } from "@/hooks/useTelegramMessage";
 import { contactSchema, type ContactValues } from "@/schemas/contact.schema";
@@ -8,6 +9,8 @@ const FIELD_CLASS =
   "w-full h-10 pl-4 border rounded-md outline-none transition-colors";
 
 export default function ContactForm() {
+  const { t } = useTranslation("pages");
+  const { t: tv } = useTranslation();
   const { sendMessage, isLoading } = useTelegramMessage();
 
   const {
@@ -45,19 +48,19 @@ export default function ContactForm() {
               className="text-[12px] text-[#6C7275] font-bold"
               htmlFor="contact-name"
             >
-              FULL NAME
+              {t("contact.form.name")}
             </label>
             <input
               className={`${FIELD_CLASS} ${borderOf(!!errors.name)}`}
               type="text"
               id="contact-name"
-              placeholder="Your Name"
+              placeholder={t("contact.form.namePlaceholder")}
               aria-invalid={!!errors.name}
               {...register("name")}
             />
             {errors.name && (
               <p className="mt-1 text-[12px] text-[#FF5630]">
-                {errors.name.message}
+                {tv(errors.name.message ?? "")}
               </p>
             )}
           </div>
@@ -67,19 +70,19 @@ export default function ContactForm() {
               className="text-[12px] text-[#6C7275] font-bold"
               htmlFor="contact-email"
             >
-              EMAIL ADDRESS
+              {t("contact.form.email")}
             </label>
             <input
               className={`${FIELD_CLASS} ${borderOf(!!errors.email)}`}
               type="email"
               id="contact-email"
-              placeholder="Your Email"
+              placeholder={t("contact.form.emailPlaceholder")}
               aria-invalid={!!errors.email}
               {...register("email")}
             />
             {errors.email && (
               <p className="mt-1 text-[12px] text-[#FF5630]">
-                {errors.email.message}
+                {tv(errors.email.message ?? "")}
               </p>
             )}
           </div>
@@ -89,20 +92,20 @@ export default function ContactForm() {
               className="text-[12px] text-[#6C7275] font-bold"
               htmlFor="contact-message"
             >
-              MESSAGE
+              {t("contact.form.message")}
             </label>
             <textarea
               className={`w-full h-35 border resize-none p-4 rounded-md outline-none transition-colors ${borderOf(
                 !!errors.message,
               )}`}
-              placeholder="Your Message"
+              placeholder={t("contact.form.messagePlaceholder")}
               id="contact-message"
               aria-invalid={!!errors.message}
               {...register("message")}
             ></textarea>
             {errors.message && (
               <p className="mt-1 text-[12px] text-[#FF5630]">
-                {errors.message.message}
+                {tv(errors.message.message ?? "")}
               </p>
             )}
           </div>
@@ -112,7 +115,7 @@ export default function ContactForm() {
             type="submit"
             className="w-full sm:w-47"
           >
-            Send Message
+            {t("contact.form.submit")}
           </Button>
         </form>
       </div>
@@ -120,7 +123,7 @@ export default function ContactForm() {
           balandlik beriladi, lg dan boshlab forma balandligiga cho'ziladi */}
       <div className="w-full h-75 lg:w-[50%] lg:h-auto">
         <iframe
-          title="3legant do'koni joylashuvi"
+          title={t("contact.info.address")}
           className="w-full h-full"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3290.2799511993253!2d68.03033196493809!3d40.52112785111432!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ad7bf60a0e6dff%3A0xb3a88d3b69714cd0!2s1-maktab!5e0!3m2!1sen!2sus!4v1778663387266!5m2!1sen!2sus"
           loading="lazy"

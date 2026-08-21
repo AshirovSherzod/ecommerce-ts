@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { IoClose } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/utils/cn";
 
 interface SearchBoxProps {
@@ -29,12 +30,15 @@ interface SearchBoxProps {
 export default function SearchBox({
   defaultValue = "",
   onSubmit,
-  placeholder = "Search products",
+  placeholder,
   autoFocus = false,
   className,
-  label = "Mahsulot qidirish",
+  label,
 }: SearchBoxProps) {
+  const { t } = useTranslation("layout");
   const [term, setTerm] = useState(defaultValue);
+
+  const fieldLabel = label ?? t("search.label");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,7 +63,7 @@ export default function SearchBox({
     >
       <button
         type="submit"
-        aria-label={`${label}: qidirish`}
+        aria-label={t("search.submit", { label: fieldLabel })}
         className="shrink-0 w-7 h-7 flex items-center justify-center text-xl text-[#6C7275] hover:text-[#141718] transition-colors"
       >
         <CiSearch />
@@ -68,8 +72,8 @@ export default function SearchBox({
       <input
         className="flex-1 min-w-0 outline-none bg-transparent text-[14px]"
         type="search"
-        aria-label={label}
-        placeholder={placeholder}
+        aria-label={fieldLabel}
+        placeholder={placeholder ?? t("search.placeholder")}
         value={term}
         autoFocus={autoFocus}
         onChange={(e) => setTerm(e.target.value)}
@@ -79,7 +83,7 @@ export default function SearchBox({
         <button
           type="button"
           onClick={handleClear}
-          aria-label={`${label}: tozalash`}
+          aria-label={t("search.clear", { label: fieldLabel })}
           className="shrink-0 w-7 h-7 flex items-center justify-center text-[#6C7275] hover:text-[#141718] transition-colors"
         >
           <IoClose />

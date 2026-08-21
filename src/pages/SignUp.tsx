@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import AuthLayout from "@/components/layout/AuthLayout";
 import Seo from "@/components/layout/Seo";
 import AuthInput from "@/components/ui/AuthInput";
@@ -10,6 +11,8 @@ import { signUpSchema, type SignUpValues } from "@/schemas/auth.schema";
 import { useAuthStore } from "@/store";
 
 export default function SignUp() {
+  const { t } = useTranslation("auth");
+  const { t: tv } = useTranslation();
   const navigate = useNavigate();
   const signUp = useAuthStore((state) => state.signUp);
 
@@ -35,38 +38,36 @@ export default function SignUp() {
       const signedIn = await signUp(values, true);
 
       if (signedIn) {
-        toast.success("Xush kelibsiz!");
+        toast.success(t("signIn.welcome"));
         navigate("/", { replace: true });
         return;
       }
 
       // Backend token bermadi — hisob yaratildi, endi kirish kerak
-      toast.success("Hisob yaratildi, endi tizimga kiring");
+      toast.success(t("signUp.created"));
       navigate("/signin", { replace: true });
     } catch (error) {
       // "Email already exists" kabi server xabarlari shu yerda ko'rinadi
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Ro'yxatdan o'tishda xato yuz berdi",
-      );
+      toast.error(error instanceof Error ? error.message : t("signUp.failed"));
     }
   };
 
   return (
     <>
-      <Seo title="Sign Up" description="Create a 3legant account." noIndex />
+      <Seo title={t("signUp.title")} noIndex />
 
       <AuthLayout>
         <div className="flex flex-col gap-2">
-          <h1 className="font-medium text-[32px] sm:text-[40px]">Sign Up</h1>
+          <h1 className="font-medium text-[32px] sm:text-[40px]">
+            {t("signUp.title")}
+          </h1>
           <p className="text-[14px] text-[#6C7275]">
-            Already have an account?{" "}
+            {t("signUp.hasAccount")}{" "}
             <Link
               to="/signin"
               className="text-[#38CB89] font-medium hover:underline"
             >
-              Sign In
+              {t("signUp.signInLink")}
             </Link>
           </p>
         </div>
@@ -77,53 +78,53 @@ export default function SignUp() {
           className="flex flex-col gap-5"
         >
           <AuthInput
-            label="Full name"
-            placeholder="Your full name"
+            label={t("signUp.name")}
+            placeholder={t("signUp.namePlaceholder")}
             autoComplete="name"
-            error={errors.name?.message}
+            error={errors.name?.message && tv(errors.name.message)}
             {...register("name")}
           />
 
           <AuthInput
-            label="First name"
-            placeholder="Your first name"
+            label={t("signUp.firstname")}
+            placeholder={t("signUp.firstnamePlaceholder")}
             autoComplete="given-name"
-            error={errors.firstname?.message}
+            error={errors.firstname?.message && tv(errors.firstname.message)}
             {...register("firstname")}
           />
 
           <AuthInput
-            label="Username"
-            placeholder="Username"
+            label={t("signUp.username")}
+            placeholder={t("signUp.usernamePlaceholder")}
             autoComplete="username"
-            error={errors.username?.message}
+            error={errors.username?.message && tv(errors.username.message)}
             {...register("username")}
           />
 
           <AuthInput
-            label="Email address"
+            label={t("signUp.email")}
             type="email"
-            placeholder="Email address"
+            placeholder={t("signUp.emailPlaceholder")}
             autoComplete="email"
-            error={errors.email?.message}
+            error={errors.email?.message && tv(errors.email.message)}
             {...register("email")}
           />
 
           <AuthInput
-            label="Phone number"
+            label={t("signUp.phone")}
             type="tel"
             placeholder="+998901234567"
             autoComplete="tel"
-            error={errors.phone?.message}
+            error={errors.phone?.message && tv(errors.phone.message)}
             {...register("phone")}
           />
 
           <AuthInput
-            label="Password"
+            label={t("signUp.password")}
             type="password"
-            placeholder="Password"
+            placeholder={t("signUp.passwordPlaceholder")}
             autoComplete="new-password"
-            error={errors.password?.message}
+            error={errors.password?.message && tv(errors.password.message)}
             {...register("password")}
           />
 
@@ -132,7 +133,7 @@ export default function SignUp() {
             isLoading={isSubmitting}
             className="w-full h-12 mt-1"
           >
-            Sign Up
+            {t("signUp.submit")}
           </Button>
         </form>
       </AuthLayout>

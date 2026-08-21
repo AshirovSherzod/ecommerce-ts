@@ -2,12 +2,15 @@ import arrow from "@/assets/icons/arrow-right.png";
 import ticket from "@/assets/icons/ticket-icon.png";
 import close from "@/assets/icons/close-icon.png";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   setClose: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function SubHeader({ setClose }: Props) {
+  const { t } = useTranslation("layout");
+
   return (
     <div className="flex items-center justify-between gap-2 bg-[#F3F5F7] px-4">
       {/* Yopish tugmasini muvozanatlash uchun — matn haqiqiy markazda tursin */}
@@ -15,20 +18,20 @@ export default function SubHeader({ setClose }: Props) {
       <div className="flex flex-1 flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2 text-center text-[13px] sm:text-base">
         <p className="flex items-center gap-2 sm:gap-3">
           <span className="shrink-0">
-            <img src={ticket} alt="ticket-img" />
+            <img src={ticket} alt="" />
           </span>{" "}
-          30% off storewide — Limited time!
+          {t("promo.text")}
         </p>
         <p className="hidden sm:flex items-center gap-1 text-[#377DFF] border-b">
-          <Link to={"/shop"}>Shop Now</Link>
+          <Link to={"/shop"}>{t("promo.cta")}</Link>
           <span className="shrink-0">
-            <img src={arrow} alt="arrow-img" />
+            <img src={arrow} alt="" />
           </span>
         </p>
       </div>
       <button
         type="button"
-        aria-label="E'lonni yopish"
+        aria-label={t("promo.close")}
         className="shrink-0"
         onClick={() => setClose(false)}
       >

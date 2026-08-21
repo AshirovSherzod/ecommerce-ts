@@ -8,11 +8,11 @@ const PHONE_REGEX = /^\+998\d{9}$/;
 
 const password = z
   .string()
-  .min(MIN_PASSWORD, `Parol kamida ${MIN_PASSWORD} belgidan iborat bo'lishi kerak`);
+  .min(MIN_PASSWORD, "validation:passwordMin");
 
 export const signInSchema = z.object({
   // Bitta maydon: backend email va username'ni ham qabul qiladi
-  identifier: requiredText("Email yoki foydalanuvchi nomini kiriting"),
+  identifier: requiredText("validation:identifierRequired"),
   password,
   remember: z.boolean(),
 });
@@ -20,14 +20,14 @@ export const signInSchema = z.object({
 export type SignInValues = z.infer<typeof signInSchema>;
 
 export const signUpSchema = z.object({
-  name: requiredText("To'liq ismni kiriting"),
-  firstname: requiredText("Ismni kiriting"),
-  username: requiredText("Foydalanuvchi nomini kiriting").pipe(
-    z.string().min(3, "Kamida 3 belgi bo'lishi kerak"),
+  name: requiredText("validation:fullNameRequired"),
+  firstname: requiredText("validation:firstNameRequired"),
+  username: requiredText("validation:usernameRequired").pipe(
+    z.string().min(3, "validation:usernameMin"),
   ),
   email: emailField(),
-  phone: requiredText("Telefon raqamini kiriting").pipe(
-    z.string().regex(PHONE_REGEX, "Format: +998901234567"),
+  phone: requiredText("validation:phoneRequired").pipe(
+    z.string().regex(PHONE_REGEX, "validation:phoneFormat"),
   ),
   password,
 });

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import ProductCard from "@/components/ui/ProductCard";
 import Spinner from "@/components/ui/Spinner";
@@ -19,18 +20,22 @@ export default function ProductWrapper({
   isLoading,
   isError,
   error,
-  title = "New Arrivals",
+  title,
   showMore = true,
 }: ProductWrapperProps) {
+  const { t } = useTranslation("shop");
+  const { t: tCommon } = useTranslation();
+  const heading = title ?? t("newArrivals");
+
   const navigate = useNavigate();
 
   return (
     <section className="max-w-310 mx-auto px-5 flex flex-col gap-6 sm:gap-10 my-10">
       <div className="flex justify-between items-center gap-4">
-        <h3 className="font-medium text-[28px] sm:text-[40px]">{title}</h3>
+        <h3 className="font-medium text-[28px] sm:text-[40px]">{heading}</h3>
         {showMore && (
           <Button onClick={() => navigate("/shop")} variant="linked">
-            More Products
+            {t("moreProducts")}
           </Button>
         )}
       </div>
@@ -44,11 +49,11 @@ export default function ProductWrapper({
         <p className="py-20 text-center text-[#6C7275]">
           {error instanceof Error
             ? error.message
-            : "Mahsulotlarni yuklab bo'lmadi"}
+            : tCommon("errors.productsFailed")}
         </p>
       ) : data.length === 0 ? (
         <p className="py-20 text-center text-[#6C7275]">
-          Hozircha mahsulot yo'q
+          {tCommon("empty.noProducts")}
         </p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6">

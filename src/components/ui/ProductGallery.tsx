@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/utils/cn";
 import { PRODUCT_PLACEHOLDER } from "@/utils/constants";
 
@@ -14,6 +15,7 @@ export default function ProductGallery({
   alt,
   badges,
 }: ProductGalleryProps) {
+  const { t } = useTranslation();
   const [active, setActive] = useState(0);
   const stripRef = useRef<HTMLDivElement>(null);
 
@@ -67,7 +69,7 @@ export default function ProductGallery({
             <button
               key={image}
               type="button"
-              aria-label={`${index + 1}-rasmni ko'rsatish`}
+              aria-label={t("a11y.showImage", { index: index + 1 })}
               aria-current={index === current}
               onClick={() => setActive(index)}
               className={cn(
@@ -108,7 +110,7 @@ export default function ProductGallery({
           <>
             <button
               type="button"
-              aria-label="Oldingi rasm"
+              aria-label={t("a11y.previousImage")}
               onClick={prev}
               className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white hover:bg-[#F3F5F7] flex items-center justify-center transition-colors shadow-[0px_4px_12px_-2px_rgba(15,15,15,0.15)]"
             >
@@ -116,7 +118,7 @@ export default function ProductGallery({
             </button>
             <button
               type="button"
-              aria-label="Keyingi rasm"
+              aria-label={t("a11y.nextImage")}
               onClick={next}
               className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white hover:bg-[#F3F5F7] flex items-center justify-center transition-colors shadow-[0px_4px_12px_-2px_rgba(15,15,15,0.15)]"
             >

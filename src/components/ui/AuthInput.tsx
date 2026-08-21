@@ -1,5 +1,7 @@
 import { useId, useState } from "react";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
+
 
 // `ComponentPropsWithRef` — react-hook-form `register()` qaytargan `ref` ni
 // ham qabul qilishi uchun (React 19'da ref oddiy prop)
@@ -20,6 +22,7 @@ export default function AuthInput({
   type = "text",
   ...rest
 }: AuthInputProps) {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const errorId = useId();
 
@@ -48,7 +51,7 @@ export default function AuthInput({
           <button
             type="button"
             onClick={() => setShow((prev) => !prev)}
-            aria-label={show ? "Parolni yashirish" : "Parolni ko'rsatish"}
+            aria-label={show ? t("a11y.hidePassword") : t("a11y.showPassword")}
             className="absolute right-0 top-1/2 -translate-y-1/2 text-xl text-[#6C7275] hover:text-[#141718] transition-colors"
           >
             {show ? <IoEyeOffOutline /> : <IoEyeOutline />}

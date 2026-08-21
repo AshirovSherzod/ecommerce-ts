@@ -15,7 +15,7 @@ test.describe("Katalog", () => {
     await goto("/shop");
 
     await page.getByLabel("Saralash").click();
-    await page.getByRole("option", { name: "Price: Low to High" }).click();
+    await page.getByRole("option", { name: "Narx: arzondan qimmatga" }).click();
 
     await expect
       .poll(async () => {
@@ -50,7 +50,7 @@ test.describe("Katalog", () => {
     await page.locator("input[type=radio]").nth(1).click();
     await expect.poll(() => page.url()).toContain("category=");
 
-    await page.getByRole("button", { name: "Clear all filters" }).first().click();
+    await page.getByRole("button", { name: "Filtrlarni tozalash" }).first().click();
 
     await expect.poll(() => page.url()).not.toContain("category=");
   });

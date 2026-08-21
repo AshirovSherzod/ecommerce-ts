@@ -2,6 +2,8 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
+// Tarjimalar ilova chizilishidan oldin tayyor bo'lishi kerak
+import "@/i18n";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { QueryProvider } from "@/provider/QueryProvider.tsx";

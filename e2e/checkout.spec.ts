@@ -14,7 +14,7 @@ const addItemToCart = async (
   goto: (path: string) => Promise<void>,
 ) => {
   await goto(`/shop/${PRODUCT_ID}`);
-  await page.getByRole("button", { name: "Add to Cart" }).click();
+  await page.getByRole("button", { name: "Savatga qo'shish" }).click();
   await expect(page.locator("header")).toContainText("1");
 };
 
@@ -50,19 +50,21 @@ test.describe("Checkout: kirish yo'llari", () => {
     await addItemToCart(page, goto);
     await goto("/cart");
 
-    await page.getByRole("button", { name: "Checkout" }).click();
+    await page.getByRole("button", { name: "Buyurtma berish" }).click();
 
     await page.waitForURL("**/checkout");
-    await expect(page.getByRole("heading", { name: "Checkout" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Buyurtma" }),
+    ).toBeVisible();
   });
 
   test("savatdagi yetkazish tanlovi checkout'ga o'tadi", async ({ page, goto }) => {
     await addItemToCart(page, goto);
     await goto("/cart");
 
-    // "Express shipping" — ikkinchi variant
+    // Tezkor yetkazib berish — ikkinchi variant
     await page.locator('input[name="shipping"]').nth(1).check();
-    await page.getByRole("button", { name: "Checkout" }).click();
+    await page.getByRole("button", { name: "Buyurtma berish" }).click();
     await page.waitForURL("**/checkout");
 
     await expect(page.locator('input[name="checkout-shipping"]').nth(1)).toBeChecked();
@@ -137,7 +139,7 @@ test.describe("Checkout: buyurtma yuborish", () => {
     await fillCustomer(page);
     await page.getByRole("button", { name: "Buyurtma berish" }).click();
 
-    await expect(page.getByRole("heading", { name: "Complete!" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Tayyor!" })).toBeVisible();
     await expect(page.getByText(/#3L-\d{6}-\d{4}/)).toBeVisible();
 
     // Telegram'ga yuborildi (fixture ushlab qoldi — haqiqiy bot emas)
@@ -150,11 +152,11 @@ test.describe("Checkout: buyurtma yuborish", () => {
   test("tasdiq sahifasi sahifa yangilanganda ham qoladi", async ({ page }) => {
     await fillCustomer(page);
     await page.getByRole("button", { name: "Buyurtma berish" }).click();
-    await expect(page.getByRole("heading", { name: "Complete!" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Tayyor!" })).toBeVisible();
 
     await page.reload({ waitUntil: "domcontentloaded" });
 
-    await expect(page.getByRole("heading", { name: "Complete!" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Tayyor!" })).toBeVisible();
   });
 
   // Eng muhim holat: yuborilmagan buyurtmada savat yo'qolmasligi kerak
@@ -180,11 +182,11 @@ test.describe("Checkout: buyurtma yuborish", () => {
     // Savat joyida
     expect(await cartItemCount(page)).toBe(1);
     // Tasdiq ekrani chiqmasligi kerak
-    await expect(page.getByRole("heading", { name: "Complete!" })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Tayyor!" })).toHaveCount(0);
 
     // Mijoz savatga qaytib, qayta urina oladi
     await goto("/cart");
-    await expect(page.locator("main")).toContainText("Subtotal");
+    await expect(page.locator("main")).toContainText("Mahsulotlar");
   });
 
   test("qayta urinishda buyurtma raqami o'zgarmaydi", async ({ page }) => {
@@ -213,7 +215,7 @@ test.describe("Checkout: buyurtma yuborish", () => {
     ).toBeVisible();
 
     await page.getByRole("button", { name: "Buyurtma berish" }).click();
-    await expect(page.getByRole("heading", { name: "Complete!" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Tayyor!" })).toBeVisible();
 
     await expect(page.getByText(/#3L-\d{6}-\d{4}/)).toBeVisible();
   });
