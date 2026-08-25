@@ -8,6 +8,10 @@ interface ImportMetaEnv {
   readonly VITE_BOT_TOKEN?: string;
   readonly VITE_CHAT_ID?: string;
 
+  // Ixtiyoriy: Sentry DSN. Berilmasa monitoring butunlay o'chiq va
+  // Sentry bundle'i yuklab olinmaydi.
+  readonly VITE_SENTRY_DSN?: string;
+
   // Ixtiyoriy: demo sharhlarni majburan yoqish/o'chirish ("true" | "false").
   // Berilmasa — dev'da yoqiq, production build'da o'chiq.
   readonly VITE_DEMO_REVIEWS?: string;

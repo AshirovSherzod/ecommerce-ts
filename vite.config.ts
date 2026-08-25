@@ -6,6 +6,13 @@ import path from "path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  // Sentry shu bayroqlarni o'z kodida tekshiradi. Build paytida `false`
+  // ga almashtirilsa, tezlik o'lchash (tracing) va nosozlik xabarlari
+  // butunlay tashlab yuboriladi — bizga faqat xatolar kerak.
+  define: {
+    __SENTRY_DEBUG__: false,
+    __SENTRY_TRACING__: false,
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

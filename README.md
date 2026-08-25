@@ -52,6 +52,7 @@ The dev server usually starts at http://localhost:5173.
 | `VITE_API_URL` | Base URL of the backend API (used by `axiosInstance`) |
 | `VITE_BOT_TOKEN` | Telegram bot token — the contact form sends messages through this bot |
 | `VITE_CHAT_ID` | Telegram chat ID that receives the messages |
+| `VITE_SENTRY_DSN` | Optional. Sentry DSN. Unset means monitoring is off and the Sentry bundle is never downloaded |
 | `VITE_DEMO_REVIEWS` | Optional. `true`/`false` to force the placeholder reviews on or off. Unset means on in development, off in production |
 | `VITE_SALE_ENDS_AT` | Optional. ISO date for the site-wide sale countdown. Unset means no countdown in production |
 
@@ -69,6 +70,7 @@ src/
 │   ├── layout/   Header, Footer, Layout (Outlet)
 │   └── ui/       Button, Select, ProductCard, Counter, Rating, Sidebar, Spinner ...
 ├── i18n/         i18next setup, language list, bundled resources
+├── monitoring/   Sentry wiring — lazy loaded, off without a DSN
 ├── hooks/        useProducts, useCategories, useTelegramMessage
 ├── locales/      uz/, ru/, en/ — one JSON per namespace
 ├── pages/        Home, Shop, Blog, Contact, Cart, Wishlist, NotFound
@@ -164,6 +166,23 @@ to crash the page instead of showing an error state.
 alive when a page throws, and one at the root catches the rest. Stack traces
 are shown in development only.
 
+**Crashes are reported to Sentry** when `VITE_SENTRY_DSN` is set, and the
+integration is built to cost nothing when it is not: the SDK sits behind a
+dynamic `import()`, so a deployment without a DSN never downloads it. Errors
+raised before the SDK finishes loading are queued (bounded, so a blocked
+request cannot grow the queue) and flushed on arrival.
+
+`Sentry.init()` is deliberately not used. It references every default
+integration — tracing, session replay, user feedback — and all of them end up
+in the bundle whether or not they run. Building the client by hand from the
+integrations we actually want takes the chunk from 140 KB gzipped to 25 KB.
+
+**Reports are scrubbed before they leave the browser.** Sentry records XHR
+calls as breadcrumbs, and the Telegram endpoint carries the bot token in its
+URL — every placed order would have shipped that token to a third party.
+`beforeSend` strips it (`src/monitoring/scrub.ts`). `sendDefaultPii` is off,
+so the name, phone and address from checkout stay out of reports.
+
 ## Tests
 
 ```bash
@@ -211,9 +230,23 @@ a new test cannot trigger them by accident:
 | --- | --- |
 | `api.telegram.org` | The contact form would send a real message to the bot |
 | `POST /auth/register` | A valid payload would create a real account on the backend that cannot be deleted |
+| Sentry ingest | Test-run errors would land in the live project and drown the real ones |
 
 Tests assert on the block counters, so a leak fails the suite rather than
 going unnoticed. Everything else runs against the real API.
+
+**`e2e/monitoring.spec.ts` is skipped unless a DSN is configured**, since
+monitoring is compiled in at build time. It is the only check that proves the
+scrubber works on a real Sentry payload rather than a hand-written one — it
+places an order so the Telegram call is recorded as a breadcrumb, throws, and
+reads the outgoing envelope. Run it deliberately:
+
+```bash
+VITE_SENTRY_DSN="https://key@o4507.ingest.sentry.io/4507" VITE_BOT_TOKEN="7123456789:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw" VITE_CHAT_ID=1 npx playwright test e2e/monitoring.spec.ts
+```
+
+Both values are throwaway: nothing reaches Sentry or Telegram, the fixtures
+intercept both.
 
 ## Continuous integration
 
