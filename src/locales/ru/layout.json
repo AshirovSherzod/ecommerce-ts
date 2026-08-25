@@ -16,7 +16,8 @@
     "wishlist": "Избранное",
     "account": "Аккаунт",
     "signedOut": "Вы вышли из аккаунта",
-    "language": "Язык"
+    "language": "Язык",
+    "myAccount": "Мой аккаунт"
   },
   "search": {
     "placeholder": "Поиск товаров",

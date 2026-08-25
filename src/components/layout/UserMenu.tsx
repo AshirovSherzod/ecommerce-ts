@@ -93,6 +93,15 @@ export default function UserMenu() {
             )}
           </div>
 
+          <Link
+            to="/account"
+            role="menuitem"
+            onClick={() => setOpen(false)}
+            className="block px-4 py-3 text-[14px] hover:bg-[#F3F5F7] transition-colors"
+          >
+            {t("header.myAccount")}
+          </Link>
+
           <button
             type="button"
             role="menuitem"

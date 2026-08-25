@@ -85,5 +85,30 @@
       "title": "Yotoqxonangizni bezang",
       "excerpt": "Xotirjam ranglar, mayin yorug'lik va tabiiy matolar xonani orom maskaniga aylantiradi."
     }
+  },
+  "account": {
+    "title": "Hisobim",
+    "description": "Profilingiz va shu qurilmadagi buyurtmalaringiz.",
+    "guestTitle": "Siz tizimga kirmagansiz",
+    "guestDesc": "Kirsangiz profil ma'lumotlaringiz shu yerda ko'rinadi.",
+    "signIn": "Kirish",
+    "profile": "Profil",
+    "username": "Foydalanuvchi nomi",
+    "email": "Email",
+    "phone": "Telefon",
+    "phoneEmpty": "ko'rsatilmagan",
+    "signOut": "Chiqish",
+    "orders": "Buyurtmalarim",
+    "ordersDeviceNote": "Buyurtmalar shu qurilmada saqlanadi — boshqa telefon yoki brauzerda ko'rinmaydi.",
+    "ordersEmptyTitle": "Hali buyurtma bermagansiz",
+    "ordersEmptyDesc": "Birinchi buyurtmangizdan keyin u shu yerda paydo bo'ladi.",
+    "orderNumber": "Buyurtma",
+    "itemCount_one": "{{count}} mahsulot",
+    "itemCount_other": "{{count}} mahsulot",
+    "showItems": "Tarkibini ko'rsatish",
+    "shippingSeparate": "alohida kelishiladi",
+    "clear": "Tarixni tozalash",
+    "clearConfirm": "Buyurtmalar tarixi shu qurilmadan o'chiriladi. Davom etilsinmi?",
+    "cleared": "Buyurtmalar tarixi tozalandi"
   }
 }

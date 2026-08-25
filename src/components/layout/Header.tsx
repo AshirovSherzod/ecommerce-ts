@@ -178,6 +178,11 @@ export default function Header() {
                   <p className="text-[14px] text-[#6C7275] truncate">
                     {user?.firstname || user?.name || user?.username}
                   </p>
+                  <Link to="/account" onClick={() => setSidebar(false)}>
+                    <Button size="lg" className="w-full">
+                      {t("header.myAccount")}
+                    </Button>
+                  </Link>
                   <Button
                     variant="secondary"
                     onClick={handleSignOut}
