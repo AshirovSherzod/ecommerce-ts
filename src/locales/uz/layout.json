@@ -16,7 +16,8 @@
     "wishlist": "Sevimlilar",
     "account": "Hisob",
     "signedOut": "Siz tizimdan chiqdingiz",
-    "language": "Til"
+    "language": "Til",
+    "myAccount": "Hisobim"
   },
   "search": {
     "placeholder": "Mahsulot qidirish",

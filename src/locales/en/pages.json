@@ -85,5 +85,30 @@
       "title": "Decor your bedroom",
       "excerpt": "A calm palette, soft lighting and natural fabrics make the room restful."
     }
+  },
+  "account": {
+    "title": "My account",
+    "description": "Your profile and the orders placed on this device.",
+    "guestTitle": "You are not signed in",
+    "guestDesc": "Sign in and your profile details will show up here.",
+    "signIn": "Sign in",
+    "profile": "Profile",
+    "username": "Username",
+    "email": "Email",
+    "phone": "Phone",
+    "phoneEmpty": "not provided",
+    "signOut": "Sign out",
+    "orders": "My orders",
+    "ordersDeviceNote": "Orders are kept on this device — they will not appear on another phone or browser.",
+    "ordersEmptyTitle": "No orders yet",
+    "ordersEmptyDesc": "Your first order will show up here.",
+    "orderNumber": "Order",
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "showItems": "Show contents",
+    "shippingSeparate": "agreed separately",
+    "clear": "Clear history",
+    "clearConfirm": "The order history will be removed from this device. Continue?",
+    "cleared": "Order history cleared"
   }
 }

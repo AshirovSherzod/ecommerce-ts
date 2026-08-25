@@ -16,7 +16,8 @@
     "wishlist": "Wishlist",
     "account": "Account",
     "signedOut": "You have been signed out",
-    "language": "Language"
+    "language": "Language",
+    "myAccount": "My account"
   },
   "search": {
     "placeholder": "Search products",

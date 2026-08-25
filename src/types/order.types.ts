@@ -16,6 +16,13 @@ export interface OrderCustomer {
 }
 
 export interface OrderShipping {
+  /**
+   * Usul identifikatori. `label` do'kon operatoriga ketadigan xabar uchun
+   * va tilga bog'liq emas; interfeysda esa shu `id` bo'yicha tarjima
+   * ko'rsatiladi. Ixtiyoriy: bu maydon qo'shilishidan oldin saqlangan
+   * buyurtmalarda u yo'q, ular `label` bilan chiziladi.
+   */
+  id?: "free" | "express" | "pickup";
   label: string;
   price: number;
   /**

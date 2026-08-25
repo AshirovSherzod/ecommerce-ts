@@ -101,6 +101,7 @@ import { Button } from "@/components/ui/Button";
 | `/contact` | Contact form (sent to Telegram) |
 | `/cart` | Cart |
 | `/checkout` | Checkout — customer details, order summary, confirmation |
+| `/account` | Profile and the orders placed on this device |
 | `/wishlist` | Wishlist |
 | `/signin`, `/signup` | Auth pages (outside the main layout) |
 | `*` | 404 |
@@ -150,6 +151,23 @@ sentences, because a schema is a module-level constant and cannot call a hook;
 the component renders `t(errors.x.message)`. The shipping label sent to the
 shop operator over Telegram stays in a fixed language on purpose — it should
 not change with the customer's UI language.
+
+**Order history lives on the device.** There is no orders endpoint, so a
+placed order is kept in `localStorage` alongside the cart and wishlist. That
+makes the history per-device rather than per-account, and `/account` says so
+in as many words — a customer who finds an empty list on their phone should
+know why rather than assume the order was lost. The list is capped, because a
+full `localStorage` quota makes `persist` fail silently and new orders would
+vanish without a trace.
+
+The confirmation screen and the history deliberately use different storage:
+the screen is a single visit (`sessionStorage`, so it survives a refresh but
+not a return trip), the history is the device (`localStorage`). One `persist`
+cannot write to both, hence two stores in `order.store.ts`.
+
+An order records the shipping method's `id` as well as its `label`. The label
+is what the shop operator reads in Telegram and stays in one language on
+purpose; the `id` is what the account page translates for the customer.
 
 **Reviews are stored in the browser.** The API has no reviews endpoint yet;
 `useProductReviews` is the single place to swap once it does.

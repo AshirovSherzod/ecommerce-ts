@@ -17,6 +17,7 @@ const Contact = lazy(() => import("@/pages/Contact"));
 const Cart = lazy(() => import("@/pages/Cart"));
 const Checkout = lazy(() => import("@/pages/Checkout"));
 const Wishlist = lazy(() => import("@/pages/Wishlist"));
+const Account = lazy(() => import("@/pages/Account"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const SignIn = lazy(() => import("@/pages/SignIn"));
 const SignUp = lazy(() => import("@/pages/SignUp"));
@@ -58,6 +59,9 @@ export default function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="wishlist" element={<Wishlist />} />
+          {/* Kirish shart emas: buyurtma mehmon sifatida ham beriladi,
+              ya'ni mehmonning ham ko'radigan tarixi bo'ladi */}
+          <Route path="account" element={<Account />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

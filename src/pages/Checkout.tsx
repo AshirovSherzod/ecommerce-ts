@@ -11,7 +11,7 @@ import {
   isTelegramConfigured,
   sendTelegramMessages,
 } from "@/services/telegramService";
-import { useCartStore, useOrderStore } from "@/store";
+import { useCartStore, useOrderHistoryStore, useOrderStore } from "@/store";
 import type { Order } from "@/types/order.types";
 import { STORE_CURRENCY } from "@/utils/constants";
 import { formatPrice } from "@/utils/formatPrice";
@@ -119,6 +119,7 @@ export default function Checkout() {
   const clearCart = useCartStore((state) => state.clearCart);
   const lastOrder = useOrderStore((state) => state.lastOrder);
   const setLastOrder = useOrderStore((state) => state.setLastOrder);
+  const addOrder = useOrderHistoryStore((state) => state.addOrder);
 
   const initialShipping =
     (location.state as { shippingId?: ShippingId } | null)?.shippingId ??
@@ -220,6 +221,7 @@ export default function Checkout() {
       currency: freshCurrency,
       subtotal: freshSubtotal,
       shipping: {
+        id: shipping.id,
         label: shipping.label,
         price: shipping.price,
         applies,
@@ -241,6 +243,8 @@ export default function Checkout() {
     }
 
     setLastOrder(order);
+    // Tasdiq ekrani sessiyaga, tarix esa qurilmaga yoziladi
+    addOrder(order);
     clearCart();
   };
 
