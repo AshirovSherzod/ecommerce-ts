@@ -15,7 +15,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      // `import.meta.dirname` — `__dirname` Vite'ning kelajakdagi native
+      // config yuklovchisida ishlamaydi (Node 20.11+ da mavjud)
+      "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
   test: {
