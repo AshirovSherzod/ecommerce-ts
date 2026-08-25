@@ -2,12 +2,14 @@ import { test as base, expect, type Page } from "@playwright/test";
 import { API_URL } from "./env";
 
 /**
- * Testlar tashqi dunyoga haqiqiy ta'sir qilmasligi kerak. Ikkita yo'l
+ * Testlar tashqi dunyoga haqiqiy ta'sir qilmasligi kerak. Uchta yo'l
  * ataylab yopilgan:
  *
  *   Telegram   — contact formasi haqiqiy bot orqali xabar yuboradi
  *   /auth/register — to'liq to'g'ri ma'lumot yuborilsa backendda haqiqiy
  *                    akkaunt yaratiladi va uni o'chirib bo'lmaydi
+ *   Sentry     — DSN sozlangan muhitda test paytidagi har bir xato
+ *                haqiqiy loyihaga tushib, jonli hisobotni ifloslantiradi
  *
  * Ular fixture darajasida to'silgan, ya'ni yangi test yozgan odam buni
  * yodda tutishi shart emas — himoya o'zi ishlaydi.
@@ -17,15 +19,25 @@ interface Fixtures {
   /** Sahifaga o'tib, yuklanish tugashini kutadi */
   goto: (path: string) => Promise<void>;
   /** Ushlab qolingan tashqi so'rovlar soni — testda tasdiqlash uchun */
-  blocked: { telegram: number; register: number };
+  blocked: { telegram: number; register: number; sentry: number };
 }
 
 export const test = base.extend<Fixtures>({
   blocked: async ({}, use) => {
-    await use({ telegram: 0, register: 0 });
+    await use({ telegram: 0, register: 0, sentry: 0 });
   },
 
   page: async ({ page, blocked }, use) => {
+    // Sentry ikkala manzilda ham bo'lishi mumkin: o'z domeni yoki
+    // reklama bloklovchilardan qochish uchun qo'yilgan tunnel
+    await page.route(
+      /(ingest\.sentry\.io|ingest\.[a-z]+\.sentry\.io|sentry_key=)/,
+      (route) => {
+        blocked.sentry++;
+        return route.fulfill({ status: 200, body: "{}" });
+      },
+    );
+
     await page.route("**/api.telegram.org/**", (route) => {
       blocked.telegram++;
       return route.fulfill({

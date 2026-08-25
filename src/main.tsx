@@ -8,6 +8,12 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { QueryProvider } from "@/provider/QueryProvider.tsx";
 import ErrorBoundary from "@/components/layout/ErrorBoundary";
+import { initMonitoring } from "@/monitoring";
+
+// Chizishdan oldin: birinchi renderdagi qulash ham hisobotga tushsin.
+// `void` — natijani kutmaymiz, Sentry fonda yuklanadi va shu orada
+// yuz bergan xatolar navbatda saqlanadi.
+void initMonitoring();
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>

@@ -9,6 +9,7 @@ import {
   type LanguageCode,
 } from "@/i18n/config";
 import { resources } from "@/i18n/resources";
+import { setMonitoringLanguage } from "@/monitoring";
 
 /**
  * Saqlangan tilni o'qiydi. Brauzer tilini avtomatik aniqlamaymiz:
@@ -50,10 +51,12 @@ export const changeLanguage = async (language: LanguageCode) => {
   }
 
   document.documentElement.lang = language;
+  setMonitoringLanguage(language);
 };
 
 // Sahifa ochilganda ham `<html lang>` to'g'ri bo'lsin — ekran o'quvchi
 // va qidiruv tizimlari shunga qaraydi
 document.documentElement.lang = i18n.language;
+setMonitoringLanguage(i18n.language);
 
 export default i18n;
