@@ -11,10 +11,16 @@ import {
   isTelegramConfigured,
   sendTelegramMessages,
 } from "@/services/telegramService";
-import { useCartStore, useOrderHistoryStore, useOrderStore } from "@/store";
+import {
+  useAuthStore,
+  useCartStore,
+  useOrderHistoryStore,
+  useOrderStore,
+} from "@/store";
 import type { Order } from "@/types/order.types";
 import { STORE_CURRENCY } from "@/utils/constants";
 import { formatPrice } from "@/utils/formatPrice";
+import { checkoutDefaults } from "@/utils/checkoutDefaults";
 import { buildOrderMessage, createOrderId } from "@/utils/orderMessage";
 import {
   findShipping,
@@ -120,6 +126,11 @@ export default function Checkout() {
   const lastOrder = useOrderStore((state) => state.lastOrder);
   const setLastOrder = useOrderStore((state) => state.setLastOrder);
   const addOrder = useOrderHistoryStore((state) => state.addOrder);
+  const user = useAuthStore((state) => state.user);
+  // Tarixdagi eng yangi buyurtma — manzil shundan olinadi
+  const previousOrder = useOrderHistoryStore(
+    (state) => state.orders[0] ?? null,
+  );
 
   const initialShipping =
     (location.state as { shippingId?: ShippingId } | null)?.shippingId ??
@@ -139,13 +150,9 @@ export default function Checkout() {
     formState: { errors, isSubmitting },
   } = useForm<CheckoutValues>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: {
-      name: "",
-      phone: "+998",
-      address: "",
-      email: "",
-      note: "",
-    },
+    // Faqat mount paytida o'qiladi. Keyin profil yuklanib qolsa ham
+    // qayta yozmaymiz — mijoz allaqachon yozayotgan matnni yo'qotmasin.
+    defaultValues: checkoutDefaults(user, previousOrder),
   });
 
   const subtotal = useMemo(
@@ -159,8 +166,18 @@ export default function Checkout() {
   const total = subtotal + (shippingApplies ? shipping.price : 0);
   const money = (value: number) => formatPrice(value, currency);
 
-  // Buyurtma berilgan bo'lsa tasdiq ekrani — savat bo'sh bo'lsa ham
-  if (lastOrder) return <OrderComplete order={lastOrder} />;
+  /**
+   * Tasdiq ekrani faqat savat bo'sh bo'lganda ko'rsatiladi.
+   *
+   * Buyurtma yuborilgach savat tozalanadi, ya'ni odatdagi holat shu.
+   * Ammo mijoz o'sha tashrifdayoq yana mahsulot qo'shsa, unga forma
+   * kerak — `lastOrder` sessiya oxirigacha turgani uchun shartsiz
+   * tekshiruv uni eski tasdiq ekranida qamab qo'yardi va ikkinchi
+   * buyurtma berib bo'lmasdi.
+   */
+  if (lastOrder && items.length === 0) {
+    return <OrderComplete order={lastOrder} />;
+  }
 
   // Bo'sh savat bilan checkout ma'nosiz
   if (items.length === 0) {
