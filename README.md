@@ -166,6 +166,21 @@ Both the article bodies and the About page carry a visible line saying the
 text is a sample. It is placeholder copy about decorating a home, not a claim
 about this business, and the note stays until the shop writes its own.
 
+**Checkout starts filled in.** Name, phone and email come from the signed-in
+profile; the address comes from the most recent order, since no profile field
+holds one. Profile wins over the old order — a customer who updated their
+details should not have them overwritten by last month's delivery. The note is
+never carried over: "leave it by the door" belongs to one delivery, and
+repeating it on the next order would be a wrong instruction rather than a
+convenience. `checkoutDefaults` is a pure function so this priority is pinned
+by tests.
+
+The confirmation screen shows only while the cart is empty. `lastOrder` lives
+in `sessionStorage` for the whole visit, so checking it unconditionally
+trapped a customer who added more items on the same visit: they reached
+checkout and saw the previous confirmation instead of a form, with no way to
+place a second order.
+
 **Order history lives on the device.** There is no orders endpoint, so a
 placed order is kept in `localStorage` alongside the cart and wishlist. That
 makes the history per-device rather than per-account, and `/account` says so
