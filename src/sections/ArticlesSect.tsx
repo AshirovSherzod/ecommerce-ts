@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -34,7 +35,9 @@ export default function ArticlesSect({ data }: ArticlesSectProps) {
               <h4 className="font-medium text-xl">
                 {t(`articles.${item.id}.title`)}
               </h4>
-              <Button variant="linked">{tCommon("actions.readMore")}</Button>
+              <Link to={`/blog/${item.id}`}>
+                <Button variant="linked">{tCommon("actions.readMore")}</Button>
+              </Link>
             </div>
           </div>
         ))}

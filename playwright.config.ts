@@ -1,6 +1,14 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const PORT = 5199;
+/**
+ * Port band bo'lsa `PW_PORT` bilan o'zgartiriladi.
+ *
+ * `reuseExistingServer` shu manzilda javob beradigan istalgan serverni
+ * qabul qiladi — boshqa loyihaning dev serveri shu portni egallab tursa,
+ * testlar jimgina o'sha saytga qarshi ishlab ketadi va natija ma'nosiz
+ * bo'ladi. Shunday holatda: `PW_PORT=5299 npx playwright test`.
+ */
+const PORT = Number(process.env.PW_PORT ?? 5199);
 const BASE_URL = `http://localhost:${PORT}`;
 
 /**

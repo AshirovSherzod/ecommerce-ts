@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import Seo from "@/components/layout/Seo";
 import ArticlesSect from "@/sections/ArticlesSect";
 import CategorySect from "@/sections/CategorySect";
@@ -37,9 +38,11 @@ export default function Home() {
           {t("home.sale.title")}
         </h3>
         <p className="text-base sm:text-xl">{t("home.sale.text")}</p>
-        <Button className="w-35" variant="linked">
-          {tCommon("actions.showMore")}
-        </Button>
+        <Link to="/shop">
+          <Button className="w-35" variant="linked">
+            {tCommon("actions.showMore")}
+          </Button>
+        </Link>
       </Banner>
       <ArticlesSect data={ARTICLES} />
     </>

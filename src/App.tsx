@@ -18,6 +18,8 @@ const Cart = lazy(() => import("@/pages/Cart"));
 const Checkout = lazy(() => import("@/pages/Checkout"));
 const Wishlist = lazy(() => import("@/pages/Wishlist"));
 const Account = lazy(() => import("@/pages/Account"));
+const Article = lazy(() => import("@/pages/Article"));
+const About = lazy(() => import("@/pages/About"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const SignIn = lazy(() => import("@/pages/SignIn"));
 const SignUp = lazy(() => import("@/pages/SignUp"));
@@ -56,6 +58,8 @@ export default function App() {
           <Route path="shop" element={<Shop />} />
           <Route path="shop/:id" element={<Product />} />
           <Route path="blog" element={<Blog />} />
+          <Route path="blog/:id" element={<Article />} />
+          <Route path="about" element={<About />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="wishlist" element={<Wishlist />} />

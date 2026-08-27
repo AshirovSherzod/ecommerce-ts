@@ -110,5 +110,32 @@
     "clear": "Clear history",
     "clearConfirm": "The order history will be removed from this device. Continue?",
     "cleared": "Order history cleared"
+  },
+  "article": {
+    "backToBlog": "All articles",
+    "notFound": "Article not found",
+    "notFoundDesc": "This article was removed, or the address is wrong.",
+    "more": "More articles",
+    "placeholder": "Sample text — the shop replaces this with its own article."
+  },
+  "about": {
+    "title": "About us",
+    "breadcrumb": "About us",
+    "description": "3legant is a gift and decoration store. About us, what we value, and how we work.",
+    "lead": "We sell things for the home — not the ones that catch the eye, but the ones people use every day and keep for years.",
+    "storyTitle": "How we got here",
+    "story1": "3legant started in 2019 as a small shop. Then as now, one question decides everything: will this still be wanted in five years? If the answer is no, it does not go in the catalog.",
+    "story2": "Today the catalog covers furniture, lighting and home decor. We pick every category ourselves and work directly with the maker, which is how both the price and the quality stay ours to answer for.",
+    "valuesTitle": "What we care about",
+    "value1Title": "Built to last",
+    "value1Text": "Natural materials and plain shapes. Trends pass; the object stays.",
+    "value2Title": "Honest pricing",
+    "value2Text": "No middlemen. The price covers the object and the delivery, nothing else.",
+    "value3Title": "Real help",
+    "value3Text": "A person from the shop answers your question — not a bot, and during working hours.",
+    "ctaTitle": "Have a look at the catalog",
+    "ctaText": "From furniture to lighting, all in one place.",
+    "cta": "Go to the shop",
+    "placeholder": "The text on this page is a sample — the shop replaces it with its own story."
   }
 }

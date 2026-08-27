@@ -7,6 +7,8 @@ export const PATHS = [
   ["/shop", "do'kon"],
   ["/cart", "savat"],
   ["/blog", "blog"],
+  ["/blog/1", "maqola"],
+  ["/about", "biz haqimizda"],
   ["/wishlist", "sevimlilar"],
   ["/account", "hisob"],
   ["/contact", "bog'lanish"],
