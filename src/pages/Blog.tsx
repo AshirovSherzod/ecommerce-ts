@@ -45,7 +45,9 @@ export default function Blog() {
               <p className="text-[14px] text-[#6C7275]">
                 {t(`articles.${article.id}.excerpt`)}
               </p>
-              <Button variant="linked">{tCommon("actions.readMore")}</Button>
+              <Link to={`/blog/${article.id}`}>
+                <Button variant="linked">{tCommon("actions.readMore")}</Button>
+              </Link>
             </div>
           </article>
         ))}

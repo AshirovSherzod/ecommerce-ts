@@ -110,5 +110,32 @@
     "clear": "Tarixni tozalash",
     "clearConfirm": "Buyurtmalar tarixi shu qurilmadan o'chiriladi. Davom etilsinmi?",
     "cleared": "Buyurtmalar tarixi tozalandi"
+  },
+  "article": {
+    "backToBlog": "Barcha maqolalar",
+    "notFound": "Maqola topilmadi",
+    "notFoundDesc": "Bu maqola o'chirilgan yoki manzil noto'g'ri.",
+    "more": "Boshqa maqolalar",
+    "placeholder": "Namunaviy matn — do'kon o'z maqolasi bilan almashtiradi."
+  },
+  "about": {
+    "title": "Biz haqimizda",
+    "breadcrumb": "Biz haqimizda",
+    "description": "3legant — sovg'a va bezak do'koni. Biz haqimizda, qadriyatlarimiz va xizmatimiz.",
+    "lead": "Biz uy uchun buyumlar sotamiz — ko'zga tashlanadigan emas, har kuni ishlatiladigan va yillar davomida xizmat qiladigan buyumlar.",
+    "storyTitle": "Bizning yo'limiz",
+    "story1": "3legant 2019-yilda kichik do'kondan boshlangan. O'shanda ham, hozir ham bitta savolga tayanamiz: bu buyum besh yildan keyin ham kerak bo'ladimi? Agar javob yo'q bo'lsa, uni katalogga qo'ymaymiz.",
+    "story2": "Bugun katalogimizda mebel, yoritish va uy bezaklari bor. Har bir turkumni o'zimiz tanlaymiz va ishlab chiqaruvchi bilan bevosita ishlaymiz — shuning uchun narx ham, sifat ham nazoratimizda qoladi.",
+    "valuesTitle": "Nimaga e'tibor beramiz",
+    "value1Title": "Uzoq xizmat",
+    "value1Text": "Tabiiy materiallar va sodda shakllar. Moda o'tadi, buyum qoladi.",
+    "value2Title": "Halol narx",
+    "value2Text": "Vositachisiz ishlaymiz. Narxda faqat buyumning o'zi va yetkazib berish bor.",
+    "value3Title": "Haqiqiy yordam",
+    "value3Text": "Savolingizga do'kon xodimi javob beradi — bot emas, va ish vaqtida.",
+    "ctaTitle": "Katalogni ko'rib chiqing",
+    "ctaText": "Mebeldan yoritishgacha — hammasi bitta joyda.",
+    "cta": "Do'konga o'tish",
+    "placeholder": "Bu sahifadagi matn namunaviy — do'kon uni o'z tarixi bilan almashtiradi."
   }
 }

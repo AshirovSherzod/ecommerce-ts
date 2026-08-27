@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/layout/Seo";
 import ContactHero from "@/sections/ContactHero";
@@ -19,9 +20,11 @@ export default function Contact() {
           {t("contact.about.title")}
         </h3>
         <p className="text-xl">{t("contact.about.text")}</p>
-        <Button className="w-35" variant="linked">
-          {tCommon("actions.showMore")}
-        </Button>
+        <Link to="/about">
+          <Button className="w-35" variant="linked">
+            {tCommon("actions.showMore")}
+          </Button>
+        </Link>
       </Banner>
       <ContactSect />
       <ContactForm />

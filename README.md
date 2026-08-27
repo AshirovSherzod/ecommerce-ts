@@ -73,6 +73,7 @@ src/
 ├── monitoring/   Sentry wiring — lazy loaded, off without a DSN
 ├── hooks/        useProducts, useCategories, useTelegramMessage
 ├── locales/      uz/, ru/, en/ — one JSON per namespace
+├── data/         articles and their bodies (not fetched from the API)
 ├── pages/        Home, Shop, Blog, Contact, Cart, Wishlist, NotFound
 ├── provider/     QueryProvider (QueryClient configuration)
 ├── schemas/      zod validation schemas (auth, contact, review ...)
@@ -101,6 +102,8 @@ import { Button } from "@/components/ui/Button";
 | `/contact` | Contact form (sent to Telegram) |
 | `/cart` | Cart |
 | `/checkout` | Checkout — customer details, order summary, confirmation |
+| `/blog/:id` | A single article |
+| `/about` | Who the shop is and what it stands for |
 | `/account` | Profile and the orders placed on this device |
 | `/wishlist` | Wishlist |
 | `/signin`, `/signup` | Auth pages (outside the main layout) |
@@ -151,6 +154,17 @@ sentences, because a schema is a module-level constant and cannot call a hook;
 the component renders `t(errors.x.message)`. The shipping label sent to the
 shop operator over Telegram stays in a fixed language on purpose — it should
 not change with the customer's UI language.
+
+**Article text is not in the locale files.** Titles and excerpts are, because
+the blog list and the home page always show them. The bodies live in
+`src/data/articleBodies.ts`, which only the article route imports — a few
+kilobytes of prose per language has no business in a bundle that every visitor
+downloads to look at the shop. A unit test keeps the languages in step, since
+the locale key test cannot see this file.
+
+Both the article bodies and the About page carry a visible line saying the
+text is a sample. It is placeholder copy about decorating a home, not a claim
+about this business, and the note stays until the shop writes its own.
 
 **Order history lives on the device.** There is no orders endpoint, so a
 placed order is kept in `localStorage` alongside the cart and wishlist. That
