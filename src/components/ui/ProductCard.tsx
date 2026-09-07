@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
-
 type Variant = "grid" | "list";
 
 interface ProductProps {
@@ -81,8 +80,10 @@ export default function ProductCard({ data, variant = "grid" }: ProductProps) {
           {t("product.new")}
         </span>
       )}
+      {/* Oq matn bu yashilda 2.09 kontrast berardi — o'qib bo'lmasdi.
+          Brend rangi saqlanib, matn qoraytirildi: 8.64 */}
       {discountPercentage > 0 && (
-        <span className="bg-[#38CB89] text-white px-3 py-1 rounded-sm text-[12px] font-semibold">
+        <span className="bg-[#38CB89] text-[#141718] px-3 py-1 rounded-sm text-[12px] font-semibold">
           -{discountPercentage}%
         </span>
       )}

@@ -1,4 +1,5 @@
 import { clearState, expect, expectNoCrash, test } from "./fixtures";
+import { mainAddToCart, mainWishlist } from "./productHelpers";
 
 // 8 rasmli mahsulot — galereya testlari uchun
 const MULTI_IMAGE_ID = "7a40356a-c78e-4333-8ae1-9b69d89d8f18";
@@ -8,7 +9,10 @@ test.describe("Mahsulot sahifasi", () => {
     await clearState(page);
   });
 
-  test("kartani bosganda mahsulot sahifasi ochiladi", async ({ page, goto }) => {
+  test("kartani bosganda mahsulot sahifasi ochiladi", async ({
+    page,
+    goto,
+  }) => {
     await goto("/shop");
     const title = await page.locator("main h3 a").first().innerText();
 
@@ -36,7 +40,10 @@ test.describe("Mahsulot sahifasi", () => {
     await expect.poll(() => mainImage.getAttribute("src")).not.toBe(before);
   });
 
-  test("thumbnail'lar bitta vertikal ustunda turadi", async ({ page, goto }) => {
+  test("thumbnail'lar bitta vertikal ustunda turadi", async ({
+    page,
+    goto,
+  }) => {
     await goto(`/shop/${MULTI_IMAGE_ID}`);
 
     const lefts = await page
@@ -48,7 +55,10 @@ test.describe("Mahsulot sahifasi", () => {
     expect(new Set(lefts).size).toBe(1);
   });
 
-  test("noma'lum mahsulotda server xabari ko'rsatiladi", async ({ page, goto }) => {
+  test("noma'lum mahsulotda server xabari ko'rsatiladi", async ({
+    page,
+    goto,
+  }) => {
     // Haqiqiy xato: foydalanuvchi "Request failed with status code 404" ko'rardi
     await goto("/shop/00000000-0000-0000-0000-000000000000");
 
@@ -67,7 +77,7 @@ test.describe("Savat va wishlist", () => {
     const title = await page.locator("main h1").innerText();
 
     await page.getByLabel("Ko'paytirish").click();
-    await page.getByRole("button", { name: "Savatga qo'shish" }).click();
+    await mainAddToCart(page).click();
 
     await expect(page.locator("header")).toContainText("2");
 
@@ -76,10 +86,13 @@ test.describe("Savat va wishlist", () => {
     await expect(page.locator("main")).toContainText("Mahsulotlar");
   });
 
-  test("yetkazib berish narxi o'z valyutasida ko'rsatiladi", async ({ page, goto }) => {
+  test("yetkazib berish narxi o'z valyutasida ko'rsatiladi", async ({
+    page,
+    goto,
+  }) => {
     // Haqiqiy xato: 15 dollarlik yetkazish savat valyutasida formatlanardi
     await goto(`/shop/${MULTI_IMAGE_ID}`);
-    await page.getByRole("button", { name: "Savatga qo'shish" }).click();
+    await mainAddToCart(page).click();
 
     await goto("/cart");
 
@@ -90,7 +103,7 @@ test.describe("Savat va wishlist", () => {
     await goto(`/shop/${MULTI_IMAGE_ID}`);
     const title = await page.locator("main h1").innerText();
 
-    await page.getByRole("button", { name: "Sevimlilar" }).click();
+    await mainWishlist(page).click();
     await goto("/wishlist");
 
     await expect(page.locator("main")).toContainText(title);

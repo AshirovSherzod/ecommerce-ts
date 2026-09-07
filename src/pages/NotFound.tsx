@@ -18,13 +18,17 @@ export default function NotFound() {
         description={t("notFound.description")}
         noIndex
       />
-      <p className="font-medium text-[64px]/[64px] text-[#E8ECEF]">404</p>
-      <h1 className="font-medium text-[28px] sm:text-[40px]">{t("notFound.title")}</h1>
-      <p className="text-[#6C7275] max-w-md">
-        {t("notFound.desc")}
-      </p>
+      {/* Ilgari #E8ECEF edi — oq fonda 1.19 kontrast, ya'ni deyarli
+          ko'rinmasdi. Katta matn uchun 3.0 kerak, bu ohang 3.03 beradi. */}
+      <p className="font-medium text-[64px]/[64px] text-[#8A969C]">404</p>
+      <h1 className="font-medium text-[28px] sm:text-[40px]">
+        {t("notFound.title")}
+      </h1>
+      <p className="text-[#6C7275] max-w-md">{t("notFound.desc")}</p>
       <div className="flex flex-wrap justify-center gap-3 pt-2">
-        <Button onClick={() => navigate("/")}>{tCommon("actions.goHome")}</Button>
+        <Button onClick={() => navigate("/")}>
+          {tCommon("actions.goHome")}
+        </Button>
         <Button variant="secondary" onClick={() => navigate("/shop")}>
           {tCommon("actions.goToShop")}
         </Button>

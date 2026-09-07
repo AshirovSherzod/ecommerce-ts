@@ -67,13 +67,17 @@ test.describe("Newsletter", () => {
     await expect(page.getByText("Email manzili noto'g'ri")).toBeVisible();
   });
 
-  test("to'g'ri email qabul qilinadi va maydon tozalanadi", async ({ page }) => {
+  test("to'g'ri email qabul qilinadi va maydon tozalanadi", async ({
+    page,
+  }) => {
     const field = page.getByLabel("Email manzilingiz");
     await field.fill("ok@example.com");
     await page.getByRole("button", { name: "Obuna" }).click();
 
     await expect(
-      page.locator(".Toastify__toast").filter({ hasText: "Obuna uchun rahmat" }),
+      page
+        .locator(".Toastify__toast")
+        .filter({ hasText: "Obuna uchun rahmat" }),
     ).toBeVisible();
     await expect(field).toHaveValue("");
   });
@@ -87,9 +91,13 @@ test.describe("Footer", () => {
     goto,
   }) => {
     await goto("/contact");
-    await expect(page.locator("footer")).not.toContainText("Yangiliklarimizga obuna bo'ling");
+    await expect(page.locator("footer")).not.toContainText(
+      "Yangiliklarimizga obuna bo'ling",
+    );
 
     await goto("/");
-    await expect(page.locator("footer")).toContainText("Yangiliklarimizga obuna bo'ling");
+    await expect(page.locator("footer")).toContainText(
+      "Yangiliklarimizga obuna bo'ling",
+    );
   });
 });

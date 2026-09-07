@@ -1,6 +1,6 @@
-import livingroom from "@/assets/images/livingroom.png";
-import bedroom from "@/assets/images/bedroom.png";
-import kitchen from "@/assets/images/kitchen.png";
+import livingroom from "@/assets/images/livingroom.webp";
+import bedroom from "@/assets/images/bedroom.webp";
+import kitchen from "@/assets/images/kitchen.webp";
 import { Button } from "@/components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";

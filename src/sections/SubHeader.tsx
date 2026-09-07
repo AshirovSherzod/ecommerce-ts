@@ -22,7 +22,7 @@ export default function SubHeader({ setClose }: Props) {
           </span>{" "}
           {t("promo.text")}
         </p>
-        <p className="hidden sm:flex items-center gap-1 text-[#377DFF] border-b">
+        <p className="hidden sm:flex items-center gap-1 text-[#2563EB] border-b">
           <Link to={"/shop"}>{t("promo.cta")}</Link>
           <span className="shrink-0">
             <img src={arrow} alt="" />

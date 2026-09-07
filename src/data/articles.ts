@@ -1,6 +1,6 @@
-import articles1 from "@/assets/images/articles-1.png";
-import articles2 from "@/assets/images/articles-2.png";
-import articles3 from "@/assets/images/articles-3.png";
+import articles1 from "@/assets/images/articles-1.webp";
+import articles2 from "@/assets/images/articles-2.webp";
+import articles3 from "@/assets/images/articles-3.webp";
 
 export interface Article {
   id: string;

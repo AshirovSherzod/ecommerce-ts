@@ -49,15 +49,3 @@ export interface ProductQueryParams {
   maxPrice?: number;
 }
 
-export interface CreateProductRequest {
-  title: string;
-  description: string;
-  price: number;
-  oldPrice?: number;
-  currency: Currency;
-  categoryId: string;
-  brand: string;
-  images: string[];
-}
-
-export type UpdateProductRequest = Partial<CreateProductRequest>;

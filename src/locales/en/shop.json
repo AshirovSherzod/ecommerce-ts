@@ -27,7 +27,8 @@
     "priceAsc": "Price: Low to High",
     "priceDesc": "Price: High to Low",
     "nameAsc": "Name: A-Z",
-    "label": "Sort by"
+    "label": "Sort by",
+    "partialNote": "Sorting currently covers the {{count}} loaded products. Use \"Show more\" below for the full result."
   },
   "view": {
     "grid3": "3 columns",
@@ -101,5 +102,6 @@
   "newArrivals": "New Arrivals",
   "moreProducts": "More Products",
   "seoDescription": "Browse the 3legant catalog — furniture, lighting and home decor with filters by category, brand and price.",
-  "seoCategory": "{{category}} at 3legant."
+  "seoCategory": "{{category}} at 3legant.",
+  "related": "You may also like"
 }

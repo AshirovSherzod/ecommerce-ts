@@ -43,5 +43,9 @@
   },
   "empty": {
     "noProducts": "No products yet"
+  },
+  "toast": {
+    "sent": "Message sent!",
+    "failed": "Not sent: {{reason}}"
   }
 }

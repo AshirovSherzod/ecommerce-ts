@@ -25,7 +25,9 @@ test.describe("Qidiruv: Shop sahifasi", () => {
   test("filtr panelidan qidirish URL'ni yangilaydi", async ({ page, goto }) => {
     await goto("/shop");
 
-    await page.getByLabel("Katalogdan qidirish", { exact: true }).fill("playstation");
+    await page
+      .getByLabel("Katalogdan qidirish", { exact: true })
+      .fill("playstation");
     await page.getByLabel("Katalogdan qidirish: qidirish").click();
 
     await expect.poll(() => page.url()).toContain("q=playstation");
@@ -72,10 +74,16 @@ test.describe("Qidiruv: Shop sahifasi", () => {
     await expect.poll(() => page.url()).toContain("category=");
   });
 
-  test("'Clear all filters' qidiruvni ham tozalaydi", async ({ page, goto }) => {
+  test("'Clear all filters' qidiruvni ham tozalaydi", async ({
+    page,
+    goto,
+  }) => {
     await goto("/shop?q=zzzzqwertyyoq");
 
-    await page.getByRole("button", { name: "Filtrlarni tozalash" }).first().click();
+    await page
+      .getByRole("button", { name: "Filtrlarni tozalash" })
+      .first()
+      .click();
 
     await expect.poll(() => page.url()).not.toContain("q=");
   });
@@ -92,7 +100,10 @@ test.describe("Qidiruv: Shop sahifasi", () => {
     await expect(page.locator("main")).toContainText("script");
   });
 
-  test("bo'sh qidiruv barcha mahsulotlarni qaytaradi", async ({ page, goto }) => {
+  test("bo'sh qidiruv barcha mahsulotlarni qaytaradi", async ({
+    page,
+    goto,
+  }) => {
     await goto("/shop?q=");
 
     await expect
@@ -123,7 +134,10 @@ test.describe("Qidiruv: header", () => {
     ).toHaveCount(0);
   });
 
-  test("bosh sahifadan qidirish Shop'ga olib boradi", async ({ page, goto }) => {
+  test("bosh sahifadan qidirish Shop'ga olib boradi", async ({
+    page,
+    goto,
+  }) => {
     await goto("/");
 
     await page.getByRole("button", { name: "Qidiruv", exact: true }).click();

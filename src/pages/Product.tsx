@@ -12,6 +12,7 @@ import ProductGallery from "@/components/ui/ProductGallery";
 import Rating from "@/components/ui/Rating";
 import Spinner from "@/components/ui/Spinner";
 import ProductTabs from "@/sections/ProductTabs";
+import RelatedProducts from "@/sections/RelatedProducts";
 import { useGetCategory } from "@/hooks/useCategories";
 import { useGetProduct } from "@/hooks/useProducts";
 import { useProductReviews } from "@/hooks/useProductReviews";
@@ -77,9 +78,7 @@ function ProductDetail({ id }: { id: string }) {
         <Seo title={t("product.notFound")} noIndex />
         <h1 className="font-medium text-2xl">{t("product.notFound")}</h1>
         <p className="text-[#6C7275]">
-          {error instanceof Error
-            ? error.message
-            : t("product.notFoundDesc")}
+          {error instanceof Error ? error.message : t("product.notFoundDesc")}
         </p>
         <Link to="/shop">
           <Button>{t("product.backToShop")}</Button>
@@ -125,8 +124,10 @@ function ProductDetail({ id }: { id: string }) {
           {t("product.new")}
         </span>
       )}
+      {/* Oq matn bu yashilda 2.09 kontrast berardi — o'qib bo'lmasdi.
+          Brend rangi saqlanib, matn qoraytirildi: 8.64 */}
       {discountPercentage > 0 && (
-        <span className="bg-[#38CB89] text-white px-3 py-1 rounded-sm text-[12px] font-semibold">
+        <span className="bg-[#38CB89] text-[#141718] px-3 py-1 rounded-sm text-[12px] font-semibold">
           -{discountPercentage}%
         </span>
       )}
@@ -248,6 +249,8 @@ function ProductDetail({ id }: { id: string }) {
       </section>
 
       <ProductTabs product={product} categoryTitle={category?.title} />
+
+      <RelatedProducts categoryId={product.categoryId} currentId={product.id} />
     </>
   );
 }

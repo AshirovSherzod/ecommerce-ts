@@ -1,5 +1,6 @@
 import type { Page } from "@playwright/test";
 import { clearState, expect, test } from "./fixtures";
+import { mainAddToCart } from "./productHelpers";
 
 const PRODUCT_ID = "7a40356a-c78e-4333-8ae1-9b69d89d8f18";
 
@@ -14,11 +15,14 @@ const addItemToCart = async (
   goto: (path: string) => Promise<void>,
 ) => {
   await goto(`/shop/${PRODUCT_ID}`);
-  await page.getByRole("button", { name: "Savatga qo'shish" }).click();
+  await mainAddToCart(page).click();
   await expect(page.locator("header")).toContainText("1");
 };
 
-const fillCustomer = async (page: Page, overrides: Record<string, string> = {}) => {
+const fillCustomer = async (
+  page: Page,
+  overrides: Record<string, string> = {},
+) => {
   const values = { ...CUSTOMER, ...overrides };
 
   for (const [selector, value] of Object.entries(values)) {
@@ -40,7 +44,9 @@ test.describe("Checkout: kirish yo'llari", () => {
   test("bo'sh savat bilan buyurtma berib bo'lmaydi", async ({ page, goto }) => {
     await goto("/checkout");
 
-    await expect(page.getByRole("heading", { name: "Savat bo'sh" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Savat bo'sh" }),
+    ).toBeVisible();
   });
 
   test("savatdagi Checkout tugmasi checkout'ga olib boradi", async ({
@@ -58,7 +64,10 @@ test.describe("Checkout: kirish yo'llari", () => {
     ).toBeVisible();
   });
 
-  test("savatdagi yetkazish tanlovi checkout'ga o'tadi", async ({ page, goto }) => {
+  test("savatdagi yetkazish tanlovi checkout'ga o'tadi", async ({
+    page,
+    goto,
+  }) => {
     await addItemToCart(page, goto);
     await goto("/cart");
 
@@ -67,7 +76,9 @@ test.describe("Checkout: kirish yo'llari", () => {
     await page.getByRole("button", { name: "Buyurtma berish" }).click();
     await page.waitForURL("**/checkout");
 
-    await expect(page.locator('input[name="checkout-shipping"]').nth(1)).toBeChecked();
+    await expect(
+      page.locator('input[name="checkout-shipping"]').nth(1),
+    ).toBeChecked();
   });
 });
 
@@ -85,7 +96,9 @@ test.describe("Checkout: validatsiya", () => {
     await page.locator("#co-phone").fill("");
     await page.getByRole("button", { name: "Buyurtma berish" }).click();
 
-    await expect(page.getByText("Ism va familiyangizni kiriting")).toBeVisible();
+    await expect(
+      page.getByText("Ism va familiyangizni kiriting"),
+    ).toBeVisible();
     await expect(page.getByText("Telefon raqamini kiriting")).toBeVisible();
     await expect(
       page.getByText("Yetkazib berish manzilini kiriting"),
@@ -110,7 +123,9 @@ test.describe("Checkout: validatsiya", () => {
     expect(blocked.telegram).toBe(0);
   });
 
-  test("noto'g'ri email rad etiladi, bo'sh email esa o'tadi", async ({ page }) => {
+  test("noto'g'ri email rad etiladi, bo'sh email esa o'tadi", async ({
+    page,
+  }) => {
     await fillCustomer(page);
     await page.locator("#co-email").fill("notanemail");
     await page.getByRole("button", { name: "Buyurtma berish" }).click();
@@ -176,7 +191,9 @@ test.describe("Checkout: buyurtma yuborish", () => {
     await page.getByRole("button", { name: "Buyurtma berish" }).click();
 
     await expect(
-      page.locator(".Toastify__toast").filter({ hasText: "Buyurtma yuborilmadi" }),
+      page
+        .locator(".Toastify__toast")
+        .filter({ hasText: "Buyurtma yuborilmadi" }),
     ).toBeVisible();
 
     // Savat joyida
@@ -211,7 +228,9 @@ test.describe("Checkout: buyurtma yuborish", () => {
     await fillCustomer(page);
     await page.getByRole("button", { name: "Buyurtma berish" }).click();
     await expect(
-      page.locator(".Toastify__toast").filter({ hasText: "Buyurtma yuborilmadi" }),
+      page
+        .locator(".Toastify__toast")
+        .filter({ hasText: "Buyurtma yuborilmadi" }),
     ).toBeVisible();
 
     await page.getByRole("button", { name: "Buyurtma berish" }).click();

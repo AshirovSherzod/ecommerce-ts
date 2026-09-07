@@ -1,5 +1,6 @@
 import type { Page } from "@playwright/test";
 import { clearState, expect, test } from "./fixtures";
+import { mainAddToCart } from "./productHelpers";
 
 const PRODUCT_ID = "7a40356a-c78e-4333-8ae1-9b69d89d8f18";
 const TOKEN_TAIL = "AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw";
@@ -23,7 +24,7 @@ test.describe("Monitoring", () => {
 
   const placeOrder = async (page: Page) => {
     await page.goto(`/shop/${PRODUCT_ID}`);
-    await page.getByRole("button", { name: "Savatga qo'shish" }).click();
+    await mainAddToCart(page).click();
     await page.goto("/checkout");
     await page.locator("#co-name").fill("Sinov Foydalanuvchi");
     await page.locator("#co-phone").fill("+998901234567");

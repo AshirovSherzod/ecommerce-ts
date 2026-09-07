@@ -49,9 +49,7 @@
       "emailPlaceholder": "Ваш email",
       "message": "СООБЩЕНИЕ",
       "messagePlaceholder": "Ваше сообщение",
-      "submit": "Отправить сообщение",
-      "sent": "Сообщение успешно отправлено!",
-      "failed": "Ошибка: {{reason}}"
+      "submit": "Отправить сообщение"
     },
     "description": "Свяжитесь с 3legant — 234 Hai Trieu, Ho Chi Minh City. Телефон +84 234 567 890, hello@3legant.com."
   },

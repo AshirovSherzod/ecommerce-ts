@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import Seo from "@/components/layout/Seo";
 import { Button } from "@/components/ui/Button";
 import ServiceSect from "@/sections/ServiceSect";
-import aboutImg from "@/assets/images/livingroom.png";
+import aboutImg from "@/assets/images/livingroom.webp";
 
 const VALUES = ["1", "2", "3"] as const;
 

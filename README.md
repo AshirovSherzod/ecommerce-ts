@@ -16,6 +16,7 @@ a Telegram bot.
 | HTTP | axios (instance with interceptors) |
 | Forms | react-hook-form + zod (`@hookform/resolvers`) |
 | Notifications | react-toastify |
+| Accessibility | @axe-core/playwright (e2e) |
 | i18n | i18next + react-i18next (uz / ru / en) |
 
 ## Getting started
@@ -165,6 +166,24 @@ the locale key test cannot see this file.
 Both the article bodies and the About page carry a visible line saying the
 text is a sample. It is placeholder copy about decorating a home, not a claim
 about this business, and the note stays until the shop writes its own.
+
+**The newsletter reaches the shop.** It used to validate the address, say
+thank you and drop it — the customer believed they had subscribed and the shop
+never saw them. It now goes to the same Telegram bot as orders, and the field
+is only cleared once the send is confirmed.
+
+**Sorting says what it can and cannot do.** The API has no `sort` parameter,
+so sorting runs over the pages already loaded. Left silent, "price: low to
+high" would show the cheapest of nine and read as the cheapest in the catalog —
+a wrong answer delivered confidently. A line under the toolbar names the limit
+and points at "Show more". The real fix belongs on the server.
+
+**Accessibility is checked in CI-shaped tests, not by eye.** `e2e/a11y.spec.ts`
+runs axe over every page in `PATHS` and fails on `serious` and `critical`
+findings. The first run flagged colour contrast on every page: white on the
+brand green scored 2.09 where 4.5 is required, and the 404 watermark scored
+1.19. The brand green is unchanged — the badge text went dark instead, which
+reads at 8.64.
 
 **Checkout starts filled in.** Name, phone and email come from the signed-in
 profile; the address comes from the most recent order, since no profile field
