@@ -31,7 +31,7 @@ export default function Home() {
       />
       <ServiceSect variant="pr" />
       <Banner variant="none">
-        <p className="font-bold text-[#377DFF] text-[16px]">
+        <p className="font-bold text-[#2563EB] text-[16px]">
           {t("home.sale.badge")}
         </p>
         <h3 className="font-medium text-[28px]/[34px] sm:text-[40px] max-w-sm">

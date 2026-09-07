@@ -27,7 +27,8 @@
     "priceAsc": "Narx: arzondan qimmatga",
     "priceDesc": "Narx: qimmatdan arzonga",
     "nameAsc": "Nomi: A-Z",
-    "label": "Saralash:"
+    "label": "Saralash:",
+    "partialNote": "Saralash hozircha yuklangan {{count}} ta mahsulot ustidan ishlaydi. To'liq natija uchun quyidagi \"Ko'proq\" tugmasini bosing."
   },
   "view": {
     "grid3": "3 ustun",
@@ -97,5 +98,6 @@
   "newArrivals": "Yangi kelganlar",
   "moreProducts": "Barcha mahsulotlar",
   "seoDescription": "3legant katalogi — mebel, yoritish va uy bezaklari. Kategoriya, brend va narx bo'yicha filtrlash.",
-  "seoCategory": "{{category}} — 3legant katalogida."
+  "seoCategory": "{{category}} — 3legant katalogida.",
+  "related": "O'xshash mahsulotlar"
 }

@@ -6,7 +6,7 @@ import Seo from "@/components/layout/Seo";
 import { Button } from "@/components/ui/Button";
 import ProductCard from "@/components/ui/ProductCard";
 import { Select } from "@/components/ui/Select";
-import Spinner from "@/components/ui/Spinner";
+import { ProductGridSkeleton } from "@/components/ui/Skeleton";
 import ShopFilters, { type ShopFilterValues } from "@/sections/ShopFilters";
 import ShopHero from "@/sections/ShopHero";
 import { useGetCategories } from "@/hooks/useCategories";
@@ -250,6 +250,18 @@ export default function Shop() {
             </div>
           </div>
 
+          {/*
+            API'da `sort` parametri yo'q, shuning uchun saralash faqat
+            yuklangan sahifalar ustidan bajariladi. Buni aytmasak, mijoz
+            "arzondan qimmatga" deb butun katalogning eng arzonini ko'rdim
+            deb o'ylardi — jimgina noto'g'ri javob. To'liq yechim serverda.
+          */}
+          {sort !== "newest" && hasNextPage && !isLoading && (
+            <p className="mb-4 px-3 py-2 rounded-md bg-[#F3F5F7] text-[13px] text-[#5E6669]">
+              {t("sort.partialNote", { count: sortedProducts.length })}
+            </p>
+          )}
+
           {filtersOpen && (
             <div className="lg:hidden mb-6 p-4 border border-[#E8ECEF] rounded-md">
               {filters}
@@ -257,9 +269,8 @@ export default function Shop() {
           )}
 
           {isLoading ? (
-            <div className="flex justify-center py-20">
-              <Spinner size="xl" color="dark" />
-            </div>
+            // Filtr paneli allaqachon chizilgan — to'r ham o'z joyini egallasin
+            <ProductGridSkeleton count={9} className={viewConfig.className} />
           ) : isError ? (
             <p className="py-20 text-center text-[#6C7275]">
               {error instanceof Error

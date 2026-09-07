@@ -6,7 +6,10 @@ const PRODUCT_ID = "7a40356a-c78e-4333-8ae1-9b69d89d8f18";
 // Ro'yxatning o'zi 5 tadan sahifalanadi, shuning uchun kartochkalar sonini
 // sanash yangi sharh qo'shilganini ko'rsatmaydi.
 const totalReviews = async (page: import("@playwright/test").Page) => {
-  const heading = await page.locator('[role="tabpanel"] h3').first().innerText();
+  const heading = await page
+    .locator('[role="tabpanel"] h3')
+    .first()
+    .innerText();
   return Number(heading.match(/\d+/)?.[0] ?? 0);
 };
 
@@ -18,7 +21,9 @@ test.describe("Sharhlar", () => {
 
   test("uchta tab bor va Reviews ochiq turadi", async ({ page }) => {
     await expect(page.getByRole("tab")).toHaveCount(3);
-    await expect(page.getByRole("tab", { selected: true })).toHaveText("Sharhlar");
+    await expect(page.getByRole("tab", { selected: true })).toHaveText(
+      "Sharhlar",
+    );
   });
 
   test("Additional Info'da texnik ma'lumot bor, tepada takrorlanmaydi", async ({
@@ -49,10 +54,14 @@ test.describe("Sharhlar", () => {
     await page.getByRole("button", { name: "Sharh yozish" }).click();
 
     await expect.poll(() => totalReviews(page)).toBe(before + 1);
-    await expect(page.locator("article").first()).toContainText("Sinov Foydalanuvchi");
+    await expect(page.locator("article").first()).toContainText(
+      "Sinov Foydalanuvchi",
+    );
 
     // Yuborgach ism qoladi, matn tozalanadi
-    await expect(page.getByLabel("Ismingiz").first()).toHaveValue("Sinov Foydalanuvchi");
+    await expect(page.getByLabel("Ismingiz").first()).toHaveValue(
+      "Sinov Foydalanuvchi",
+    );
     await expect(page.getByLabel("Sharh matni")).toHaveValue("");
 
     await goto(`/shop/${PRODUCT_ID}`);
@@ -67,7 +76,10 @@ test.describe("Sharhlar", () => {
   });
 
   test("Like bosilganda hisob oshadi", async ({ page }) => {
-    const like = page.locator("article").first().getByRole("button", { name: /^Yoqdi/ });
+    const like = page
+      .locator("article")
+      .first()
+      .getByRole("button", { name: /^Yoqdi/ });
     const before = await like.innerText();
 
     await like.click();

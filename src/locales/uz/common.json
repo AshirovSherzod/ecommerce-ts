@@ -43,5 +43,9 @@
   },
   "empty": {
     "noProducts": "Hozircha mahsulot yo'q"
+  },
+  "toast": {
+    "sent": "Xabar muvaffaqiyatli yuborildi!",
+    "failed": "Yuborilmadi: {{reason}}"
   }
 }

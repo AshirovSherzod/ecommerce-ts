@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import ProductCard from "@/components/ui/ProductCard";
-import Spinner from "@/components/ui/Spinner";
+import { ProductGridSkeleton } from "@/components/ui/Skeleton";
 import type { Product } from "@/types/products.types";
 import { useNavigate } from "react-router-dom";
 
@@ -41,9 +41,7 @@ export default function ProductWrapper({
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-20">
-          <Spinner size="xl" color="dark" />
-        </div>
+        <ProductGridSkeleton />
       ) : isError ? (
         // Ilgari xato bo'lsa ham bo'sh to'r ko'rinardi — sabab bilinmasdi
         <p className="py-20 text-center text-[#6C7275]">

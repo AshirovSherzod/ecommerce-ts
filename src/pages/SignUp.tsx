@@ -65,7 +65,7 @@ export default function SignUp() {
             {t("signUp.hasAccount")}{" "}
             <Link
               to="/signin"
-              className="text-[#38CB89] font-medium hover:underline"
+              className="text-[#12805A] font-medium hover:underline"
             >
               {t("signUp.signInLink")}
             </Link>

@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Shaxsiy sahifalar: bular <meta name="robots" content="noindex"> bilan ham
+# belgilangan, lekin robotlar u yerga umuman bormagani yaxshi
+Disallow: /cart
+Disallow: /checkout
+Disallow: /account
+Disallow: /wishlist
+Disallow: /signin
+Disallow: /signup
+
+Sitemap: https://ecommerce-ts-six.vercel.app/sitemap.xml

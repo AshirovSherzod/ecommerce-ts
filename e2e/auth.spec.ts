@@ -20,7 +20,10 @@ const VALID_SIGNUP = {
   Parol: "password123",
 };
 
-const fillSignUp = async (page: Page, overrides: Record<string, string> = {}) => {
+const fillSignUp = async (
+  page: Page,
+  overrides: Record<string, string> = {},
+) => {
   const values = { ...VALID_SIGNUP, ...overrides };
 
   for (const [label, value] of Object.entries(values)) {
@@ -71,7 +74,9 @@ test.describe("Sign In", () => {
   });
 
   test("qisqa parolni rad etadi", async ({ page }) => {
-    await page.getByLabel("Foydalanuvchi nomi yoki email").fill("test@example.com");
+    await page
+      .getByLabel("Foydalanuvchi nomi yoki email")
+      .fill("test@example.com");
     await page.getByLabel("Parol", { exact: true }).fill("123");
     await page.getByRole("button", { name: "Kirish", exact: true }).click();
 
@@ -90,7 +95,9 @@ test.describe("Sign In", () => {
   // Haqiqiy API: server o'z xabarini ko'rsatishi kerak, axios'ning
   // umumiy "Request failed with status code 401" matnini emas
   test("noto'g'ri parolda server xabari chiqadi", async ({ page }) => {
-    await page.getByLabel("Foydalanuvchi nomi yoki email").fill("yoq@example.com");
+    await page
+      .getByLabel("Foydalanuvchi nomi yoki email")
+      .fill("yoq@example.com");
     await page.getByLabel("Parol", { exact: true }).fill("notogriparol123");
     await page.getByRole("button", { name: "Kirish", exact: true }).click();
 
@@ -119,12 +126,19 @@ test.describe("Sign Up", () => {
     page,
   }) => {
     await expect(page.locator("form input")).toHaveCount(6);
-    await expect(page.getByLabel("Telefon raqam", { exact: true })).toHaveValue("+998");
+    await expect(page.getByLabel("Telefon raqam", { exact: true })).toHaveValue(
+      "+998",
+    );
   });
 
-  test("har maydon uchun alohida xato ko'rsatadi", async ({ page, blocked }) => {
+  test("har maydon uchun alohida xato ko'rsatadi", async ({
+    page,
+    blocked,
+  }) => {
     await page.getByLabel("Telefon raqam", { exact: true }).fill("");
-    await page.getByRole("button", { name: "Ro'yxatdan o'tish", exact: true }).click();
+    await page
+      .getByRole("button", { name: "Ro'yxatdan o'tish", exact: true })
+      .click();
 
     await expect(page.getByText("To'liq ismni kiriting")).toBeVisible();
     await expect(page.getByText("Foydalanuvchi nomini kiriting")).toBeVisible();
@@ -137,7 +151,9 @@ test.describe("Sign Up", () => {
 
   test("noto'g'ri telefon formatini rad etadi", async ({ page, blocked }) => {
     await fillSignUp(page, { "Telefon raqam": "901234567" });
-    await page.getByRole("button", { name: "Ro'yxatdan o'tish", exact: true }).click();
+    await page
+      .getByRole("button", { name: "Ro'yxatdan o'tish", exact: true })
+      .click();
 
     await expect(page.getByText("Format: +998901234567")).toBeVisible();
     expect(blocked.register).toBe(0);
@@ -148,7 +164,9 @@ test.describe("Sign Up", () => {
     blocked,
   }) => {
     await fillSignUp(page);
-    await page.getByRole("button", { name: "Ro'yxatdan o'tish", exact: true }).click();
+    await page
+      .getByRole("button", { name: "Ro'yxatdan o'tish", exact: true })
+      .click();
 
     // So'rov fixture darajasida ushlanadi — backendda akkaunt yaratilmaydi
     await expect(

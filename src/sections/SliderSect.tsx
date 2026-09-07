@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { useTranslation } from "react-i18next";
-import bedroom from "@/assets/images/bedroom.png";
-import kitchen from "@/assets/images/kitchen.png";
-import livingroom from "@/assets/images/livingroom.png";
+import bedroom from "@/assets/images/bedroom.webp";
+import kitchen from "@/assets/images/kitchen.webp";
+import livingroom from "@/assets/images/livingroom.webp";
 
 const SLIDES = [
   { id: "livingroom", img: livingroom, altKey: "home.categories.living" },
